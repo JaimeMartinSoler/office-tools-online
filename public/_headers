@@ -1,0 +1,12 @@
+# Security headers for static hosts that read a `_headers` file
+# (Cloudflare Pages, Netlify). The key privacy line is `connect-src 'self'`:
+# the browser is not permitted to send user data to any other origin.
+#
+# Note: 'unsafe-inline' for script/style is required by Next.js's static
+# runtime (inline bootstrap + styles). It does not weaken the egress guarantee.
+/*
+  Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self' data:; connect-src 'self'; object-src 'none'; base-uri 'self'; frame-ancestors 'none'
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: no-referrer
+  X-Frame-Options: DENY
+  Permissions-Policy: geolocation=(), microphone=(), camera=()

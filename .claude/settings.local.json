@@ -1,0 +1,13 @@
+{
+  "permissions": {
+    "allow": [
+      "Skill(claude-api)",
+      "Bash(pnpm -v)",
+      "Bash(pnpm install *)",
+      "Bash(pnpm test *)",
+      "Bash(pnpm rebuild *)",
+      "Bash(pnpm lint *)",
+      "Bash(pnpm build *)"
+    ]
+  }
+}

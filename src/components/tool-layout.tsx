@@ -1,0 +1,49 @@
+import type { ReactNode } from "react";
+
+/** Standard header + content frame shared by every tool page. */
+export function ToolLayout({
+  title,
+  description,
+  children,
+}: {
+  title: string;
+  description: string;
+  children: ReactNode;
+}) {
+  return (
+    <div className="flex h-full flex-col gap-4">
+      <header className="space-y-1">
+        <h1 className="text-2xl font-semibold tracking-tight">{title}</h1>
+        <p className="text-sm text-muted-foreground">{description}</p>
+      </header>
+      {children}
+    </div>
+  );
+}
+
+/** Two-column input/output pane wrapper (stacks on small screens). */
+export function ToolPanes({ children }: { children: ReactNode }) {
+  return (
+    <div className="grid flex-1 gap-4 lg:grid-cols-2">{children}</div>
+  );
+}
+
+export function ToolPane({
+  label,
+  actions,
+  children,
+}: {
+  label: string;
+  actions?: ReactNode;
+  children: ReactNode;
+}) {
+  return (
+    <section className="flex min-w-0 flex-col gap-2">
+      <div className="flex h-8 items-center justify-between gap-2">
+        <h2 className="text-sm font-medium text-muted-foreground">{label}</h2>
+        {actions ? <div className="flex items-center gap-2">{actions}</div> : null}
+      </div>
+      {children}
+    </section>
+  );
+}
