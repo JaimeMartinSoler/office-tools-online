@@ -45,6 +45,38 @@ Each tool exposes pure functions in logic.ts. Errors are returned, not thrown.
   JSON Schema (in case the wrong direction was chosen) — same pattern as the
   JSON-in-YAML notice. It warns, it doesn't block.
 
+## markdown
+- Converts a source document to Markdown, or previews Markdown. A top segmented
+  control picks the Input format: HTML, CSV, or Markdown (each with an on-hover
+  tooltip). Reuses `ConverterTool`.
+- The output pane has a Raw / Formatted toggle (rendered as `outputControls`):
+  Raw shows the Markdown source in the editor; Formatted renders it as a styled
+  preview. Markdown input + Formatted = a live Markdown previewer.
+- Formatted preview: `marked` (MD→HTML, GFM on) sanitised with `DOMPurify`,
+  rendered in a `prose dark:prose-invert` container. It's lazy-loaded via a
+  `ssr:false` dynamic component (`preview.tsx` / `preview-inner.tsx`), so marked
+  + DOMPurify never run during prerender and only load on first use. The pure
+  `markdownToHtml` lives in `logic.ts` (Node-testable); DOMPurify (needs the DOM)
+  stays in the client component. External images/links in the preview won't load
+  under the site CSP (`img-src 'self' data:`) — a privacy-preserving side effect.
+- Markdown input is a passthrough (line endings normalised, trimmed); the Copy
+  button always copies the raw Markdown, in either view.
+- HTML → Markdown via `turndown` + `turndown-plugin-gfm` (ATX headings, fenced
+  code, `-` bullets; GFM adds tables, strikethrough, task lists). turndown uses
+  the browser's `DOMParser` in the client bundle (no network) and its bundled
+  `@mixmark-io/domino` DOM in Node, so the logic stays pure and Node-testable
+  with no `jsdom` dependency.
+- CSV → Markdown table: in-house RFC-4180-ish parser (quoted fields, `""`
+  escapes, embedded delimiters/newlines). First row is the header; `|` is escaped
+  as `\|`, in-cell newlines become `<br>`, ragged rows are padded to the header
+  width. Delimiter is auto-detected per first line among `,`, tab, `;`.
+- Orange notice: if the input looks like the other format (HTML pasted while CSV
+  is selected, or vice versa), warn to switch the Input format. It warns, it
+  doesn't block.
+- Load sample is mode-aware (a small HTML document or a few CSV rows).
+- Out of scope (for now): PDF → Markdown. PDFs carry no semantic structure, so a
+  client-side conversion would only be best-effort text extraction; deferred.
+
 ## string-case-converter
 - Convert input to: lower, UPPER, camelCase, PascalCase, snake_case,
   kebab-case, CONSTANT_CASE, Title Case, Sentence case.

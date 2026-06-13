@@ -13,7 +13,8 @@ A fast, **privacy-first** collection of online utilities for developers and offi
 | --- | --- |
 | **JSON ↔ YAML ↔ XML** | Convert, beautify (2/4/tab indent), and minify between JSON, YAML, and XML, with line/column errors. |
 | **JSON ↔ JSON Schema** | Infer a JSON Schema (draft 2020-12) from a sample, or generate a deterministic sample instance from a schema. |
-| **Base64 Encode / Decode** | Standard and URL-safe Base64, correct UTF-8 handling, file → Base64. |
+| **Base64** | Standard and URL-safe Base64, correct UTF-8 handling, file → Base64. |
+| **Markdown** | Convert HTML or CSV into Markdown, or write Markdown and preview it rendered (Raw / Formatted toggle). |
 | **String Case Converter** | camelCase, PascalCase, snake_case, kebab-case, CONSTANT_CASE, and more. |
 | **Clipboard Sharing** | Placeholder — coming soon. |
 

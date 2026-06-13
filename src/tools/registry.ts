@@ -3,6 +3,7 @@ import { Base64Tool } from "./base64";
 import { ClipboardSharing } from "./clipboard-sharing";
 import { JsonJsonSchema } from "./json-json-schema";
 import { JsonYamlXml } from "./json-yaml-xml";
+import { MarkdownTool } from "./markdown";
 import { StringCaseConverter } from "./string-case-converter";
 
 export type ToolCategory = "JSON" | "Encoding" | "Text" | "Misc";
@@ -72,6 +73,23 @@ export const tools: Tool[] = [
     keywords: ["base64", "base64url", "encode", "decode", "url-safe"],
     status: "stable",
     Component: Base64Tool,
+  },
+  {
+    slug: "markdown",
+    name: "Markdown",
+    description: "Convert HTML or CSV into Markdown.",
+    category: "Text",
+    keywords: [
+      "markdown",
+      "md",
+      "html",
+      "csv",
+      "table",
+      "convert",
+      "to markdown",
+    ],
+    status: "stable",
+    Component: MarkdownTool,
   },
   {
     slug: "string-case-converter",

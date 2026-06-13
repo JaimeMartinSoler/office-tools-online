@@ -34,6 +34,7 @@ export function ConverterTool({
   inputControls,
   outputControls,
   warn,
+  renderOutput,
   infoMessage = DEFAULT_INFO_MESSAGE,
   validatedMessage = DEFAULT_VALIDATED_MESSAGE,
 }: {
@@ -55,6 +56,11 @@ export function ConverterTool({
   inputControls?: ReactNode;
   /** Controls rendered under the output pane label. */
   outputControls?: ReactNode;
+  /**
+   * Optional custom renderer for the output pane (e.g. a rendered preview).
+   * When omitted, a read-only CodeEditor shows the raw output.
+   */
+  renderOutput?: (output: string) => ReactNode;
   /**
    * Optional non-blocking notice for valid-but-suspicious input. Must be stable
    * across renders (wrap in useCallback), same contract as `convert`.
@@ -130,7 +136,11 @@ export function ConverterTool({
           actions={<CopyButton value={output} />}
           controls={outputControls}
         >
-          <CodeEditor value={output} language={outputLanguage} readOnly />
+          {renderOutput ? (
+            renderOutput(output)
+          ) : (
+            <CodeEditor value={output} language={outputLanguage} readOnly />
+          )}
         </ToolPane>
       </ToolPanes>
     </ToolLayout>
