@@ -17,7 +17,11 @@ See docs/TOOLS.md.
 ## Global UX requirements
 - Persistent sidebar (grouped by category) + command-palette search (Cmd/Ctrl-K).
 - Each tool: input pane, output pane, action bar (copy, clear, load sample, swap).
-- Validation errors shown inline, never thrown to console only.
+- A single always-present status banner gives live feedback (priority
+  error > warning > info > validated), so validation is visible inline — never
+  thrown to console only — and the layout never shifts as messages come and go.
+- Controls carry on-hover tooltips; mode-dependent controls are disabled/grayed
+  rather than hidden.
 - A visible "🔒 100% client-side — your data never leaves this browser" badge + /privacy page.
 
 ## Out of scope (v1)

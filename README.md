@@ -11,14 +11,17 @@ A fast, **privacy-first** collection of online utilities for developers and offi
 
 | Tool | Description |
 | --- | --- |
-| **JSON Formatter** | Beautify (2/4/tab indent), minify, and validate JSON with line/column errors. |
-| **JSON → YAML** | Convert JSON documents to YAML. |
-| **YAML → JSON** | Convert YAML to JSON with configurable indentation. |
-| **JSON → JSON Schema** | Infer a JSON Schema (draft 2020-12) from a sample document. |
-| **JSON Schema → JSON** | Generate a sample JSON instance from a schema (deterministic, seeded). |
+| **JSON ↔ YAML ↔ XML** | Convert, beautify (2/4/tab indent), and minify between JSON, YAML, and XML, with line/column errors. |
+| **JSON ↔ JSON Schema** | Infer a JSON Schema (draft 2020-12) from a sample, or generate a deterministic sample instance from a schema. |
 | **Base64 Encode / Decode** | Standard and URL-safe Base64, correct UTF-8 handling, file → Base64. |
 | **String Case Converter** | camelCase, PascalCase, snake_case, kebab-case, CONSTANT_CASE, and more. |
 | **Clipboard Sharing** | Placeholder — coming soon. |
+
+Each tool is **bidirectional** where it makes sense (a direction toggle, like
+Base64's Encode/Decode), with on-hover tooltips on every control and a
+mode-aware "Load sample". A persistent status line gives live feedback —
+**info** while empty, **validated** (green) when the input parses, plus inline
+**warning** and **error** banners — so the layout never jumps.
 
 ## Why it's private by design
 

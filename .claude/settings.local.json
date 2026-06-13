@@ -7,7 +7,8 @@
       "Bash(pnpm test *)",
       "Bash(pnpm rebuild *)",
       "Bash(pnpm lint *)",
-      "Bash(pnpm build *)"
+      "Bash(pnpm build *)",
+      "Bash(node -e \"const s='Hello, Office Tools! 🔒'; const b=Buffer.from\\(s,'utf8'\\).toString\\('base64'\\); console.log\\('std :', b\\); console.log\\('url :', b.replace\\(/\\\\+/g,'-'\\).replace\\(/\\\\//g,'_'\\).replace\\(/=+$/,''\\)\\);\")"
     ]
   }
 }

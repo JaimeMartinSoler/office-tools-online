@@ -1,12 +1,9 @@
 import type { ComponentType } from "react";
 import { Base64Tool } from "./base64";
 import { ClipboardSharing } from "./clipboard-sharing";
-import { JsonFormatter } from "./json-formatter";
-import { JsonSchemaToJson } from "./json-schema-to-json";
-import { JsonToJsonSchema } from "./json-to-json-schema";
-import { JsonToYaml } from "./json-to-yaml";
+import { JsonJsonSchema } from "./json-json-schema";
+import { JsonYamlXml } from "./json-yaml-xml";
 import { StringCaseConverter } from "./string-case-converter";
-import { YamlToJson } from "./yaml-to-json";
 
 export type ToolCategory = "JSON" | "Encoding" | "Text" | "Misc";
 
@@ -29,53 +26,47 @@ export interface Tool {
  */
 export const tools: Tool[] = [
   {
-    slug: "json-formatter",
-    name: "JSON Formatter",
-    description: "Beautify, minify, and validate JSON.",
+    slug: "json-yaml-xml",
+    name: "JSON ↔ YAML ↔ XML",
+    description: "Convert, beautify, and minify between JSON, YAML, and XML.",
     category: "JSON",
-    keywords: ["json", "beautify", "format", "minify", "validate", "pretty"],
+    keywords: [
+      "json",
+      "yaml",
+      "xml",
+      "convert",
+      "transform",
+      "beautify",
+      "minify",
+      "format",
+      "pretty",
+      "validate",
+    ],
     status: "stable",
-    Component: JsonFormatter,
+    Component: JsonYamlXml,
   },
   {
-    slug: "json-to-yaml",
-    name: "JSON → YAML",
-    description: "Convert JSON to YAML.",
+    slug: "json-json-schema",
+    name: "JSON ↔ JSON Schema",
+    description:
+      "Infer a JSON Schema from a sample, or generate a sample from a schema.",
     category: "JSON",
-    keywords: ["json", "yaml", "convert"],
+    keywords: [
+      "json",
+      "schema",
+      "infer",
+      "draft",
+      "2020-12",
+      "sample",
+      "mock",
+      "generate",
+    ],
     status: "stable",
-    Component: JsonToYaml,
-  },
-  {
-    slug: "yaml-to-json",
-    name: "YAML → JSON",
-    description: "Convert YAML to JSON.",
-    category: "JSON",
-    keywords: ["yaml", "json", "convert"],
-    status: "stable",
-    Component: YamlToJson,
-  },
-  {
-    slug: "json-to-json-schema",
-    name: "JSON → JSON Schema",
-    description: "Infer a JSON Schema from a sample document.",
-    category: "JSON",
-    keywords: ["json", "schema", "infer", "draft", "2020-12"],
-    status: "stable",
-    Component: JsonToJsonSchema,
-  },
-  {
-    slug: "json-schema-to-json",
-    name: "JSON Schema → JSON",
-    description: "Generate a sample JSON instance from a JSON Schema.",
-    category: "JSON",
-    keywords: ["json", "schema", "sample", "mock", "generate"],
-    status: "stable",
-    Component: JsonSchemaToJson,
+    Component: JsonJsonSchema,
   },
   {
     slug: "base64",
-    name: "Base64 Encode / Decode",
+    name: "Base64",
     description: "Encode and decode Base64 and Base64URL.",
     category: "Encoding",
     keywords: ["base64", "base64url", "encode", "decode", "url-safe"],

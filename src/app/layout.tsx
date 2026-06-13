@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Header } from "@/components/header";
 import { Sidebar } from "@/components/sidebar";
 import { ThemeProvider } from "@/components/theme-provider";
+import { TooltipProvider } from "@/components/ui/tooltip";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -22,15 +23,17 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <body>
         <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
-          <div className="flex h-screen overflow-hidden">
-            <Sidebar />
-            <div className="flex min-w-0 flex-1 flex-col">
-              <Header />
-              <main className="flex-1 overflow-y-auto p-4 md:p-6">
-                {children}
-              </main>
+          <TooltipProvider delayDuration={300}>
+            <div className="flex h-screen overflow-hidden">
+              <Sidebar />
+              <div className="flex min-w-0 flex-1 flex-col">
+                <Header />
+                <main className="flex-1 overflow-y-auto p-4 md:p-6">
+                  {children}
+                </main>
+              </div>
             </div>
-          </div>
+          </TooltipProvider>
         </ThemeProvider>
       </body>
     </html>

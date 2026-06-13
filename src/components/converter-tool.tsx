@@ -1,14 +1,18 @@
 "use client";
 
-import { AlertCircle } from "lucide-react";
 import { useEffect, useState, type ReactNode } from "react";
 import { CodeEditor } from "@/components/code-editor";
 import { CopyButton } from "@/components/copy-button";
+import { StatusBanner } from "@/components/status-banner";
 import { ToolLayout, ToolPane, ToolPanes } from "@/components/tool-layout";
 import { Button } from "@/components/ui/button";
 import type { Result } from "@/lib/result";
 
 type Language = "json" | "text";
+
+const DEFAULT_INFO_MESSAGE =
+  "Ready when you are — paste or type to begin. Runs 100% in your browser.";
+const DEFAULT_VALIDATED_MESSAGE = "Looks good — input is valid.";
 
 /**
  * Reusable single-input → single-output converter used by most tools.
@@ -27,6 +31,11 @@ export function ConverterTool({
   outputLanguage = "text",
   inputPlaceholder,
   options,
+  inputControls,
+  outputControls,
+  warn,
+  infoMessage = DEFAULT_INFO_MESSAGE,
+  validatedMessage = DEFAULT_VALIDATED_MESSAGE,
 }: {
   title: string;
   description: string;
@@ -38,16 +47,31 @@ export function ConverterTool({
   outputLanguage?: Language;
   inputPlaceholder?: string;
   options?: ReactNode;
+  /** Grey banner shown while the input is empty. */
+  infoMessage?: string;
+  /** Green banner shown when conversion succeeds with no warning. */
+  validatedMessage?: string;
+  /** Controls rendered under the input pane label (e.g. a format selector). */
+  inputControls?: ReactNode;
+  /** Controls rendered under the output pane label. */
+  outputControls?: ReactNode;
+  /**
+   * Optional non-blocking notice for valid-but-suspicious input. Must be stable
+   * across renders (wrap in useCallback), same contract as `convert`.
+   */
+  warn?: (input: string) => string | null;
 }) {
   const [input, setInput] = useState("");
   const [output, setOutput] = useState("");
   const [error, setError] = useState<string | null>(null);
+  const [warning, setWarning] = useState<string | null>(null);
 
   useEffect(() => {
     const handle = setTimeout(() => {
       if (input.trim() === "") {
         setOutput("");
         setError(null);
+        setWarning(null);
         return;
       }
       const result = convert(input);
@@ -58,9 +82,10 @@ export function ConverterTool({
         setOutput("");
         setError(result.error);
       }
+      setWarning(warn ? warn(input) : null);
     }, 150);
     return () => clearTimeout(handle);
-  }, [input, convert]);
+  }, [input, convert, warn]);
 
   return (
     <ToolLayout title={title} description={description}>
@@ -81,15 +106,18 @@ export function ConverterTool({
         </div>
       </div>
 
-      {error && (
-        <div className="flex items-start gap-2 rounded-md border border-destructive/40 bg-destructive/10 px-3 py-2 text-sm text-destructive">
-          <AlertCircle className="mt-0.5 size-4 shrink-0" />
-          <span>{error}</span>
-        </div>
+      {error ? (
+        <StatusBanner kind="error">{error}</StatusBanner>
+      ) : warning ? (
+        <StatusBanner kind="warning">{warning}</StatusBanner>
+      ) : input.trim() === "" ? (
+        <StatusBanner kind="info">{infoMessage}</StatusBanner>
+      ) : (
+        <StatusBanner kind="validated">{validatedMessage}</StatusBanner>
       )}
 
       <ToolPanes>
-        <ToolPane label={inputLabel}>
+        <ToolPane label={inputLabel} controls={inputControls}>
           <CodeEditor
             value={input}
             onChange={setInput}
@@ -97,7 +125,11 @@ export function ConverterTool({
             placeholder={inputPlaceholder}
           />
         </ToolPane>
-        <ToolPane label={outputLabel} actions={<CopyButton value={output} />}>
+        <ToolPane
+          label={outputLabel}
+          actions={<CopyButton value={output} />}
+          controls={outputControls}
+        >
           <CodeEditor value={output} language={outputLanguage} readOnly />
         </ToolPane>
       </ToolPanes>

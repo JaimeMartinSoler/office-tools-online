@@ -31,10 +31,13 @@ export function ToolPanes({ children }: { children: ReactNode }) {
 export function ToolPane({
   label,
   actions,
+  controls,
   children,
 }: {
   label: string;
   actions?: ReactNode;
+  /** Optional controls rendered under the label row (e.g. format selectors). */
+  controls?: ReactNode;
   children: ReactNode;
 }) {
   return (
@@ -43,6 +46,7 @@ export function ToolPane({
         <h2 className="text-sm font-medium text-muted-foreground">{label}</h2>
         {actions ? <div className="flex items-center gap-2">{actions}</div> : null}
       </div>
+      {controls ? <div className="flex flex-wrap items-center gap-2">{controls}</div> : null}
       {children}
     </section>
   );

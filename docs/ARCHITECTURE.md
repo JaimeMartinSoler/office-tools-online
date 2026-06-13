@@ -21,6 +21,13 @@ are ALL derived from `tools`. Never hardcode a tool list twice.
 ## Result type (src/lib/result.ts)
 type Result<T> = { ok: true; value: T } | { ok: false; error: string };
 
+## Shared UI primitives (src/components/)
+- ConverterTool — single-input → single-output shell (debounced convert, panes).
+- StatusBanner — the one always-on status line; kinds info | validated | warning |
+  error, priority error > warning > info > validated. ConverterTool drives it;
+  bespoke tools render it directly.
+- Hint / Segmented `hint` — on-hover tooltips (Hint works on disabled controls).
+
 ## Static export & privacy hardening
 - next.config: output:'export', images.unoptimized:true.
 - Set a strict CSP via hosting headers: default-src 'self'; connect-src 'self';

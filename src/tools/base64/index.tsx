@@ -1,10 +1,12 @@
 "use client";
 
-import { AlertCircle, Upload } from "lucide-react";
+import { Upload } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { CodeEditor } from "@/components/code-editor";
 import { CopyButton } from "@/components/copy-button";
+import { DisabledHint } from "@/components/disabled-hint";
 import { Segmented } from "@/components/segmented";
+import { StatusBanner } from "@/components/status-banner";
 import { ToolLayout, ToolPane, ToolPanes } from "@/components/tool-layout";
 import { Button } from "@/components/ui/button";
 import {
@@ -65,7 +67,7 @@ export function Base64Tool() {
 
   return (
     <ToolLayout
-      title="Base64 Encode / Decode"
+      title="Base64"
       description="Encode and decode Base64 and Base64URL — entirely in your browser."
     >
       <div className="flex flex-wrap items-center gap-2">
@@ -84,40 +86,57 @@ export function Base64Tool() {
         <Segmented
           aria-label="Variant"
           options={[
-            { label: "Standard", value: "standard" },
-            { label: "URL-safe", value: "url" },
+            {
+              label: "Standard",
+              value: "standard",
+              hint: "Standard Base64 (RFC 4648 §4): uses + and / with = padding. The default for MIME, data URLs, and most APIs.",
+            },
+            {
+              label: "URL-safe",
+              value: "url",
+              hint: "URL-safe Base64 (RFC 4648 §5): uses - and _ instead of + and /, and omits = padding — safe inside URLs, query params, and filenames.",
+            },
           ]}
           value={variant}
           onChange={setVariant}
         />
         <div className="ml-auto flex items-center gap-2">
-          {mode === "encode" && (
-            <>
-              <input
-                ref={fileInputRef}
-                type="file"
-                className="hidden"
-                onChange={(e) => {
-                  const file = e.target.files?.[0];
-                  if (file) void handleFile(file);
-                  e.target.value = "";
-                }}
-              />
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={() => fileInputRef.current?.click()}
-              >
-                <Upload />
-                Encode file
-              </Button>
-            </>
-          )}
+          <input
+            ref={fileInputRef}
+            type="file"
+            className="hidden"
+            onChange={(e) => {
+              const file = e.target.files?.[0];
+              if (file) void handleFile(file);
+              e.target.value = "";
+            }}
+          />
+          <DisabledHint
+            when={mode !== "encode"}
+            reason="Switch to Encode mode to encode a file."
+          >
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => fileInputRef.current?.click()}
+              disabled={mode !== "encode"}
+            >
+              <Upload />
+              Encode file
+            </Button>
+          </DisabledHint>
           <Button
             variant="outline"
             size="sm"
             onClick={() => {
-              setInput(SAMPLE);
+              if (mode === "encode") {
+                setInput(SAMPLE);
+              } else {
+                // Decode mode wants Base64 input — encode the sample with the
+                // selected variant so it round-trips back to readable text.
+                const encoded = encodeText(SAMPLE, variant);
+                setInput(encoded.ok ? encoded.value : SAMPLE);
+              }
               clearFileNote();
             }}
           >
@@ -144,11 +163,18 @@ export function Base64Tool() {
         </div>
       )}
 
-      {error && (
-        <div className="flex items-start gap-2 rounded-md border border-destructive/40 bg-destructive/10 px-3 py-2 text-sm text-destructive">
-          <AlertCircle className="mt-0.5 size-4 shrink-0" />
-          <span>{error}</span>
-        </div>
+      {error ? (
+        <StatusBanner kind="error">{error}</StatusBanner>
+      ) : input.trim() === "" && output === "" ? (
+        <StatusBanner kind="info">
+          Ready when you are — paste or type to begin. Runs 100% in your browser.
+        </StatusBanner>
+      ) : (
+        <StatusBanner kind="validated">
+          {mode === "decode"
+            ? `Looks good — valid ${variant === "url" ? "Base64URL" : "Base64"}.`
+            : `Looks good — encoded to ${variant === "url" ? "Base64URL" : "Base64"}.`}
+        </StatusBanner>
       )}
 
       <ToolPanes>

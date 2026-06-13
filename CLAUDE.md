@@ -19,6 +19,14 @@ Client-side-only web app offering dev/office utilities (JSON, YAML, encoding, st
   (`ConverterTool`). Its `convert` prop MUST be wrapped in `useCallback`, or the
   debounced effect resets every render. Tools with bespoke UIs (e.g. base64,
   string-case) compose the editor/copy/layout primitives directly.
+- Status feedback uses `src/components/status-banner.tsx` (`StatusBanner`): exactly
+  ONE banner is always shown — `error > warning > info > validated` — so the panes
+  never jump. `ConverterTool` renders it automatically (pass `validatedMessage` /
+  `infoMessage` / `warn`); bespoke tools render `StatusBanner` themselves.
+- Controls explain themselves on hover: per-option `hint` on `Segmented`, or wrap
+  any control in `Hint` (`src/components/hint.tsx`) — its span trigger works even
+  on disabled controls. Context-dependent controls are disabled/grayed, not hidden,
+  to keep the toolbar stable.
 
 ## Conventions
 - TypeScript strict. No `any`. Pure functions return `Result<T>` (`{ok,value}|{ok:false,error}`),
