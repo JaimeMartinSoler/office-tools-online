@@ -6,6 +6,7 @@ import { JsonJsonSchema } from "./json-json-schema";
 import { JsonYamlXml } from "./json-yaml-xml";
 import { MarkdownTool } from "./markdown";
 import { StringCaseConverter } from "./string-case-converter";
+import { UrlTool } from "./url";
 
 export type ToolCategory = "JSON" | "Encoding" | "Text" | "Misc";
 
@@ -104,6 +105,28 @@ export const tools: Tool[] = [
     ],
     status: "stable",
     Component: HashGeneratorTool,
+  },
+  {
+    slug: "url",
+    name: "URL Encoder / Decoder",
+    description:
+      "Percent-encode or decode text, and parse a URL's query string into key/value pairs.",
+    category: "Encoding",
+    keywords: [
+      "url",
+      "uri",
+      "encode",
+      "decode",
+      "percent",
+      "escape",
+      "unescape",
+      "query",
+      "querystring",
+      "parameters",
+      "params",
+    ],
+    status: "stable",
+    Component: UrlTool,
   },
   {
     slug: "markdown",
