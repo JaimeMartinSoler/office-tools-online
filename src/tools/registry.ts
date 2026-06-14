@@ -1,6 +1,7 @@
 import type { ComponentType } from "react";
 import { Base64Tool } from "./base64";
 import { ClipboardSharing } from "./clipboard-sharing";
+import { HashGeneratorTool } from "./hash-generator";
 import { JsonJsonSchema } from "./json-json-schema";
 import { JsonYamlXml } from "./json-yaml-xml";
 import { MarkdownTool } from "./markdown";
@@ -73,6 +74,36 @@ export const tools: Tool[] = [
     keywords: ["base64", "base64url", "encode", "decode", "url-safe"],
     status: "stable",
     Component: Base64Tool,
+  },
+  {
+    slug: "hash-generator",
+    name: "Hash Generator",
+    description:
+      "Generate hashes, HMACs, and derived keys — MD5, SHA, BLAKE, PBKDF2, bcrypt, Argon2.",
+    category: "Encoding",
+    keywords: [
+      "hash",
+      "md5",
+      "sha",
+      "sha256",
+      "sha512",
+      "sha3",
+      "ripemd",
+      "crc32",
+      "blake2",
+      "blake3",
+      "hmac",
+      "checksum",
+      "digest",
+      "pbkdf2",
+      "scrypt",
+      "bcrypt",
+      "argon2",
+      "salt",
+      "kdf",
+    ],
+    status: "stable",
+    Component: HashGeneratorTool,
   },
   {
     slug: "markdown",
