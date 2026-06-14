@@ -1,10 +1,13 @@
 import type { ComponentType } from "react";
 import { Base64Tool } from "./base64";
 import { ClipboardSharing } from "./clipboard-sharing";
+import { HashGeneratorTool } from "./hash-generator";
 import { JsonJsonSchema } from "./json-json-schema";
 import { JsonYamlXml } from "./json-yaml-xml";
 import { MarkdownTool } from "./markdown";
 import { StringCaseConverter } from "./string-case-converter";
+import { UnixTimestampTool } from "./unix-timestamp";
+import { UrlTool } from "./url";
 
 export type ToolCategory = "JSON" | "Encoding" | "Text" | "Misc";
 
@@ -77,6 +80,58 @@ export const tools: Tool[] = [
     Component: Base64Tool,
   },
   {
+    slug: "hash-generator",
+    name: "Hash Generator",
+    description:
+      "Generate hashes, HMACs, and derived keys — MD5, SHA, BLAKE, PBKDF2, bcrypt, Argon2.",
+    category: "Encoding",
+    keywords: [
+      "hash",
+      "md5",
+      "sha",
+      "sha256",
+      "sha512",
+      "sha3",
+      "ripemd",
+      "crc32",
+      "blake2",
+      "blake3",
+      "hmac",
+      "checksum",
+      "digest",
+      "pbkdf2",
+      "scrypt",
+      "bcrypt",
+      "argon2",
+      "salt",
+      "kdf",
+    ],
+    status: "stable",
+    Component: HashGeneratorTool,
+  },
+  {
+    slug: "url",
+    name: "URL Encoder / Decoder",
+    description:
+      "Percent-encode or decode text, and parse a URL's query string into key/value pairs.",
+    category: "Encoding",
+    keywords: [
+      "url",
+      "uri",
+      "encode",
+      "decode",
+      "percent",
+      "escape",
+      "unescape",
+      "query",
+      "querystring",
+      "parameters",
+      "params",
+    ],
+    status: "stable",
+    Component: UrlTool,
+  },
+  {
     slug: "markdown",
     name: "Markdown",
     description: "Convert HTML or CSV into Markdown.",
@@ -110,6 +165,26 @@ export const tools: Tool[] = [
     ],
     status: "stable",
     Component: StringCaseConverter,
+  },
+  {
+    slug: "unix-timestamp",
+    name: "Unix Timestamp Converter",
+    description:
+      "Convert Unix timestamps to dates and back, in seconds or milliseconds.",
+    category: "Misc",
+    keywords: [
+      "unix",
+      "timestamp",
+      "epoch",
+      "date",
+      "time",
+      "seconds",
+      "milliseconds",
+      "iso 8601",
+      "convert",
+    ],
+    status: "stable",
+    Component: UnixTimestampTool,
   },
   {
     slug: "clipboard-sharing",
