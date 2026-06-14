@@ -5,6 +5,7 @@ import { HashGeneratorTool } from "./hash-generator";
 import { JsonJsonSchema } from "./json-json-schema";
 import { JsonYamlXml } from "./json-yaml-xml";
 import { MarkdownTool } from "./markdown";
+import { PasswordGeneratorTool } from "./password-generator";
 import { StringCaseConverter } from "./string-case-converter";
 import { UnixTimestampTool } from "./unix-timestamp";
 import { UrlTool } from "./url";
@@ -130,6 +131,29 @@ export const tools: Tool[] = [
     ],
     status: "stable",
     Component: UrlTool,
+  },
+  {
+    slug: "password-generator",
+    name: "Password Generator",
+    description:
+      "Generate strong random passwords — choose length, character sets, and minimums. Runs entirely in your browser.",
+    category: "Encoding",
+    keywords: [
+      "password",
+      "generator",
+      "random",
+      "secure",
+      "strong",
+      "passphrase",
+      "lowercase",
+      "uppercase",
+      "digits",
+      "symbols",
+      "special",
+      "entropy",
+    ],
+    status: "stable",
+    Component: PasswordGeneratorTool,
   },
   {
     slug: "markdown",
