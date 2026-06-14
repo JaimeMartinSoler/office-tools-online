@@ -93,6 +93,27 @@ Each tool exposes pure functions in logic.ts. Errors are returned, not thrown.
 - Bespoke UI (not ConverterTool): renders its own `StatusBanner` (no warning
   state) — validated copy confirms the variant decoded / encoded.
 
+## cron-expression
+- Explains a cron expression field by field. Category: **Datetime** (alongside
+  unix-timestamp). Bespoke UI (not ConverterTool), modeled on unix-timestamp's
+  layout and the url tool's `<table>` output.
+- A Standard / Macros + Names segmented toggle picks the accepted syntax, and
+  also drives a mode-aware Load Sample:
+  - **Standard**: classic 5 numeric fields — `*`, ranges `a-b`, lists `a,b`,
+    steps `*/n` and `a-b/n`.
+  - **Macros + Names**: a superset that additionally accepts `@yearly`/
+    `@annually`, `@monthly`, `@weekly`, `@daily`/`@midnight`, `@hourly` macros
+    and `JAN`–`DEC` / `SUN`–`SAT` names. `@reboot` is reported as having no field
+    schedule. Switching mode clears the input.
+- Output is a 4-column table: **Field · Expression · Periodicity · Matches**
+  (e.g. `*/15` → "Every 15 minutes" / `0, 15, 30, 45`). Day/month values display
+  as names (Monday, January) even when the input is numeric; day-of-week 7 folds
+  to Sunday (= 0). A full field shows e.g. `0–59 (all)`; long match lists are
+  abbreviated. Copy yields tab-separated rows.
+- In-house pure parser (`logic.ts`) returning `Result` — no date math (no "next
+  run times"), no dependency, fully client-side. Errors name the offending field
+  (out-of-range, reversed range, zero step, names/macros used in Standard mode).
+
 ## clipboard-sharing  [PLACEHOLDER — v1 does nothing]
 - Render the tool page + "Coming soon" empty state. No backend, no logic.
 - Keep it in the registry so the menu/route exist, but wire no functionality.

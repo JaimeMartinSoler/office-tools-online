@@ -16,6 +16,7 @@ A fast, **privacy-first** collection of online utilities for developers and offi
 | **Base64** | Standard and URL-safe Base64, correct UTF-8 handling, file → Base64. |
 | **Markdown** | Convert HTML or CSV into Markdown, or write Markdown and preview it rendered (Raw / Formatted toggle). |
 | **String Case Converter** | camelCase, PascalCase, snake_case, kebab-case, CONSTANT_CASE, and more. |
+| **Cron Expression Explainer** | Break a cron expression into per-field periodicity and matched values. |
 | **Clipboard Sharing** | Placeholder — coming soon. |
 
 Each tool is **bidirectional** where it makes sense (a direction toggle, like
@@ -44,6 +45,15 @@ static assets themselves, enforced by a strict Content-Security-Policy
 ## Getting started
 
 **Prerequisites:** Node.js 20+ and pnpm (`corepack enable pnpm`).
+
+> **Build note:** `next build` would otherwise crash with
+> `TypeError: Cannot read properties of undefined (reading 'length')` inside
+> webpack's bundled WASM hasher (`WasmHash`) — a bug in this Next/webpack version
+> that reproduces on every Node version (20–24). It's worked around in
+> [`next.config.mjs`](next.config.mjs) by forcing
+> `output.hashFunction = "sha256"` (Node's crypto hash instead of the wasm one).
+> `pnpm test` and `pnpm lint` are unaffected — only the webpack build hashes
+> output.
 
 ```bash
 pnpm install     # install dependencies
