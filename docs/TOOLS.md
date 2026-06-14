@@ -12,7 +12,7 @@ Each tool exposes pure functions in logic.ts. Errors are returned, not thrown.
   selected direction/format.
 
 ## json-yaml-xml
-- Bidirectional conversion between JSON, YAML, and XML (absorbs the former
+- Bidirectional conversion between JSON, YAML, XML, and CSV (absorbs the former
   json-formatter). Input and output formats are each chosen via a segmented
   control under their pane label; same-format input is reformatted (so JSON→JSON
   is a formatter). Validation is implicit — parse errors surface with line info.
@@ -27,6 +27,11 @@ Each tool exposes pure functions in logic.ts. Errors are returned, not thrown.
 - XML defaults: attributes preserved with the `@_` prefix (round-trips
   XML→JSON→XML); when a value has no single root key it is auto-wrapped in
   `<root>` to keep the output valid XML.
+- CSV (in-house RFC-4180 parser/serializer) models an array of objects: first row
+  is the header. Two CSV-only options (active only when CSV is input or output):
+  "Nested CSV fields" flattens/expands dotted keys (`a.b`), and "Infer types"
+  coerces cells to number/boolean/null instead of strings. Non-object rows or
+  un-flattened nested fields surface a clear error.
 
 ## json-json-schema
 - Bidirectional, chosen via a segmented "JSON → JSON Schema" / "JSON Schema → JSON"
@@ -92,6 +97,61 @@ Each tool exposes pure functions in logic.ts. Errors are returned, not thrown.
   encoded file name/size above the status banner.
 - Bespoke UI (not ConverterTool): renders its own `StatusBanner` (no warning
   state) — validated copy confirms the variant decoded / encoded.
+
+## hash-generator
+- Bespoke UI. Computes digests, HMACs, and slow KDF-derived keys entirely in the
+  browser via `hash-wasm` (WASM, no network). The algorithm picker is grouped
+  into "Digest / MAC" and "Key derivation (slow)".
+- Digests: MD5, SHA-1, SHA-256/384/512, SHA3-256/512, RIPEMD-160, CRC32, plus
+  variable-length BLAKE2b / BLAKE3 (with an optional native keyed mode). An
+  output-encoding toggle switches Hex / Base64.
+- HMAC toggle wraps any standard digest with a secret key (RFC 2104); requires a
+  key, and is disabled/grayed for algorithms that don't support it.
+- KDFs: PBKDF2 (iterations + PRF SHA1/256/512), scrypt (N/r/p), bcrypt (cost,
+  16-byte salt), Argon2id (iterations, memory KiB, parallelism). KDFs are
+  intentionally slow, so they run only on an explicit **Generate** button and any
+  edit invalidates the result. bcrypt/Argon2id auto-generate a random salt when
+  none is given (embedded in the encoded output) — so they're non-deterministic;
+  PBKDF2/scrypt require an explicit salt.
+- Async logic: `hash(options)` returns `Promise<Result<string>>`; a monotonic
+  run-id guards against a slow result overwriting a newer one. Only the fields
+  relevant to the selected algorithm (key, salt, length, cost params) are shown.
+
+## url
+- Bespoke UI. Three modes via a segmented control: Encode, Decode, Parse query.
+- Encode/Decode carry an Encoding variant toggle — Component
+  (`encodeURIComponent`/`decodeURIComponent`, escapes reserved chars) or Full URL
+  (`encodeURI`/`decodeURI`, leaves URL structure intact). The variant is
+  disabled/grayed in Parse mode.
+- Parse query splits a full URL or query string into decoded key/value pairs,
+  rendered as a `<table>`; for a full URL it also lists Protocol / Host / Path /
+  Fragment. Copy flattens the params to tab-separated `key\tvalue` lines; an amber
+  notice warns when there are no parameters.
+- Pure functions return `Result`; all native (`URL` / `URLSearchParams`), no deps.
+
+## password-generator
+- Category: Encoding. Bespoke UI. Generates a password live (debounced) as
+  options change, plus a Regenerate button. Uses the Web Crypto API
+  (`crypto.getRandomValues`) with rejection sampling to avoid modulo bias — never
+  `Math.random`.
+- Character sets toggle as buttons: Lowercase, Uppercase, Digits, Special. A
+  "No look-alikes" toggle drops easily-confused chars (I l 1 O 0 o). Length 4–128,
+  with an optional per-set minimum count (guaranteed via a Fisher–Yates shuffle so
+  the minimums aren't front-loaded).
+- A strength meter shows estimated entropy (length × log2(poolSize)) bucketed
+  Weak / Fair / Strong / Excellent. Validation errors (no set selected, minimums
+  exceed length, out-of-range length) surface in the status banner.
+- `generatePassword(options, rand?)` is pure given an injected random source (so
+  tests are deterministic); it defaults to the in-app CSPRNG.
+
+## unix-timestamp
+- Category: Datetime. Bespoke UI. Converts a Unix timestamp ↔ a date, both
+  directions via a Mode toggle (Timestamp → Date / Date → Timestamp).
+- Unit toggle Auto / Seconds / Milliseconds (Auto guesses from magnitude: ~13
+  digits → ms, ~10 → s). Unit is disabled/grayed in Date → Timestamp mode.
+- Output is a labelled list of representations (ISO 8601, UTC, local, relative,
+  epoch seconds/ms, …) each with a per-row copy button. A "Now" button loads the
+  current time in the active mode. Pure functions return `Result`.
 
 ## cron-expression
 - Explains a cron expression field by field. Category: **Datetime** (alongside

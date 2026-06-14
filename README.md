@@ -1,6 +1,6 @@
 # Office Tools Online
 
-A fast, **privacy-first** collection of online utilities for developers and office work — JSON, YAML, encoding, and string tools.
+A fast, **privacy-first** collection of online utilities for developers and office work — data formats (JSON / YAML / XML / CSV), encoding & hashing, text, and date/time tools.
 
 > 🔒 **Every conversion runs entirely in your browser. Nothing is ever uploaded.**
 > This isn't a policy promise — it's how the site is built. There is no backend,
@@ -9,15 +9,19 @@ A fast, **privacy-first** collection of online utilities for developers and offi
 
 ## Tools
 
-| Tool | Description |
-| --- | --- |
-| **JSON ↔ YAML ↔ XML** | Convert, beautify (2/4/tab indent), and minify between JSON, YAML, and XML, with line/column errors. |
-| **JSON ↔ JSON Schema** | Infer a JSON Schema (draft 2020-12) from a sample, or generate a deterministic sample instance from a schema. |
-| **Base64** | Standard and URL-safe Base64, correct UTF-8 handling, file → Base64. |
-| **Markdown** | Convert HTML or CSV into Markdown, or write Markdown and preview it rendered (Raw / Formatted toggle). |
-| **String Case Converter** | camelCase, PascalCase, snake_case, kebab-case, CONSTANT_CASE, and more. |
-| **Cron Expression Explainer** | Break a cron expression into per-field periodicity and matched values. |
-| **Clipboard Sharing** | Placeholder — coming soon. |
+| Tool | Category | Description |
+| --- | --- | --- |
+| **JSON ↔ YAML ↔ XML ↔ CSV** | JSON | Convert, beautify (2/4/tab indent), and minify between JSON, YAML, XML, and CSV, with line/column errors. |
+| **JSON ↔ JSON Schema** | JSON | Infer a JSON Schema (draft 2020-12) from a sample, or generate a deterministic sample instance from a schema. |
+| **Base64** | Encoding | Standard and URL-safe Base64, correct UTF-8 handling, file → Base64. |
+| **Hash Generator** | Encoding | MD5 / SHA / SHA3 / RIPEMD / CRC32 / BLAKE digests & HMAC, plus PBKDF2 / scrypt / bcrypt / Argon2id key derivation. |
+| **URL Encoder / Decoder** | Encoding | Percent-encode/decode (component or full URL) and parse a query string into key/value pairs. |
+| **Password Generator** | Encoding | Strong random passwords (Web Crypto) with character sets, per-set minimums, and an entropy meter. |
+| **Markdown** | Text | Convert HTML or CSV into Markdown, or write Markdown and preview it rendered (Raw / Formatted toggle). |
+| **String Case Converter** | Text | camelCase, PascalCase, snake_case, kebab-case, CONSTANT_CASE, and more. |
+| **Unix Timestamp Converter** | Datetime | Convert Unix timestamps ↔ dates (seconds or milliseconds), with ISO / UTC / local / relative views. |
+| **Cron Expression Explainer** | Datetime | Break a cron expression into per-field periodicity and matched values. |
+| **Clipboard Sharing** | Misc | Placeholder — coming soon. |
 
 Each tool is **bidirectional** where it makes sense (a direction toggle, like
 Base64's Encode/Decode), with on-hover tooltips on every control and a
@@ -37,8 +41,15 @@ static assets themselves, enforced by a strict Content-Security-Policy
 
 - [Next.js 15](https://nextjs.org/) (App Router) — static export, one page per tool
 - [TypeScript](https://www.typescriptlang.org/) (strict)
-- [Tailwind CSS v4](https://tailwindcss.com/) + shadcn-style UI primitives
+- [Tailwind CSS v4](https://tailwindcss.com/) (+ `@tailwindcss/typography`) and shadcn-style UI primitives
 - [CodeMirror 6](https://codemirror.net/) for syntax-highlighted editors
+- Per-tool libraries, all running in-browser: [`yaml`](https://eemeli.org/yaml/) and
+  [`fast-xml-parser`](https://github.com/NaturalIntelligence/fast-xml-parser)
+  (YAML/XML), [`hash-wasm`](https://github.com/Daninet/hash-wasm) (hashing & KDFs),
+  [`marked`](https://marked.js.org/) + [`DOMPurify`](https://github.com/cure53/DOMPurify)
+  (Markdown render) and [`turndown`](https://github.com/mixmark-io/turndown) (HTML→Markdown)
+- [`cmdk`](https://cmdk.paco.me/) command palette, [`next-themes`](https://github.com/pacocoursey/next-themes)
+  dark mode, [Radix](https://www.radix-ui.com/) tooltips, [`lucide-react`](https://lucide.dev/) icons
 - [Vitest](https://vitest.dev/) for unit tests
 - [pnpm](https://pnpm.io/) for package management
 
