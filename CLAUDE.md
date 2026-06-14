@@ -39,3 +39,10 @@ Client-side-only web app offering dev/office utilities (JSON, YAML, encoding, st
 - Native build scripts (esbuild, sharp, unrs-resolver) are pre-approved in
   `pnpm-workspace.yaml` (`onlyBuiltDependencies`). If a new dep needs a build
   script, add it there — otherwise pnpm blocks it and the pre-run check fails.
+- **`next build` WASM-hash workaround.** Webpack's bundled WASM xxhash crashes
+  during build (`WasmHash._updateWithBuffer` → `Cannot read properties of
+  undefined (reading 'length')`) in this Next version — on *every* Node version
+  tested (20–24), so it is NOT a Node-version issue. Fixed in `next.config.mjs`
+  by forcing `config.output.hashFunction = "sha256"` (Node crypto instead of the
+  wasm hasher); keep that override. `pnpm test` / `pnpm lint` never hit this
+  path, so a green test+lint with a failing build points at this, not your code.

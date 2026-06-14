@@ -1,15 +1,17 @@
 import type { ComponentType } from "react";
 import { Base64Tool } from "./base64";
 import { ClipboardSharing } from "./clipboard-sharing";
+import { CronExpressionTool } from "./cron-expression";
 import { HashGeneratorTool } from "./hash-generator";
 import { JsonJsonSchema } from "./json-json-schema";
 import { JsonYamlXml } from "./json-yaml-xml";
 import { MarkdownTool } from "./markdown";
+import { PasswordGeneratorTool } from "./password-generator";
 import { StringCaseConverter } from "./string-case-converter";
 import { UnixTimestampTool } from "./unix-timestamp";
 import { UrlTool } from "./url";
 
-export type ToolCategory = "JSON" | "Encoding" | "Text" | "Misc";
+export type ToolCategory = "JSON" | "Encoding" | "Text" | "Datetime" | "Misc";
 
 export interface Tool {
   slug: string;
@@ -132,6 +134,29 @@ export const tools: Tool[] = [
     Component: UrlTool,
   },
   {
+    slug: "password-generator",
+    name: "Password Generator",
+    description:
+      "Generate strong random passwords — choose length, character sets, and minimums. Runs entirely in your browser.",
+    category: "Encoding",
+    keywords: [
+      "password",
+      "generator",
+      "random",
+      "secure",
+      "strong",
+      "passphrase",
+      "lowercase",
+      "uppercase",
+      "digits",
+      "symbols",
+      "special",
+      "entropy",
+    ],
+    status: "stable",
+    Component: PasswordGeneratorTool,
+  },
+  {
     slug: "markdown",
     name: "Markdown",
     description: "Convert HTML or CSV into Markdown.",
@@ -171,7 +196,7 @@ export const tools: Tool[] = [
     name: "Unix Timestamp Converter",
     description:
       "Convert Unix timestamps to dates and back, in seconds or milliseconds.",
-    category: "Misc",
+    category: "Datetime",
     keywords: [
       "unix",
       "timestamp",
@@ -187,6 +212,29 @@ export const tools: Tool[] = [
     Component: UnixTimestampTool,
   },
   {
+    slug: "cron-expression",
+    name: "Cron Expression Explainer",
+    description:
+      "Explain a cron expression field by field, with the periodicity and matched values.",
+    category: "Datetime",
+    keywords: [
+      "cron",
+      "crontab",
+      "schedule",
+      "expression",
+      "quartz",
+      "minute",
+      "hour",
+      "day",
+      "month",
+      "weekday",
+      "periodicity",
+      "explain",
+    ],
+    status: "stable",
+    Component: CronExpressionTool,
+  },
+  {
     slug: "clipboard-sharing",
     name: "Clipboard Sharing",
     description: "Share clipboard contents across devices. (Coming soon)",
@@ -197,7 +245,13 @@ export const tools: Tool[] = [
   },
 ];
 
-export const toolCategories: ToolCategory[] = ["JSON", "Encoding", "Text", "Misc"];
+export const toolCategories: ToolCategory[] = [
+  "JSON",
+  "Encoding",
+  "Text",
+  "Datetime",
+  "Misc",
+];
 
 export function getTool(slug: string): Tool | undefined {
   return tools.find((tool) => tool.slug === slug);
