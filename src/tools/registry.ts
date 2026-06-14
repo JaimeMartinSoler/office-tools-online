@@ -6,6 +6,7 @@ import { JsonJsonSchema } from "./json-json-schema";
 import { JsonYamlXml } from "./json-yaml-xml";
 import { MarkdownTool } from "./markdown";
 import { StringCaseConverter } from "./string-case-converter";
+import { UnixTimestampTool } from "./unix-timestamp";
 import { UrlTool } from "./url";
 
 export type ToolCategory = "JSON" | "Encoding" | "Text" | "Misc";
@@ -162,6 +163,26 @@ export const tools: Tool[] = [
     ],
     status: "stable",
     Component: StringCaseConverter,
+  },
+  {
+    slug: "unix-timestamp",
+    name: "Unix Timestamp Converter",
+    description:
+      "Convert Unix timestamps to dates and back, in seconds or milliseconds.",
+    category: "Misc",
+    keywords: [
+      "unix",
+      "timestamp",
+      "epoch",
+      "date",
+      "time",
+      "seconds",
+      "milliseconds",
+      "iso 8601",
+      "convert",
+    ],
+    status: "stable",
+    Component: UnixTimestampTool,
   },
   {
     slug: "clipboard-sharing",
