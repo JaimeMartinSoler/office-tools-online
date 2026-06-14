@@ -28,13 +28,15 @@ export interface Tool {
 export const tools: Tool[] = [
   {
     slug: "json-yaml-xml",
-    name: "JSON ↔ YAML ↔ XML",
-    description: "Convert, beautify, and minify between JSON, YAML, and XML.",
+    name: "JSON ↔ YAML ↔ XML ↔ CSV",
+    description:
+      "Convert, beautify, and minify between JSON, YAML, XML, and CSV.",
     category: "JSON",
     keywords: [
       "json",
       "yaml",
       "xml",
+      "csv",
       "convert",
       "transform",
       "beautify",
