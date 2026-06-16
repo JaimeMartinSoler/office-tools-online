@@ -2,7 +2,9 @@ allowBuilds:
   esbuild: true
   sharp: true
   unrs-resolver: true
+  workerd: true # wrangler's runtime, installed on the fly by the Cloudflare deploy
 onlyBuiltDependencies:
   - esbuild
   - sharp
   - unrs-resolver
+  - workerd
