@@ -1,6 +1,6 @@
 "use client";
 
-import { RefreshCw } from "lucide-react";
+import { Eye, EyeOff, RefreshCw } from "lucide-react";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import type { ReactNode } from "react";
 import { CodeEditor } from "@/components/code-editor";
@@ -44,6 +44,9 @@ export function PasswordGeneratorTool() {
   const [password, setPassword] = useState("");
   // Bumped to force a fresh password without changing options.
   const [nonce, setNonce] = useState(0);
+  const [hidden, setHidden] = useState(true);
+
+  const displayPassword = hidden ? "•".repeat(password.length) : password;
 
   const validation = useMemo(() => validate(options), [options]);
   const strength = useMemo(() => estimateStrength(options), [options]);
@@ -118,6 +121,18 @@ export function PasswordGeneratorTool() {
           onChange={(v) => update({ excludeAmbiguous: v === "exclude" })}
         />
 
+        <Hint text={hidden ? "Show password" : "Hide password"}>
+          <Button
+            variant="outline"
+            size="icon"
+            aria-label={hidden ? "Show password" : "Hide password"}
+            aria-pressed={!hidden}
+            onClick={() => setHidden((h) => !h)}
+          >
+            {hidden ? <Eye /> : <EyeOff />}
+          </Button>
+        </Hint>
+
         <div className="ml-auto flex items-center gap-2">
           <Button size="sm" onClick={() => setNonce((n) => n + 1)}>
             <RefreshCw />
@@ -171,7 +186,7 @@ export function PasswordGeneratorTool() {
       )}
 
       <ToolPane label="Password" actions={<CopyButton value={password} />}>
-        <CodeEditor value={password} readOnly minHeight="20vh" />
+        <CodeEditor value={displayPassword} readOnly minHeight="20vh" />
         <div className="mt-2 flex gap-1" aria-hidden>
           {[0, 1, 2, 3].map((i) => (
             <div
