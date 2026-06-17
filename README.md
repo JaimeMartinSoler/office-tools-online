@@ -11,11 +11,15 @@ A fast, **privacy-first** collection of online utilities for developers and offi
 
 | Tool | Description |
 | --- | --- |
-| **JSON ↔ YAML ↔ XML** | Convert, beautify (2/4/tab indent), and minify between JSON, YAML, and XML, with line/column errors. |
+| **JSON ↔ YAML ↔ XML ↔ CSV** | Convert, beautify (2/4/tab indent), and minify between JSON, YAML, XML, and CSV, with line/column errors. |
 | **JSON ↔ JSON Schema** | Infer a JSON Schema (draft 2020-12) from a sample, or generate a deterministic sample instance from a schema. |
 | **Base64** | Standard and URL-safe Base64, correct UTF-8 handling, file → Base64. |
-| **Markdown** | Convert HTML or CSV into Markdown, or write Markdown and preview it rendered (Raw / Formatted toggle). |
+| **Hash Generator** | Generate hashes, HMACs, and derived keys — MD5, SHA, SHA-3, RIPEMD, CRC32, BLAKE2/3, PBKDF2, scrypt, bcrypt, Argon2. |
+| **URL Encoder / Decoder** | Percent-encode or decode text, and parse a URL's query string into key/value pairs. |
+| **Password Generator** | Generate strong random passwords — choose length, character sets, and minimums. |
+| **Markdown** | Convert HTML or CSV into Markdown. |
 | **String Case Converter** | camelCase, PascalCase, snake_case, kebab-case, CONSTANT_CASE, and more. |
+| **Unix Timestamp Converter** | Convert Unix timestamps to dates and back, in seconds or milliseconds. |
 | **Cron Expression Explainer** | Break a cron expression into per-field periodicity and matched values. |
 | **Clipboard Sharing** | Placeholder — coming soon. |
 

@@ -1,6 +1,6 @@
 "use client";
 
-import { Wrench } from "lucide-react";
+import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
@@ -14,7 +14,13 @@ export function Sidebar() {
     <aside className="hidden w-64 shrink-0 border-r bg-card md:block">
       <div className="flex h-14 items-center gap-2 border-b px-4">
         <Link href="/" className="flex items-center gap-2 font-semibold">
-          <Wrench className="size-5" />
+          <Image
+            src="/logo.png"
+            alt=""
+            width={20}
+            height={20}
+            className="size-5 dark:invert"
+          />
           <span>Office Dev Tools</span>
         </Link>
       </div>
