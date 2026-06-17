@@ -16,12 +16,16 @@ const CodeEditorInner = dynamic(() => import("./inner"), {
 
 export function CodeEditor({
   className,
+  autoHeight = false,
   ...props
-}: CodeEditorInnerProps & { className?: string }) {
+}: CodeEditorInnerProps & { className?: string; autoHeight?: boolean }) {
   return (
     <div
       className={cn(
         "overflow-hidden rounded-md border bg-card [&_.cm-editor]:bg-transparent [&_.cm-gutters]:bg-transparent [&_.cm-focused]:outline-none",
+        // On small screens, let flagged inputs shrink to their content instead
+        // of holding a tall fixed height that buries the output below the fold.
+        autoHeight && "cm-auto-input",
         className,
       )}
     >

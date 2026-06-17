@@ -160,6 +160,23 @@ export interface Strength {
   label: StrengthLabel;
   /** 0–3, for coloring a strength meter. */
   score: 0 | 1 | 2 | 3;
+  /**
+   * Total number of possible passwords (poolSize ^ length) for the current
+   * selection, formatted in scientific notation, e.g. "1.23 × 10^28".
+   */
+  combinations: string;
+}
+
+/**
+ * Format poolSize ^ length in scientific notation without overflowing to
+ * Infinity for large lengths, by working in the log10 domain.
+ */
+export function formatCombinations(poolSize: number, length: number): string {
+  if (poolSize <= 1 || length <= 0) return "1";
+  const exponent = length * Math.log10(poolSize);
+  const power = Math.floor(exponent);
+  const mantissa = Math.pow(10, exponent - power);
+  return `${mantissa.toFixed(2)} × 10^${power}`;
 }
 
 /**
@@ -174,6 +191,7 @@ export function estimateStrength(options: PasswordOptions): Strength {
   );
   const bits =
     poolSize <= 1 ? 0 : Math.round(options.length * Math.log2(poolSize));
+  const combinations = formatCombinations(poolSize, options.length);
 
   let score: 0 | 1 | 2 | 3;
   let label: StrengthLabel;
@@ -190,5 +208,5 @@ export function estimateStrength(options: PasswordOptions): Strength {
     score = 3;
     label = "Excellent";
   }
-  return { bits, label, score };
+  return { bits, label, score, combinations };
 }

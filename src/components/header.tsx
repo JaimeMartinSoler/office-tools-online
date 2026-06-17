@@ -9,7 +9,7 @@ export function Header() {
     <header className="flex h-14 shrink-0 items-center gap-3 border-b bg-background px-4">
       <Link href="/" className="flex items-center gap-2 font-semibold md:hidden">
         <Wrench className="size-5" />
-        <span>Office Tools</span>
+        <span>Office Dev Tools</span>
       </Link>
       <div className="ml-auto flex items-center gap-3">
         <ClientSideBadge className="hidden lg:inline-flex" />

@@ -6,6 +6,7 @@ import { CopyButton } from "@/components/copy-button";
 import { StatusBanner } from "@/components/status-banner";
 import { ToolLayout, ToolPane, ToolPanes } from "@/components/tool-layout";
 import { Button } from "@/components/ui/button";
+import { initialSample } from "@/lib/config";
 import type { Result } from "@/lib/result";
 
 type Language = "json" | "text";
@@ -67,7 +68,7 @@ export function ConverterTool({
    */
   warn?: (input: string) => string | null;
 }) {
-  const [input, setInput] = useState("");
+  const [input, setInput] = useState(() => initialSample(sample));
   const [output, setOutput] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [warning, setWarning] = useState<string | null>(null);
@@ -129,6 +130,7 @@ export function ConverterTool({
             onChange={setInput}
             language={inputLanguage}
             placeholder={inputPlaceholder}
+            autoHeight
           />
         </ToolPane>
         <ToolPane

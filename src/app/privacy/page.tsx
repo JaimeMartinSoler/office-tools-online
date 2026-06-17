@@ -4,7 +4,7 @@ import { Lock } from "lucide-react";
 export const metadata: Metadata = {
   title: "Privacy & Security",
   description:
-    "How Office Tools Online keeps your data private: everything runs client-side, nothing is ever sent to a server.",
+    "How Office Dev Tools keeps your data private: everything runs client-side, nothing is ever sent to a server.",
 };
 
 export default function PrivacyPage() {
@@ -18,7 +18,7 @@ export default function PrivacyPage() {
       </div>
 
       <p className="text-muted-foreground">
-        Office Tools Online is built so that your data physically cannot reach
+        Office Dev Tools is built so that your data physically cannot reach
         us. This isn&apos;t a policy promise — it&apos;s how the site is built.
       </p>
 

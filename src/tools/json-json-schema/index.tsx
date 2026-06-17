@@ -27,11 +27,12 @@ const SCHEMA_SAMPLE = `{
   "type": "object",
   "properties": {
     "id": { "type": "integer", "minimum": 1, "maximum": 999 },
+    "name": { "type": "string" },
     "email": { "type": "string", "format": "email" },
     "role": { "enum": ["admin", "user", "guest"] },
     "tags": { "type": "array", "items": { "type": "string" }, "minItems": 2 }
   },
-  "required": ["id", "email"]
+  "required": ["id", "name", "email"]
 }`;
 
 const DIRECTIONS: { label: string; value: Direction; hint: string }[] = [
