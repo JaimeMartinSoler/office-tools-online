@@ -3,15 +3,18 @@ import { Header } from "@/components/header";
 import { Sidebar } from "@/components/sidebar";
 import { ThemeProvider } from "@/components/theme-provider";
 import { TooltipProvider } from "@/components/ui/tooltip";
+import { SITE_URL } from "@/lib/site";
 import "./globals.css";
 
 export const metadata: Metadata = {
+  metadataBase: new URL(SITE_URL),
   title: {
     default: "Office Dev Tools — private, client-side dev utilities",
     template: "%s — Office Dev Tools",
   },
   description:
-    "A fast, privacy-first collection of online tools for developers. Every conversion runs in your browser — nothing is ever uploaded.",
+    "A fast, privacy-first collection of online developer tools — JSON, YAML, XML and CSV conversion, Base64, hashing, URL encoding, timestamps and more. Every conversion runs entirely in your browser; nothing is ever uploaded.",
+  alternates: { canonical: "/" },
   icons: {
     icon: [
       { url: "/favicon-32x32.png", sizes: "32x32", type: "image/png" },
