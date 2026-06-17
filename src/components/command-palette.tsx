@@ -9,6 +9,13 @@ import { tools } from "@/tools/registry";
 export function CommandPalette() {
   const router = useRouter();
   const [open, setOpen] = useState(false);
+  // Detected client-side after mount to avoid an SSR/hydration mismatch
+  // (the server export can't know the visitor's platform).
+  const [isMac, setIsMac] = useState(false);
+
+  useEffect(() => {
+    setIsMac(/Mac|iPhone|iPad|iPod/i.test(navigator.userAgent));
+  }, []);
 
   useEffect(() => {
     function onKeyDown(e: KeyboardEvent) {
@@ -40,7 +47,7 @@ export function CommandPalette() {
         <Search className="size-4" />
         <span className="hidden sm:inline">Search tools…</span>
         <kbd className="ml-2 hidden rounded border bg-muted px-1.5 font-mono text-[10px] sm:inline">
-          ⌘K
+          {isMac ? "⌘K" : "Ctrl K"}
         </kbd>
       </button>
 
