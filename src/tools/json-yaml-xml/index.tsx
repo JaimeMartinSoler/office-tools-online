@@ -8,31 +8,58 @@ import { convertData, isJsonObjectOrArray, type DataFormat } from "./logic";
 
 const SAMPLES: Record<DataFormat, string> = {
   json: `{
-  "note": {
-    "to": "Ada",
-    "from": "Bob",
-    "priority": 1,
-    "tags": ["x", "y"]
-  }
+  "team": "Platform",
+  "active": true,
+  "headcount": 3,
+  "members": [
+    { "name": "Ada", "role": "Lead", "remote": true, "skills": ["rust", "go"] },
+    { "name": "Bob", "role": "SRE", "remote": false, "skills": ["k8s", "linux"] },
+    { "name": "Cleo", "role": "Dev", "remote": true, "skills": ["ts", "react"] }
+  ],
+  "budget": { "currency": "EUR", "amount": 125000.5, "approved": null }
 }`,
-  yaml: `note:
-  to: Ada
-  from: Bob
-  priority: 1
-  tags:
-    - x
-    - y
+  yaml: `team: Platform
+active: true
+headcount: 3
+members:
+  - name: Ada
+    role: Lead
+    remote: true
+    skills:
+      - rust
+      - go
+  - name: Bob
+    role: SRE
+    remote: false
+    skills:
+      - k8s
+      - linux
+budget:
+  currency: EUR
+  amount: 125000.5
+  approved: null
 `,
-  xml: `<note>
-  <to>Ada</to>
-  <from>Bob</from>
-  <priority>1</priority>
-  <tags>x</tags>
-  <tags>y</tags>
-</note>`,
-  csv: `to,from,priority,tags
-Ada,Bob,1,"x,y"
-Cleo,Dan,2,"z"
+  xml: `<team>
+  <name>Platform</name>
+  <active>true</active>
+  <headcount>3</headcount>
+  <members>
+    <name>Ada</name>
+    <role>Lead</role>
+    <remote>true</remote>
+    <skills>rust</skills>
+    <skills>go</skills>
+  </members>
+  <budget>
+    <currency>EUR</currency>
+    <amount>125000.5</amount>
+    <approved></approved>
+  </budget>
+</team>`,
+  csv: `name,role,remote,city,salary
+Ada Lovelace,Lead,true,"London, UK",125000
+"Hopper, Grace",SRE,false,"New York, NY",118500
+Alan Turing,Dev,true,Manchester,99000
 `,
 };
 
@@ -59,12 +86,12 @@ const MODES: { label: string; value: "beautify" | "minify" }[] = [
 
 const NESTED_OPTIONS: { label: string; value: "off" | "on"; hint: string }[] = [
   {
-    label: "Off",
+    label: "Flat only",
     value: "off",
     hint: "Any nested object or array makes the CSV conversion fail — use only when every field is a flat scalar.",
   },
   {
-    label: "On",
+    label: "Flatten nested",
     value: "on",
     hint: "Flatten nesting: nested objects become dotted columns (a.b), scalar arrays join with commas, and lists of objects are embedded as JSON. Reading CSV, dotted headers rebuild nested objects.",
   },
@@ -76,12 +103,12 @@ const VALUE_TYPE_OPTIONS: {
   hint: string;
 }[] = [
   {
-    label: "Strings",
+    label: "Keep as text",
     value: "strings",
     hint: 'Keep every CSV cell as text — "1" stays "1", "true" stays text. Lossless for IDs, zip codes, and leading zeros.',
   },
   {
-    label: "Infer",
+    label: "Infer types",
     value: "infer",
     hint: 'Convert CSV cells that look like one: "1" → number 1, "true"/"false" → boolean, empty → null.',
   },

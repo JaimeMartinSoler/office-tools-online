@@ -274,7 +274,26 @@ export function looksLikeJsonSchema(input: string): boolean {
   return false;
 }
 
-function sampleString(node: Record<string, unknown>): string {
+/**
+ * A pool of plausible, general-purpose strings used when a schema asks for a
+ * plain `string` with no `format`. Picking from this (driven by the seeded
+ * RNG) means the Regenerate button varies string values, just like it does for
+ * numbers and booleans, instead of always emitting the literal "string".
+ */
+const SAMPLE_STRINGS = [
+  "lorem ipsum",
+  "Ada Lovelace",
+  "hello world",
+  "example value",
+  "sample text",
+  "the quick brown fox",
+  "Office Dev Tools",
+  "foo bar baz",
+  "a short phrase",
+  "placeholder",
+];
+
+function sampleString(node: Record<string, unknown>, rng: () => number): string {
   switch (asString(node.format)) {
     case "email":
       return "user@example.com";
@@ -295,10 +314,14 @@ function sampleString(node: Record<string, unknown>): string {
     case "ipv4":
       return "127.0.0.1";
     default: {
+      let value = SAMPLE_STRINGS[Math.floor(rng() * SAMPLE_STRINGS.length)]!;
       const minLength = asNumber(node.minLength);
-      let value = "string";
       if (minLength !== undefined) {
         while (value.length < minLength) value += "x";
+      }
+      const maxLength = asNumber(node.maxLength);
+      if (maxLength !== undefined && value.length > maxLength) {
+        value = value.slice(0, maxLength);
       }
       return value;
     }
@@ -362,7 +385,7 @@ function gen(
       return items;
     }
     case "string":
-      return sampleString(node);
+      return sampleString(node, rng);
     case "integer": {
       const min = asNumber(node.minimum);
       const max = asNumber(node.maximum);

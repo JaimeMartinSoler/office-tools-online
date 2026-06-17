@@ -11,6 +11,7 @@ import { ToolLayout, ToolPane, ToolPanes } from "@/components/tool-layout";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Select } from "@/components/ui/select";
+import { initialSample } from "@/lib/config";
 import {
   algorithms,
   DEFAULT_OPTIONS,
@@ -24,7 +25,10 @@ import {
 const SAMPLE = "The quick brown fox jumps over the lazy dog";
 
 export function HashGeneratorTool() {
-  const [options, setOptions] = useState<HashOptions>(DEFAULT_OPTIONS);
+  const [options, setOptions] = useState<HashOptions>(() => ({
+    ...DEFAULT_OPTIONS,
+    input: initialSample(SAMPLE),
+  }));
   const [output, setOutput] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [computing, setComputing] = useState(false);
@@ -403,6 +407,7 @@ export function HashGeneratorTool() {
             onChange={(value) => update({ input: value })}
             placeholder="Type or paste text…"
             minHeight="30vh"
+            autoHeight
           />
         </ToolPane>
         <ToolPane

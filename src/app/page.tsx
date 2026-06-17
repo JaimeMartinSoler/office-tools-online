@@ -8,7 +8,7 @@ export default function HomePage() {
   return (
     <div className="mx-auto max-w-4xl space-y-8">
       <section className="space-y-3">
-        <h1 className="text-3xl font-bold tracking-tight">Office Tools Online</h1>
+        <h1 className="text-3xl font-bold tracking-tight">Office Dev Tools</h1>
         <p className="max-w-2xl text-muted-foreground">
           A fast, privacy-first collection of utilities for developers and office
           work. Every conversion runs entirely in your browser.

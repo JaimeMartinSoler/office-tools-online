@@ -6,12 +6,13 @@ import { CopyButton } from "@/components/copy-button";
 import { Segmented } from "@/components/segmented";
 import { ToolLayout, ToolPane, ToolPanes } from "@/components/tool-layout";
 import { Button } from "@/components/ui/button";
+import { initialSample } from "@/lib/config";
 import { allCases } from "./logic";
 
-const SAMPLE = "Office Tools Online";
+const SAMPLE = "Office Dev Tools";
 
 export function StringCaseConverter() {
-  const [input, setInput] = useState("");
+  const [input, setInput] = useState(() => initialSample(SAMPLE));
   const [perLine, setPerLine] = useState(false);
 
   const results = useMemo(() => allCases(input, perLine), [input, perLine]);
@@ -52,6 +53,7 @@ export function StringCaseConverter() {
             value={input}
             onChange={setInput}
             placeholder="Type or paste text…"
+            autoHeight
           />
         </ToolPane>
         <ToolPane label="All cases">

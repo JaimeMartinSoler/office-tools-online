@@ -14,32 +14,49 @@ import { MarkdownPreview } from "./preview";
 type OutputView = "raw" | "formatted";
 
 const SAMPLES: Record<InputFormat, string> = {
-  html: `<h1>Office Tools</h1>
-<p>Convert <strong>HTML</strong> or <em>CSV</em> to Markdown.</p>
+  html: `<h1>Office Dev Tools</h1>
+<p>Convert <strong>HTML</strong>, <em>CSV</em>, or Markdown — right in your browser.</p>
+<h2>Why developers like it</h2>
 <ul>
-  <li>Runs <a href="https://example.com">in your browser</a></li>
-  <li>No data leaves the page</li>
+  <li>Runs <strong>100% client-side</strong> — no data leaves the page</li>
+  <li>Supports headings, lists, <code>inline code</code>, and tables</li>
+  <li>Open and <a href="https://example.com">free to use</a></li>
 </ul>
+<blockquote>
+  <p>"Paste it, convert it, copy it."</p>
+</blockquote>
 <table>
-  <thead><tr><th>Tool</th><th>Input</th></tr></thead>
+  <thead><tr><th>Tool</th><th>Input</th><th>Output</th></tr></thead>
   <tbody>
-    <tr><td>Markdown</td><td>HTML / CSV</td></tr>
+    <tr><td>Markdown</td><td>HTML / CSV</td><td>Markdown</td></tr>
+    <tr><td>JSON</td><td>JSON / YAML / XML</td><td>Converted</td></tr>
   </tbody>
 </table>`,
-  csv: `name,role,city
-Ada Lovelace,Engineer,London
-"Grace Hopper",Admiral,"New York, NY"
-Alan Turing,Mathematician,Manchester`,
-  markdown: `# Office Tools
+  csv: `name,role,city,remote
+Ada Lovelace,Engineer,"London, UK",yes
+"Hopper, Grace",Admiral,"New York, NY",no
+Alan Turing,Mathematician,Manchester,yes
+Katherine Johnson,Mathematician,"Hampton, VA",no`,
+  markdown: `# Office Dev Tools
 
 Write **Markdown** and switch the output to *Formatted* to preview it.
 
-- Runs entirely in your browser
-- Supports [links](https://example.com), \`code\`, and tables
+## Features
 
-| Tool | Input |
-| --- | --- |
-| Markdown | HTML / CSV / Markdown |`,
+- Runs entirely in your browser
+- Supports [links](https://example.com), \`inline code\`, and tables
+- Handles nested lists:
+  1. First item
+  2. Second item
+     - a nested bullet
+     - another one
+
+> Tip: everything stays on your device — nothing is uploaded.
+
+| Tool | Input | Output |
+| --- | --- | --- |
+| Markdown | HTML / CSV / Markdown | Markdown |
+| JSON | JSON / YAML / XML | Converted |`,
 };
 
 const HTML_IN_CSV_NOTICE =
