@@ -71,7 +71,7 @@ jobs:
               TRIGGER_TEXT="" ;;
           esac
 
-          CLAUDE_MODEL_RAW=$(printf '%s' "$TRIGGER_TEXT" | grep -ioP 'claude.?model\s*[=:]\s*\K[\w.-]*' | head -n1)
+          CLAUDE_MODEL_RAW=$(printf '%s' "$TRIGGER_TEXT" | grep -ioP 'claude.?model\s*[=:]?\s*\K[\w.-]*' | head -n1)
           echo "CLAUDE_MODEL_RAW=$CLAUDE_MODEL_RAW"
           echo "raw=$CLAUDE_MODEL_RAW" >> "$GITHUB_OUTPUT"
 
