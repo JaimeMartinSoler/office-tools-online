@@ -2,6 +2,20 @@
 
 Client-side-only web app offering dev/office utilities (JSON, YAML, encoding, string tools).
 
+## Workflow (every new request, unless told otherwise)
+1. **Verify the branch.** The base for new work is `develop`. If the current
+   branch is not `develop`, stop and tell me before doing anything else.
+2. **Branch off.** Create `feature/<short-descriptive-slug>` for the request and
+   do all work there. If the same request grows into more changes, keep using
+   that branch — do NOT open a new one.
+3. **Develop, don't publish.** Make the changes (and run `pnpm test` / `pnpm lint`)
+   on that branch. Do not commit, push, or open a PR yet.
+4. **Hand off.** When the work is done, ask me before committing — then, on my
+   go-ahead, commit + push the branch and open a PR into `develop`.
+
+Never push directly to `main` (I own `develop` → `main`, and `main` triggers the
+Cloudflare deploy).
+
 ## Inviolable constraints
 - **ZERO data egress.** All conversion runs in the browser. No fetch/XHR/WebSocket
   sends user input anywhere. No analytics that capture tool content. No SSR of user data.
