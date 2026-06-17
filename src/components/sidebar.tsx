@@ -15,7 +15,7 @@ export function Sidebar() {
       <div className="flex h-14 items-center gap-2 border-b px-4">
         <Link href="/" className="flex items-center gap-2 font-semibold">
           <Wrench className="size-5" />
-          <span>Office Tools</span>
+          <span>Office Dev Tools</span>
         </Link>
       </div>
       <nav className="flex flex-col gap-6 overflow-y-auto p-4">

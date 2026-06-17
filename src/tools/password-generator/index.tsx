@@ -7,7 +7,7 @@ import { CodeEditor } from "@/components/code-editor";
 import { CopyButton } from "@/components/copy-button";
 import { Hint } from "@/components/hint";
 import { Segmented } from "@/components/segmented";
-import { StatusBanner } from "@/components/status-banner";
+import { StatusBanner, type BannerKind } from "@/components/status-banner";
 import { ToolLayout, ToolPane } from "@/components/tool-layout";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -23,7 +23,19 @@ import {
   validate,
   type CharSet,
   type PasswordOptions,
+  type StrengthLabel,
 } from "./logic";
+
+/**
+ * Keep the banner colour coherent with the strength: red for weak, orange for
+ * fair, green once the password is strong or better.
+ */
+const STRENGTH_BANNER: Record<StrengthLabel, BannerKind> = {
+  Weak: "error",
+  Fair: "warning",
+  Strong: "validated",
+  Excellent: "validated",
+};
 
 const SET_HINTS: Record<CharSet, string> = {
   lower: "Lowercase letters a–z.",
@@ -121,23 +133,21 @@ export function PasswordGeneratorTool() {
           onChange={(v) => update({ excludeAmbiguous: v === "exclude" })}
         />
 
-        <Hint text={hidden ? "Show password" : "Hide password"}>
-          <Button
-            variant="outline"
-            size="icon"
-            aria-label={hidden ? "Show password" : "Hide password"}
-            aria-pressed={!hidden}
-            onClick={() => setHidden((h) => !h)}
-          >
-            {hidden ? <Eye /> : <EyeOff />}
-          </Button>
-        </Hint>
-
         <div className="ml-auto flex items-center gap-2">
           <Button size="sm" onClick={() => setNonce((n) => n + 1)}>
             <RefreshCw />
             Regenerate
           </Button>
+          <Hint text={hidden ? "Show password" : "Hide password"}>
+            <Button
+              size="icon"
+              aria-label={hidden ? "Show password" : "Hide password"}
+              aria-pressed={!hidden}
+              onClick={() => setHidden((h) => !h)}
+            >
+              {hidden ? <Eye /> : <EyeOff />}
+            </Button>
+          </Hint>
           <CopyButton value={password} />
         </div>
       </div>
@@ -178,8 +188,9 @@ export function PasswordGeneratorTool() {
       </div>
 
       {validation.ok ? (
-        <StatusBanner kind="validated">
-          {strength.label} — about {strength.bits} bits of entropy.
+        <StatusBanner kind={STRENGTH_BANNER[strength.label]}>
+          {strength.label} — about {strength.bits} bits of entropy, roughly{" "}
+          {strength.combinations} possible character combinations.
         </StatusBanner>
       ) : (
         <StatusBanner kind="error">{validation.error}</StatusBanner>

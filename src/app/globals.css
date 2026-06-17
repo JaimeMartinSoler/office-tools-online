@@ -84,3 +84,18 @@
     -webkit-font-smoothing: antialiased;
   }
 }
+
+/*
+ * Mobile: input editors flagged with `cm-auto-input` drop their tall fixed
+ * minimum height and grow with their content (capped, with internal scroll), so
+ * a one-line input no longer pushes the output pane far below the fold. Scoped
+ * to small screens so the desktop two-pane layout keeps its fixed-height boxes.
+ */
+@media (max-width: 1023px) {
+  .cm-auto-input > div {
+    min-height: 0 !important;
+  }
+  .cm-auto-input .cm-editor {
+    max-height: 50vh;
+  }
+}

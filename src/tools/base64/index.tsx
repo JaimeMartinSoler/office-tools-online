@@ -9,6 +9,7 @@ import { Segmented } from "@/components/segmented";
 import { StatusBanner } from "@/components/status-banner";
 import { ToolLayout, ToolPane, ToolPanes } from "@/components/tool-layout";
 import { Button } from "@/components/ui/button";
+import { initialSample } from "@/lib/config";
 import {
   bytesToBase64,
   decodeText,
@@ -18,12 +19,12 @@ import {
 
 type Mode = "encode" | "decode";
 
-const SAMPLE = "Hello, Office Tools! 🔒";
+const SAMPLE = "Hello, Office Dev Tools! 🔒";
 
 export function Base64Tool() {
   const [mode, setMode] = useState<Mode>("encode");
   const [variant, setVariant] = useState<Base64Variant>("standard");
-  const [input, setInput] = useState("");
+  const [input, setInput] = useState(() => initialSample(SAMPLE));
   const [output, setOutput] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [fileNote, setFileNote] = useState<string | null>(null);
@@ -188,6 +189,7 @@ export function Base64Tool() {
             placeholder={
               mode === "encode" ? "Type or paste text…" : "Paste Base64…"
             }
+            autoHeight
           />
         </ToolPane>
         <ToolPane

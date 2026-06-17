@@ -8,6 +8,7 @@ import { Segmented } from "@/components/segmented";
 import { StatusBanner } from "@/components/status-banner";
 import { ToolLayout, ToolPane, ToolPanes } from "@/components/tool-layout";
 import { Button } from "@/components/ui/button";
+import { initialSample } from "@/lib/config";
 import type { Result } from "@/lib/result";
 import {
   describe,
@@ -25,7 +26,7 @@ const SAMPLE_DATE = "2024-06-14T00:00:00Z";
 export function UnixTimestampTool() {
   const [mode, setMode] = useState<Mode>("timestamp");
   const [unit, setUnit] = useState<TimestampUnit>("auto");
-  const [input, setInput] = useState("");
+  const [input, setInput] = useState(() => initialSample(SAMPLE_TIMESTAMP));
 
   const result: Result<OutputRow[]> | null = useMemo(() => {
     if (input.trim() === "") return null;
@@ -134,6 +135,7 @@ export function UnixTimestampTool() {
                 ? "e.g. 1718323200"
                 : "e.g. 2024-06-14T00:00:00Z"
             }
+            autoHeight
           />
         </ToolPane>
         <ToolPane label="Result">

@@ -7,8 +7,8 @@ import "./globals.css";
 
 export const metadata: Metadata = {
   title: {
-    default: "Office Tools Online — private, client-side dev utilities",
-    template: "%s — Office Tools Online",
+    default: "Office Dev Tools — private, client-side dev utilities",
+    template: "%s — Office Dev Tools",
   },
   description:
     "A fast, privacy-first collection of online tools for developers. Every conversion runs in your browser — nothing is ever uploaded.",
@@ -22,7 +22,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body>
-        <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
+        <ThemeProvider attribute="class" defaultTheme="light" enableSystem>
           <TooltipProvider delayDuration={300}>
             <div className="flex h-screen overflow-hidden">
               <Sidebar />

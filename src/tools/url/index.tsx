@@ -7,6 +7,7 @@ import { Segmented } from "@/components/segmented";
 import { StatusBanner } from "@/components/status-banner";
 import { ToolLayout, ToolPane, ToolPanes } from "@/components/tool-layout";
 import { Button } from "@/components/ui/button";
+import { initialSample } from "@/lib/config";
 import {
   decodeUrl,
   encodeUrl,
@@ -26,7 +27,7 @@ const SAMPLES: Record<Mode, string> = {
 export function UrlTool() {
   const [mode, setMode] = useState<Mode>("encode");
   const [variant, setVariant] = useState<UrlVariant>("component");
-  const [input, setInput] = useState("");
+  const [input, setInput] = useState(() => initialSample(SAMPLES.encode));
   const [output, setOutput] = useState("");
   const [parsed, setParsed] = useState<ParsedQuery | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -181,6 +182,7 @@ export function UrlTool() {
                   ? "Paste percent-encoded text…"
                   : "Type or paste text…"
             }
+            autoHeight
           />
         </ToolPane>
         {mode === "parse" ? (

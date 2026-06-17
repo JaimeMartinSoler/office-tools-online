@@ -7,6 +7,7 @@ import { Segmented } from "@/components/segmented";
 import { StatusBanner } from "@/components/status-banner";
 import { ToolLayout, ToolPane, ToolPanes } from "@/components/tool-layout";
 import { Button } from "@/components/ui/button";
+import { initialSample } from "@/lib/config";
 import type { Result } from "@/lib/result";
 import { explainCron, type CronExplanation, type CronMode } from "./logic";
 
@@ -17,7 +18,7 @@ const SAMPLES: Record<CronMode, string> = {
 
 export function CronExpressionTool() {
   const [mode, setMode] = useState<CronMode>("standard");
-  const [input, setInput] = useState("");
+  const [input, setInput] = useState(() => initialSample(SAMPLES.standard));
 
   const result: Result<CronExplanation> | null = useMemo(() => {
     if (input.trim() === "") return null;
@@ -93,6 +94,7 @@ export function CronExpressionTool() {
                 ? "e.g. 0 9 * * MON-FRI or @daily"
                 : "e.g. */15 9-17 * * 1-5"
             }
+            autoHeight
           />
         </ToolPane>
         <ToolPane
