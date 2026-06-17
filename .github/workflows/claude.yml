@@ -30,8 +30,89 @@ jobs:
         with:
           fetch-depth: 1
 
-      - name: Run Claude Code
-        id: claude
+      - name: Fetch available Claude models
+        id: claude_models
+        continue-on-error: true
+        env:
+          CLAUDE_CODE_OAUTH_TOKEN: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+        run: |
+          set +e
+          RESPONSE=$(curl -sS -m 15 "https://api.anthropic.com/v1/models?limit=1000" \
+            -H "Authorization: Bearer ${CLAUDE_CODE_OAUTH_TOKEN}" \
+            -H "anthropic-version: 2023-06-01")
+          MODELS_JSON=$(printf '%s' "$RESPONSE" | jq -c '[.data[].id]' 2>/dev/null)
+          if [ -z "$MODELS_JSON" ] || [ "$MODELS_JSON" = "null" ]; then
+            MODELS_JSON="[]"
+          fi
+          echo "CLAUDE_MODELS=$MODELS_JSON"
+          {
+            echo "models<<EOF_MODELS"
+            echo "$MODELS_JSON"
+            echo "EOF_MODELS"
+          } >> "$GITHUB_OUTPUT"
+
+      - name: Determine requested model from trigger text
+        id: requested_model
+        env:
+          ISSUE_BODY: ${{ github.event.issue.body }}
+          ISSUE_TITLE: ${{ github.event.issue.title }}
+          COMMENT_BODY: ${{ github.event.comment.body }}
+          REVIEW_BODY: ${{ github.event.review.body }}
+          EVENT_NAME: ${{ github.event_name }}
+        run: |
+          case "$EVENT_NAME" in
+            issue_comment|pull_request_review_comment)
+              TRIGGER_TEXT="$COMMENT_BODY" ;;
+            pull_request_review)
+              TRIGGER_TEXT="$REVIEW_BODY" ;;
+            issues)
+              TRIGGER_TEXT="$ISSUE_TITLE"$'\n'"$ISSUE_BODY" ;;
+            *)
+              TRIGGER_TEXT="" ;;
+          esac
+
+          CLAUDE_MODEL_RAW=$(printf '%s' "$TRIGGER_TEXT" | grep -ioP 'claude.?model\s*[=:]\s*\K[\w.-]*' | head -n1)
+          echo "CLAUDE_MODEL_RAW=$CLAUDE_MODEL_RAW"
+          echo "raw=$CLAUDE_MODEL_RAW" >> "$GITHUB_OUTPUT"
+
+      - name: Resolve CLAUDE_MODEL
+        id: resolve_model
+        if: steps.requested_model.outputs.raw != ''
+        env:
+          CLAUDE_MODEL_RAW: ${{ steps.requested_model.outputs.raw }}
+          CLAUDE_MODELS_JSON: ${{ steps.claude_models.outputs.models }}
+        run: |
+          MODELS_JSON="${CLAUDE_MODELS_JSON:-[]}"
+          CLAUDE_MODEL=$(printf '%s' "$MODELS_JSON" | jq -r --arg raw "$CLAUDE_MODEL_RAW" '
+            [.[] | select(ascii_downcase | contains($raw | ascii_downcase))]
+            | sort
+            | last // ""
+          ')
+
+          # No match in the live list (API call failed, or nothing contains the
+          # substring) - fall back to the raw text itself. Claude Code's CLI
+          # accepts short aliases ("opus", "sonnet", "haiku") as well as full
+          # model ids, so this still works in most cases.
+          if [ -z "$CLAUDE_MODEL" ] || [ "$CLAUDE_MODEL" = "null" ]; then
+            CLAUDE_MODEL="$CLAUDE_MODEL_RAW"
+          fi
+
+          echo "CLAUDE_MODEL=$CLAUDE_MODEL"
+          echo "model=$CLAUDE_MODEL" >> "$GITHUB_OUTPUT"
+
+      - name: Run Claude Code (requested model)
+        if: steps.resolve_model.outputs.model != ''
+        uses: anthropics/claude-code-action@v1
+        with:
+          claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+          model: ${{ steps.resolve_model.outputs.model }}
+
+          # This is an optional setting that allows Claude to read CI results on PRs
+          additional_permissions: |
+            actions: read
+
+      - name: Run Claude Code (default model)
+        if: steps.resolve_model.outputs.model == ''
         uses: anthropics/claude-code-action@v1
         with:
           claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
@@ -39,3 +120,4 @@ jobs:
           # This is an optional setting that allows Claude to read CI results on PRs
           additional_permissions: |
             actions: read
+            
