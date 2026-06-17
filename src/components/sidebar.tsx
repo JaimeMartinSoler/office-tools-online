@@ -16,7 +16,7 @@ export function Sidebar() {
         <Link href="/" className="flex items-center gap-2 font-semibold">
           <Image
             src="/logo.png"
-            alt=""
+            alt="Office Dev Tools logo"
             width={20}
             height={20}
             className="size-5 dark:invert"
