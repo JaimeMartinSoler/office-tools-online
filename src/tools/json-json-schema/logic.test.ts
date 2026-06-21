@@ -132,6 +132,23 @@ describe("schemaToSample", () => {
   it("still accepts a type-array schema", () => {
     expect(schemaToSample('{"type":["string","null"]}').ok).toBe(true);
   });
+
+  it("never emits a number above a negative maximum", () => {
+    // Regression: with only `maximum` set, a default min of 0 used to produce
+    // values above a negative maximum (e.g. -10 for maximum -50).
+    for (let seed = 1; seed <= 25; seed++) {
+      const out = sample('{"type":"number","maximum":-50}', seed);
+      expect(out).toBeLessThanOrEqual(-50);
+    }
+  });
+
+  it("honours both number bounds", () => {
+    for (let seed = 1; seed <= 25; seed++) {
+      const out = sample('{"type":"number","minimum":10,"maximum":20}', seed);
+      expect(out).toBeGreaterThanOrEqual(10);
+      expect(out).toBeLessThanOrEqual(20);
+    }
+  });
 });
 
 describe("looksLikeJsonSchema", () => {

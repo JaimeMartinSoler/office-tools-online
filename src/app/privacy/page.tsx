@@ -5,6 +5,7 @@ export const metadata: Metadata = {
   title: "Privacy & Security",
   description:
     "How Office Dev Tools keeps your data private: everything runs client-side, nothing is ever sent to a server.",
+  alternates: { canonical: "/privacy/" },
 };
 
 export default function PrivacyPage() {

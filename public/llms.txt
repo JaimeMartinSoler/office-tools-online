@@ -1,0 +1,23 @@
+# Office Dev Tools
+
+> A fast, privacy-first collection of browser-based utilities for developers and
+> office work. Every conversion runs entirely in the user's browser — no input is
+> ever uploaded to a server. The site is a fully static build with no backend, no
+> API routes, and no content telemetry.
+
+## Tools
+
+- [JSON ↔ YAML ↔ XML ↔ CSV](https://office-dev-tools.com/tools/json-yaml-xml/): Convert, beautify, and minify between JSON, YAML, XML, and CSV.
+- [JSON ↔ JSON Schema](https://office-dev-tools.com/tools/json-json-schema/): Infer a JSON Schema from a sample, or generate a sample from a schema.
+- [Base64](https://office-dev-tools.com/tools/base64/): Encode and decode Base64 and Base64URL.
+- [Hash Generator](https://office-dev-tools.com/tools/hash-generator/): Generate hashes, HMACs, and derived keys — MD5, SHA, BLAKE, PBKDF2, bcrypt, Argon2.
+- [URL Encoder / Decoder](https://office-dev-tools.com/tools/url/): Percent-encode or decode text, and parse a URL's query string into key/value pairs.
+- [Password Generator](https://office-dev-tools.com/tools/password-generator/): Generate strong random passwords with configurable length and character sets.
+- [Markdown](https://office-dev-tools.com/tools/markdown/): Convert HTML or CSV into Markdown.
+- [String Case Converter](https://office-dev-tools.com/tools/string-case-converter/): Convert text between common naming cases (camel, pascal, snake, kebab, ...).
+- [Unix Timestamp Converter](https://office-dev-tools.com/tools/unix-timestamp/): Convert Unix timestamps to dates and back, in seconds or milliseconds.
+- [Cron Expression Explainer](https://office-dev-tools.com/tools/cron-expression/): Explain a cron expression field by field, with periodicity and matched values.
+
+## More
+
+- [Privacy & Security](https://office-dev-tools.com/privacy/): How the site guarantees that user data never leaves the browser.

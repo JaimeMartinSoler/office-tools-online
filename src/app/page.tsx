@@ -1,12 +1,39 @@
 import Link from "next/link";
 import { ClientSideBadge } from "@/components/client-side-badge";
+import { SITE_NAME, SITE_URL } from "@/lib/site";
 import { toolsByCategory } from "@/tools/registry";
+
+const structuredData = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": `${SITE_URL}/#organization`,
+      name: SITE_NAME,
+      url: SITE_URL,
+      logo: `${SITE_URL}/icon.png`,
+      description:
+        "A privacy-first collection of browser-based utilities for developers and office work. Every conversion runs entirely in the browser.",
+    },
+    {
+      "@type": "WebSite",
+      "@id": `${SITE_URL}/#website`,
+      name: SITE_NAME,
+      url: SITE_URL,
+      publisher: { "@id": `${SITE_URL}/#organization` },
+    },
+  ],
+};
 
 export default function HomePage() {
   const groups = toolsByCategory();
 
   return (
     <div className="mx-auto max-w-4xl space-y-8">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
+      />
       <section className="space-y-3">
         <h1 className="text-3xl font-bold tracking-tight">Office Dev Tools</h1>
         <p className="max-w-2xl text-muted-foreground">
