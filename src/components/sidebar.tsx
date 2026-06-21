@@ -1,5 +1,6 @@
 "use client";
 
+import { Info, Lock } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -58,8 +59,8 @@ export function Sidebar() {
       </nav>
       <div className="flex flex-col gap-1 border-t p-4">
         {[
-          { href: "/about", label: "About" },
-          { href: "/privacy", label: "Privacy & Security" },
+          { href: "/privacy", label: "Privacy & Security", Icon: Lock },
+          { href: "/about", label: "About", Icon: Info },
         ].map((item) => {
           const active = pathname === item.href || pathname === `${item.href}/`;
           return (
@@ -67,13 +68,14 @@ export function Sidebar() {
               key={item.href}
               href={item.href}
               className={cn(
-                "rounded-md px-2 py-1.5 text-sm transition-colors",
+                "flex items-center gap-2 rounded-md px-2 py-1.5 text-sm transition-colors",
                 active
                   ? "bg-secondary font-medium text-secondary-foreground"
                   : "text-muted-foreground hover:bg-accent hover:text-accent-foreground",
               )}
             >
-              {item.label}
+              <item.Icon className="size-4 shrink-0" />
+              <span>{item.label}</span>
             </Link>
           );
         })}
