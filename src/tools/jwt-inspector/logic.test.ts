@@ -32,13 +32,15 @@ describe("decodeJwt", () => {
     const result = decodeJwt(SAMPLE);
     expect(result.ok).toBe(true);
     if (!result.ok) return;
-    expect(result.headerObject).toEqual({ alg: "HS256", typ: "JWT" });
-    expect(result.payloadObject).toMatchObject({
+    expect(result.value.headerObject).toEqual({ alg: "HS256", typ: "JWT" });
+    expect(result.value.payloadObject).toMatchObject({
       sub: "1234567890",
       name: "John Doe",
       iat: 1516239022,
     });
-    expect(result.signature).toBe("SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c");
+    expect(result.value.signature).toBe(
+      "SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c",
+    );
   });
 
   it("rejects tokens without three parts", () => {
