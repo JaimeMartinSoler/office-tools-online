@@ -61,6 +61,7 @@ jobs:
         uses: actions/checkout@v5
         with:
           fetch-depth: 1
+          ref: develop
 
       - name: Fetch available Claude models
         id: claude_models
@@ -141,6 +142,9 @@ jobs:
           claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
           claude_args: "--model ${{ steps.resolve_model.outputs.model }}"
 
+          # Base new branches on (and target PRs at) develop, not the default branch (main).
+          base_branch: develop
+
           # This is an optional setting that allows Claude to read CI results on PRs
           additional_permissions: |
             actions: read
@@ -151,7 +155,10 @@ jobs:
         with:
           claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
 
+          # Base new branches on (and target PRs at) develop, not the default branch (main).
+          base_branch: develop
+
           # This is an optional setting that allows Claude to read CI results on PRs
           additional_permissions: |
             actions: read
-            
+
