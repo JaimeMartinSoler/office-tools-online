@@ -1,15 +1,20 @@
 import type { ComponentType } from "react";
 import { Base64Tool } from "./base64";
 import { ClipboardSharing } from "./clipboard-sharing";
+import { ColorConverterTool } from "./color-converter";
 import { CronExpressionTool } from "./cron-expression";
 import { HashGeneratorTool } from "./hash-generator";
 import { JsonJsonSchema } from "./json-json-schema";
 import { JsonYamlXml } from "./json-yaml-xml";
+import { JwtInspectorTool } from "./jwt-inspector";
 import { MarkdownTool } from "./markdown";
+import { NumberBaseConverterTool } from "./number-base-converter";
 import { PasswordGeneratorTool } from "./password-generator";
 import { StringCaseConverter } from "./string-case-converter";
+import { TextDiffTool } from "./text-diff";
 import { UnixTimestampTool } from "./unix-timestamp";
 import { UrlTool } from "./url";
+import { UuidUlidGeneratorTool } from "./uuid-ulid-generator";
 
 export type ToolCategory = "JSON" | "Encoding" | "Text" | "Datetime" | "Misc";
 
@@ -157,6 +162,79 @@ export const tools: Tool[] = [
     Component: PasswordGeneratorTool,
   },
   {
+    slug: "jwt-inspector",
+    name: "JWT Inspector",
+    description:
+      "Decode a JWT's header and payload, inspect claims and expiry, and verify HS256/384/512 signatures.",
+    category: "Encoding",
+    keywords: [
+      "jwt",
+      "json web token",
+      "decode",
+      "claims",
+      "header",
+      "payload",
+      "hs256",
+      "hs384",
+      "hs512",
+      "hmac",
+      "verify",
+      "expiry",
+      "bearer",
+      "auth",
+    ],
+    status: "stable",
+    Component: JwtInspectorTool,
+  },
+  {
+    slug: "uuid-ulid-generator",
+    name: "UUID / ULID Generator",
+    description:
+      "Generate UUID v4, UUID v7, and ULID identifiers in bulk, using the Web Crypto API.",
+    category: "Encoding",
+    keywords: [
+      "uuid",
+      "ulid",
+      "guid",
+      "v4",
+      "v7",
+      "uuidv4",
+      "uuidv7",
+      "generate",
+      "random",
+      "identifier",
+      "id",
+      "bulk",
+    ],
+    status: "stable",
+    Component: UuidUlidGeneratorTool,
+  },
+  {
+    slug: "number-base-converter",
+    name: "Number Base Converter",
+    description:
+      "Convert integers between binary, octal, decimal, and hexadecimal, with a bit-by-bit view.",
+    category: "Encoding",
+    keywords: [
+      "number",
+      "base",
+      "radix",
+      "binary",
+      "octal",
+      "decimal",
+      "hexadecimal",
+      "hex",
+      "bin",
+      "oct",
+      "dec",
+      "bitwise",
+      "bits",
+      "convert",
+    ],
+    status: "stable",
+    Component: NumberBaseConverterTool,
+  },
+  {
     slug: "markdown",
     name: "Markdown",
     description: "Convert HTML or CSV into Markdown.",
@@ -190,6 +268,28 @@ export const tools: Tool[] = [
     ],
     status: "stable",
     Component: StringCaseConverter,
+  },
+  {
+    slug: "text-diff",
+    name: "Text / JSON Diff",
+    description:
+      "Compare two texts side by side with line and character-level highlighting, including structural JSON diff.",
+    category: "Text",
+    keywords: [
+      "diff",
+      "compare",
+      "difference",
+      "text",
+      "json",
+      "side by side",
+      "unified",
+      "merge",
+      "changes",
+      "character",
+      "line",
+    ],
+    status: "stable",
+    Component: TextDiffTool,
   },
   {
     slug: "unix-timestamp",
@@ -233,6 +333,30 @@ export const tools: Tool[] = [
     ],
     status: "stable",
     Component: CronExpressionTool,
+  },
+  {
+    slug: "color-converter",
+    name: "Color Converter",
+    description:
+      "Convert colours between hex, rgb, hsl, and oklch, and check WCAG contrast ratios.",
+    category: "Misc",
+    keywords: [
+      "color",
+      "colour",
+      "hex",
+      "rgb",
+      "hsl",
+      "oklch",
+      "convert",
+      "contrast",
+      "wcag",
+      "accessibility",
+      "a11y",
+      "palette",
+      "picker",
+    ],
+    status: "stable",
+    Component: ColorConverterTool,
   },
   {
     slug: "clipboard-sharing",

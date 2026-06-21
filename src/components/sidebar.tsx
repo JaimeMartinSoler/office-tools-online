@@ -56,6 +56,28 @@ export function Sidebar() {
           </div>
         ))}
       </nav>
+      <div className="flex flex-col gap-1 border-t p-4">
+        {[
+          { href: "/about", label: "About" },
+          { href: "/privacy", label: "Privacy & Security" },
+        ].map((item) => {
+          const active = pathname === item.href || pathname === `${item.href}/`;
+          return (
+            <Link
+              key={item.href}
+              href={item.href}
+              className={cn(
+                "rounded-md px-2 py-1.5 text-sm transition-colors",
+                active
+                  ? "bg-secondary font-medium text-secondary-foreground"
+                  : "text-muted-foreground hover:bg-accent hover:text-accent-foreground",
+              )}
+            >
+              {item.label}
+            </Link>
+          );
+        })}
+      </div>
     </aside>
   );
 }
