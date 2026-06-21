@@ -397,8 +397,13 @@ function gen(
       return Math.floor(rng() * 100);
     }
     case "number": {
-      const min = asNumber(node.minimum) ?? 0;
-      const max = asNumber(node.maximum) ?? min + 100;
+      const minRaw = asNumber(node.minimum);
+      const maxRaw = asNumber(node.maximum);
+      // Derive a window that always satisfies the present bound(s). When only
+      // `maximum` is given we must anchor BELOW it (a default min of 0 would
+      // emit values above a negative maximum), and vice versa.
+      const min = minRaw ?? (maxRaw !== undefined ? maxRaw - 100 : 0);
+      const max = maxRaw ?? min + 100;
       return Math.round((min + rng() * (max - min)) * 100) / 100;
     }
     case "boolean":
