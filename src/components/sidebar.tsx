@@ -11,8 +11,8 @@ export function Sidebar() {
   const groups = toolsByCategory();
 
   return (
-    <aside className="hidden w-64 shrink-0 border-r bg-card md:block">
-      <div className="flex h-14 items-center gap-2 border-b px-4">
+    <aside className="hidden h-screen w-64 shrink-0 flex-col border-r bg-card md:flex">
+      <div className="flex h-14 shrink-0 items-center gap-2 border-b px-4">
         <Link href="/" className="flex items-center gap-2 font-semibold">
           <Image
             src="/logo.png"
@@ -24,10 +24,10 @@ export function Sidebar() {
           <span>Office Dev Tools</span>
         </Link>
       </div>
-      <nav className="flex flex-col gap-6 overflow-y-auto p-4">
+      <nav className="min-h-0 flex-1 divide-y divide-border overflow-y-auto p-2">
         {groups.map((group) => (
-          <div key={group.category} className="flex flex-col gap-1">
-            <p className="px-2 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+          <div key={group.category} className="flex flex-col gap-1 py-3 first:pt-1 last:pb-1">
+            <p className="px-2 pb-1 text-xs font-bold uppercase tracking-wider text-foreground">
               {group.category}
             </p>
             {group.tools.map((tool) => {
