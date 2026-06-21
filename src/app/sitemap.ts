@@ -9,7 +9,7 @@ export const dynamic = "force-static";
 // Emitted as a static out/sitemap.xml. URLs carry trailing slashes to match the
 // deployed routes (`trailingSlash: true`).
 export default function sitemap(): MetadataRoute.Sitemap {
-  const staticPaths = ["/", "/privacy/"];
+  const staticPaths = ["/", "/privacy/", "/about/"];
   const toolPaths = tools.map((tool) => `/tools/${tool.slug}/`);
 
   return [...staticPaths, ...toolPaths].map((path) => ({
