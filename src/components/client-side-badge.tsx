@@ -15,8 +15,10 @@ export function ClientSideBadge({ className }: { className?: string }) {
         className,
       )}
     >
-      <Lock className="size-3.5" />
-      <span>100% client-side — your data never leaves this browser</span>
+      <Lock className="size-3.5 shrink-0" />
+      <span className="truncate">
+        100% client-side — your data never leaves this browser
+      </span>
     </Link>
   );
 }

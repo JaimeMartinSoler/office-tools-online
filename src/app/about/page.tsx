@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Github, Sparkles } from "lucide-react";
+import { Github, Info } from "lucide-react";
 import Link from "next/link";
 import { buttonVariants } from "@/components/ui/button";
 
@@ -16,7 +16,7 @@ export default function AboutPage() {
   return (
     <div className="mx-auto max-w-2xl space-y-6">
       <div className="flex items-center justify-center gap-3">
-        <Sparkles className="size-6" />
+        <Info className="size-6" />
         <h1 className="text-2xl font-semibold tracking-tight">About</h1>
       </div>
 

@@ -1,3 +1,4 @@
+import { Info } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { ClientSideBadge } from "@/components/client-side-badge";
@@ -17,8 +18,18 @@ export function Header() {
         />
         <span>Office Dev Tools</span>
       </Link>
-      <div className="ml-auto flex items-center gap-3">
-        <ClientSideBadge className="hidden lg:inline-flex" />
+      <div className="ml-auto flex min-w-0 items-center gap-3">
+        <div className="flex min-w-0 items-center gap-2">
+          <ClientSideBadge className="min-w-0" />
+          <Link
+            href="/about"
+            aria-label="About"
+            title="About"
+            className="inline-flex shrink-0 items-center justify-center rounded-full border border-border bg-secondary p-1.5 text-secondary-foreground transition-colors hover:bg-accent"
+          >
+            <Info className="size-3.5" />
+          </Link>
+        </div>
         <CommandPalette />
         <ThemeToggle />
       </div>
