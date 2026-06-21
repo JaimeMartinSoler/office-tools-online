@@ -3,18 +3,54 @@ import { Header } from "@/components/header";
 import { Sidebar } from "@/components/sidebar";
 import { ThemeProvider } from "@/components/theme-provider";
 import { TooltipProvider } from "@/components/ui/tooltip";
-import { SITE_URL } from "@/lib/site";
+import { OG_IMAGE } from "@/lib/seo";
+import { SITE_NAME, SITE_URL } from "@/lib/site";
 import "./globals.css";
+
+const DEFAULT_TITLE = "Office Dev Tools — private, client-side dev utilities";
+const DEFAULT_DESCRIPTION =
+  "A fast, privacy-first collection of online developer tools — JSON formatter & converter, Base64 encoder, hash generator, password generator, URL encoder, timestamp and number base converters, and more. Every conversion runs entirely in your browser; nothing is ever uploaded.";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
+  applicationName: SITE_NAME,
   title: {
-    default: "Office Dev Tools — private, client-side dev utilities",
+    default: DEFAULT_TITLE,
     template: "%s — Office Dev Tools",
   },
-  description:
-    "A fast, privacy-first collection of online developer tools — JSON, YAML, XML and CSV conversion, Base64, hashing, URL encoding, timestamps and more. Every conversion runs entirely in your browser; nothing is ever uploaded.",
+  description: DEFAULT_DESCRIPTION,
+  keywords: [
+    "online tools",
+    "developer tools",
+    "json formatter",
+    "json converter",
+    "base64 encoder",
+    "hash generator",
+    "password generator",
+    "url encoder",
+    "jwt decoder",
+    "uuid generator",
+    "number base converter",
+    "unix timestamp converter",
+    "privacy",
+    "client-side",
+  ],
   alternates: { canonical: "/" },
+  openGraph: {
+    type: "website",
+    siteName: SITE_NAME,
+    title: DEFAULT_TITLE,
+    description: DEFAULT_DESCRIPTION,
+    url: "/",
+    locale: "en_US",
+    images: [OG_IMAGE],
+  },
+  twitter: {
+    card: "summary",
+    title: DEFAULT_TITLE,
+    description: DEFAULT_DESCRIPTION,
+    images: [OG_IMAGE.url],
+  },
   icons: {
     icon: [
       { url: "/favicon-32x32.png", sizes: "32x32", type: "image/png" },

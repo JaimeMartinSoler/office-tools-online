@@ -24,6 +24,13 @@ export interface Tool {
   description: string;
   category: ToolCategory;
   keywords: string[];
+  /**
+   * Search-optimised page <title>, phrased the way people actually search
+   * (e.g. "JSON Formatter & Converter") when the display `name` is not a good
+   * match. Used ONLY for the document title / social previews — the on-page
+   * heading still uses `name`. Falls back to `name` when omitted.
+   */
+  seoTitle?: string;
   status?: "stable" | "placeholder";
   Component: ComponentType;
 }
@@ -39,6 +46,7 @@ export const tools: Tool[] = [
   {
     slug: "json-yaml-xml",
     name: "JSON ↔ YAML ↔ XML ↔ CSV",
+    seoTitle: "JSON Formatter & Converter (YAML, XML, CSV)",
     description:
       "Convert, beautify, and minify between JSON, YAML, XML, and CSV.",
     category: "JSON",
@@ -61,6 +69,7 @@ export const tools: Tool[] = [
   {
     slug: "json-json-schema",
     name: "JSON ↔ JSON Schema",
+    seoTitle: "JSON Schema Generator & Validator",
     description:
       "Infer a JSON Schema from a sample, or generate a sample from a schema.",
     category: "JSON",
@@ -80,6 +89,7 @@ export const tools: Tool[] = [
   {
     slug: "base64",
     name: "Base64",
+    seoTitle: "Base64 Encoder & Decoder",
     description: "Encode and decode Base64 and Base64URL.",
     category: "Encoding",
     keywords: ["base64", "base64url", "encode", "decode", "url-safe"],
@@ -164,6 +174,7 @@ export const tools: Tool[] = [
   {
     slug: "jwt-inspector",
     name: "JWT Inspector",
+    seoTitle: "JWT Decoder & Verifier",
     description:
       "Decode a JWT's header and payload, inspect claims and expiry, and verify HS256/384/512 signatures.",
     category: "Encoding",
@@ -237,6 +248,7 @@ export const tools: Tool[] = [
   {
     slug: "markdown",
     name: "Markdown",
+    seoTitle: "Markdown Converter — HTML & CSV to Markdown",
     description: "Convert HTML or CSV into Markdown.",
     category: "Text",
     keywords: [
@@ -272,6 +284,7 @@ export const tools: Tool[] = [
   {
     slug: "text-diff",
     name: "Text / JSON Diff",
+    seoTitle: "Text & JSON Diff Checker — Compare Online",
     description:
       "Compare two texts side by side with line and character-level highlighting, including structural JSON diff.",
     category: "Text",
