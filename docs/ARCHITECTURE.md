@@ -2,13 +2,13 @@
 
 ## Routing
 - /                      → landing + tool grid (from registry)
-- /tools/[slug]          → renders registry[slug].component
+- /tools/[slug]          → renders registry[slug].Component
 - /privacy               → privacy/security statement
 
 ## Tool registry (src/tools/registry.ts)
 type Tool = {
   slug: string; name: string; description: string;
-  category: 'JSON' | 'Encoding' | 'Text' | 'Misc';
+  category: 'JSON' | 'Encoding' | 'Text' | 'Datetime' | 'Misc';
   keywords: string[];
   status?: 'stable' | 'placeholder';
   Component: React.ComponentType;
