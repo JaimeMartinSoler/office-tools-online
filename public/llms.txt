@@ -13,11 +13,17 @@
 - [Hash Generator](https://office-dev-tools.com/tools/hash-generator/): Generate hashes, HMACs, and derived keys — MD5, SHA, BLAKE, PBKDF2, bcrypt, Argon2.
 - [URL Encoder / Decoder](https://office-dev-tools.com/tools/url/): Percent-encode or decode text, and parse a URL's query string into key/value pairs.
 - [Password Generator](https://office-dev-tools.com/tools/password-generator/): Generate strong random passwords with configurable length and character sets.
+- [JWT Inspector](https://office-dev-tools.com/tools/jwt-inspector/): Decode a JWT's header and payload, inspect claims and expiry, and verify HS256/384/512 signatures.
+- [UUID / ULID Generator](https://office-dev-tools.com/tools/uuid-ulid-generator/): Generate UUID v4, UUID v7, and ULID identifiers in bulk, using the Web Crypto API.
+- [Number Base Converter](https://office-dev-tools.com/tools/number-base-converter/): Convert integers between binary, octal, decimal, and hexadecimal, with a bit-by-bit view.
 - [Markdown](https://office-dev-tools.com/tools/markdown/): Convert HTML or CSV into Markdown.
 - [String Case Converter](https://office-dev-tools.com/tools/string-case-converter/): Convert text between common naming cases (camel, pascal, snake, kebab, ...).
+- [Text / JSON Diff](https://office-dev-tools.com/tools/text-diff/): Compare two texts side by side with line and character-level highlighting, including structural JSON diff.
 - [Unix Timestamp Converter](https://office-dev-tools.com/tools/unix-timestamp/): Convert Unix timestamps to dates and back, in seconds or milliseconds.
 - [Cron Expression Explainer](https://office-dev-tools.com/tools/cron-expression/): Explain a cron expression field by field, with periodicity and matched values.
+- [Color Converter](https://office-dev-tools.com/tools/color-converter/): Convert colours between hex, rgb, hsl, and oklch, and check WCAG contrast ratios.
 
 ## More
 
+- [About](https://office-dev-tools.com/about/): About the project and a link to the open-source code on GitHub.
 - [Privacy & Security](https://office-dev-tools.com/privacy/): How the site guarantees that user data never leaves the browser.
