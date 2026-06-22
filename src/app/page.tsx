@@ -1,5 +1,4 @@
 import Link from "next/link";
-import { ClientSideBadge } from "@/components/client-side-badge";
 import { SITE_NAME, SITE_URL } from "@/lib/site";
 import { toolsByCategory } from "@/tools/registry";
 
@@ -40,7 +39,6 @@ export default function HomePage() {
           A fast, privacy-first collection of utilities for developers and office
           work. Every conversion runs entirely in your browser.
         </p>
-        <ClientSideBadge />
       </section>
 
       {groups.map((group) => (

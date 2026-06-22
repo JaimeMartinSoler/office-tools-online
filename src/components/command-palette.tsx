@@ -42,11 +42,11 @@ export function CommandPalette() {
       <button
         type="button"
         onClick={() => setOpen(true)}
-        className="inline-flex h-9 items-center gap-2 rounded-md border border-input bg-background px-3 text-sm text-muted-foreground transition-colors hover:bg-accent"
+        className="inline-flex h-9 shrink-0 items-center gap-2 whitespace-nowrap rounded-md border border-input bg-background px-3 text-sm text-muted-foreground transition-colors hover:bg-accent"
       >
         <Search className="size-4" />
         <span className="hidden sm:inline">Search tools…</span>
-        <kbd className="ml-2 hidden rounded border bg-muted px-1.5 font-mono text-[10px] sm:inline">
+        <kbd className="ml-2 hidden rounded border bg-muted px-1.5 font-mono text-[10px] pointer-fine:inline">
           {isMac ? "⌘K" : "Ctrl K"}
         </kbd>
       </button>
