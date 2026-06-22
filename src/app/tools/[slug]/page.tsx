@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
+import { toolMetadata } from "@/lib/seo";
 import { SITE_URL } from "@/lib/site";
 import { getTool, tools } from "@/tools/registry";
 
@@ -18,13 +19,7 @@ export async function generateMetadata({
   const { slug } = await params;
   const tool = getTool(slug);
   if (!tool) return {};
-  return {
-    title: tool.name,
-    // Meta-only suffix: lengthens the description and reinforces the
-    // privacy-first positioning without changing on-page content.
-    description: `${tool.description} Runs entirely in your browser — your data is never uploaded.`,
-    alternates: { canonical: `/tools/${slug}/` },
-  };
+  return toolMetadata(tool);
 }
 
 export default async function ToolPage({ params }: PageProps) {
@@ -32,16 +27,41 @@ export default async function ToolPage({ params }: PageProps) {
   const tool = getTool(slug);
   if (!tool) notFound();
 
+  const toolUrl = `${SITE_URL}/tools/${tool.slug}/`;
+
   const structuredData = {
     "@context": "https://schema.org",
-    "@type": "WebApplication",
-    name: tool.name,
-    description: tool.description,
-    url: `${SITE_URL}/tools/${tool.slug}/`,
-    applicationCategory: "DeveloperApplication",
-    operatingSystem: "Any (web browser)",
-    isAccessibleForFree: true,
-    offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
+    "@graph": [
+      {
+        "@type": "WebApplication",
+        name: tool.name,
+        description: tool.description,
+        url: toolUrl,
+        applicationCategory: "DeveloperApplication",
+        operatingSystem: "Any (web browser)",
+        browserRequirements: "Requires JavaScript.",
+        isAccessibleForFree: true,
+        keywords: tool.keywords.join(", "),
+        offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
+      },
+      {
+        "@type": "BreadcrumbList",
+        itemListElement: [
+          {
+            "@type": "ListItem",
+            position: 1,
+            name: "Home",
+            item: `${SITE_URL}/`,
+          },
+          {
+            "@type": "ListItem",
+            position: 2,
+            name: tool.name,
+            item: toolUrl,
+          },
+        ],
+      },
+    ],
   };
 
   const ToolComponent = tool.Component;
