@@ -14,9 +14,13 @@ const DEFAULT_DESCRIPTION =
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   applicationName: SITE_NAME,
+  // Browser tab text is always just the brand name. The template has no `%s`,
+  // so any per-page title (Privacy, About, each tool) still resolves to the
+  // constant "Office Dev Tools" in the tab. Social-card titles below stay
+  // descriptive for SEO/sharing.
   title: {
-    default: DEFAULT_TITLE,
-    template: "%s — Office Dev Tools",
+    default: "Office Dev Tools",
+    template: "Office Dev Tools",
   },
   description: DEFAULT_DESCRIPTION,
   keywords: [
