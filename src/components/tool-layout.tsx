@@ -11,7 +11,10 @@ export function ToolLayout({
   children: ReactNode;
 }) {
   return (
-    <div className="flex h-full flex-col gap-4">
+    // pb-4 adds a little breathing room below the bottom pane on mobile, where
+    // the panes stack and the content scrolls; dropped at lg where the layout is
+    // fixed-height two columns and the main padding already provides the gap.
+    <div className="flex h-full flex-col gap-4 pb-4 lg:pb-0">
       <header className="space-y-1">
         <h1 className="text-2xl font-semibold tracking-tight">{title}</h1>
         <p className="text-sm text-muted-foreground">{description}</p>
