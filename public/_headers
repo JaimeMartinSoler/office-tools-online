@@ -1,13 +1,25 @@
 # Security headers for static hosts that read a `_headers` file
-# (Cloudflare Pages, Netlify). The key privacy line is `connect-src 'self'`:
-# the browser is not permitted to send user data to any other origin.
+# (Cloudflare Pages, Netlify). The key privacy line is `connect-src`: the
+# browser may only send data back to our own origin ('self') and to
+# Cloudflare Web Analytics — never anywhere else, and never user input.
+#
+# Cloudflare Web Analytics: when enabled in the Cloudflare Pages dashboard,
+# Cloudflare auto-injects a tiny, cookieless beacon at the edge (no code or
+# token needed here). The beacon loads from static.cloudflareinsights.com and
+# POSTs an anonymous page-view (URL, referrer, coarse device class — never
+# tool content) to cloudflareinsights.com. The two origins below are exactly
+# what that beacon needs; without them the strict CSP silently blocks it and
+# the dashboard reports 0 visits. This is "zero egress of USER data": your
+# input still physically cannot leave the browser, only an anonymous visit
+# ping does.
 #
 # Note: 'unsafe-inline' for script/style is required by Next.js's static
 # runtime (inline bootstrap + styles). 'wasm-unsafe-eval' lets the Hash
-# Generator compile its hash-wasm WebAssembly modules in-browser. Neither
-# weakens the egress guarantee — that is enforced by `connect-src 'self'`.
+# Generator compile its hash-wasm WebAssembly modules in-browser. None of
+# these weaken the user-data guarantee — that is enforced by `connect-src`
+# allowing only 'self' plus the anonymous-analytics origin.
 /*
-  Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline' 'wasm-unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self' data:; connect-src 'self'; object-src 'none'; base-uri 'self'; frame-ancestors 'none'
+  Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline' 'wasm-unsafe-eval' https://static.cloudflareinsights.com; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self' data:; connect-src 'self' https://cloudflareinsights.com; object-src 'none'; base-uri 'self'; frame-ancestors 'none'
   Strict-Transport-Security: max-age=63072000; includeSubDomains; preload
   X-Content-Type-Options: nosniff
   Referrer-Policy: no-referrer

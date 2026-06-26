@@ -10,7 +10,9 @@
       "Bash(pnpm build *)",
       "PowerShell(pnpm test src/tools/markdown/logic.test.ts)",
       "PowerShell(pnpm build)",
-      "PowerShell(pnpm lint)"
+      "PowerShell(pnpm lint)",
+      "Bash(git add *)",
+      "Bash(git commit -m ' *)"
     ]
   }
 }
