@@ -17,9 +17,14 @@ Never push directly to `main` (I own `develop` → `main`, and `main` triggers t
 Cloudflare deploy).
 
 ## Inviolable constraints
-- **ZERO data egress.** All conversion runs in the browser. No fetch/XHR/WebSocket
+- **ZERO USER-data egress.** All conversion runs in the browser. No fetch/XHR/WebSocket
   sends user input anywhere. No analytics that capture tool content. No SSR of user data.
   If a feature seems to need a server, stop and flag it — it almost certainly doesn't.
+  The ONLY permitted egress is Cloudflare Web Analytics: a cookieless, edge-injected
+  beacon that sends an anonymous page-view (URL, referrer, coarse device class) and
+  NEVER tool content. It is allowlisted in `public/_headers` (script-src
+  static.cloudflareinsights.com, connect-src cloudflareinsights.com) and requires no
+  code or token here — Cloudflare injects it automatically when enabled in the dashboard.
 - Fully static build (`next build` + `output: 'export'`). No API routes, no server actions.
 
 ## Architecture
