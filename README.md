@@ -2,10 +2,12 @@
 
 A fast, **privacy-first** collection of online utilities for developers and office work — JSON, YAML, encoding, and string tools.
 
-> 🔒 **Every conversion runs entirely in your browser. Nothing is ever uploaded.**
+> 🔒 **Every conversion runs entirely in your browser. Your data is never uploaded.**
 > This isn't a policy promise — it's how the site is built. There is no backend,
 > no API, and no telemetry on your data. Open your browser's Network tab and see
-> for yourself.
+> for yourself. (The only cross-origin request is an anonymous, cookieless
+> visit count — see [Visit analytics](#visit-analytics) — which never sees your
+> input.)
 
 ## Tools
 
@@ -34,8 +36,28 @@ mode-aware "Load sample". A persistent status line gives live feedback —
 The site is a **fully static export** (`next build` with `output: 'export'`).
 There are no server routes, no server actions, and no database — there is simply
 nowhere for your data to be sent. The only network activity is loading the
-static assets themselves, enforced by a strict Content-Security-Policy
-(`connect-src 'self'`) in [`public/_headers`](public/_headers).
+static assets themselves plus an anonymous visit count (see below), enforced by
+a strict Content-Security-Policy in [`public/_headers`](public/_headers):
+`connect-src` permits only `'self'` and Cloudflare's analytics beacon, so your
+**input** can never be transmitted anywhere.
+
+## Visit analytics
+
+The site uses [Cloudflare Web Analytics](https://developers.cloudflare.com/web-analytics/),
+a **privacy-first, cookieless** way to count visits. The beacon records only the
+page URL, referrer, and coarse device/browser class — it **never** reads the
+contents of any tool. This is the single intentional exception to "nothing leaves
+your browser": anonymous _visit_ data may, but your _input_ data never does.
+
+It is **opt-in at build time**: set `NEXT_PUBLIC_CF_BEACON_TOKEN` to the token
+from your Cloudflare Web Analytics site, and the beacon
+(`src/app/layout.tsx`) loads. With no token set, no beacon is emitted and the
+site makes zero cross-origin requests.
+
+```bash
+# Cloudflare Pages → Settings → Environment variables (Production)
+NEXT_PUBLIC_CF_BEACON_TOKEN=<your-web-analytics-token>
+```
 
 ## Tech stack
 

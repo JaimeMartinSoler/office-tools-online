@@ -21,6 +21,8 @@ export default function PrivacyPage() {
       <p className="text-muted-foreground">
         Office Dev Tools is built so that your data physically cannot reach
         us. This isn&apos;t a policy promise — it&apos;s how the site is built.
+        The only thing measured is an anonymous, cookieless visit count; your
+        input never leaves your browser.
       </p>
 
       <div className="space-y-4">
@@ -35,11 +37,14 @@ export default function PrivacyPage() {
         </Section>
         <Section title="No content telemetry">
           We do not send the contents of your inputs to any analytics or logging
-          service.
+          service. We use Cloudflare Web Analytics to count visits, which is
+          cookieless and privacy-first: it records only the page address,
+          referrer, and coarse device type — never what you type or convert.
         </Section>
         <Section title="Verify it yourself">
           Open your browser&apos;s developer tools, go to the Network tab, and
-          use any tool. You will see that your data never leaves the page.
+          use any tool. You will see that your input never leaves the page — the
+          only outbound request is the anonymous Cloudflare visit beacon.
         </Section>
       </div>
     </div>

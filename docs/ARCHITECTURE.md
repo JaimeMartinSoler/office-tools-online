@@ -30,9 +30,12 @@ type Result<T> = { ok: true; value: T } | { ok: false; error: string };
 
 ## Static export & privacy hardening
 - next.config: output:'export', images.unoptimized:true.
-- Set a strict CSP via hosting headers: default-src 'self'; connect-src 'self';
-  no third-party origins. Document chosen host's header file.
-- No runtime fetch of user data. Allowed network: static asset loads only.
+- Set a strict CSP via hosting headers: default-src 'self'; connect-src 'self'
+  plus the Cloudflare Web Analytics beacon origin only. Document chosen host's
+  header file.
+- No runtime fetch of user data. Allowed network: static asset loads, plus an
+  anonymous cookieless visit beacon (Cloudflare Web Analytics) that never reads
+  user input.
 
 ## Testing
 - Vitest unit tests per logic.ts. Aim for the conversion edge cases

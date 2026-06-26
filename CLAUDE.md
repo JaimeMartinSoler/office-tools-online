@@ -17,9 +17,13 @@ Never push directly to `main` (I own `develop` → `main`, and `main` triggers t
 Cloudflare deploy).
 
 ## Inviolable constraints
-- **ZERO data egress.** All conversion runs in the browser. No fetch/XHR/WebSocket
+- **ZERO USER-data egress.** All conversion runs in the browser. No fetch/XHR/WebSocket
   sends user input anywhere. No analytics that capture tool content. No SSR of user data.
   If a feature seems to need a server, stop and flag it — it almost certainly doesn't.
+  The ONLY permitted cross-origin traffic is anonymous, cookieless visit analytics
+  (Cloudflare Web Analytics): it carries the URL/referrer/device class but never the
+  contents of any tool. It is gated on `NEXT_PUBLIC_CF_BEACON_TOKEN` and allowlisted in
+  the CSP (`public/_headers`) for the two `cloudflareinsights.com` origins only.
 - Fully static build (`next build` + `output: 'export'`). No API routes, no server actions.
 
 ## Architecture

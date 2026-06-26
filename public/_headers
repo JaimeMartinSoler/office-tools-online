@@ -1,13 +1,21 @@
 # Security headers for static hosts that read a `_headers` file
-# (Cloudflare Pages, Netlify). The key privacy line is `connect-src 'self'`:
-# the browser is not permitted to send user data to any other origin.
+# (Cloudflare Pages, Netlify). The key privacy line is `connect-src`: the
+# browser is not permitted to send USER data to any other origin. The only
+# permitted cross-origin egress is Cloudflare Web Analytics — an anonymous,
+# cookieless page-view beacon that never sees your tool input (see below).
 #
 # Note: 'unsafe-inline' for script/style is required by Next.js's static
 # runtime (inline bootstrap + styles). 'wasm-unsafe-eval' lets the Hash
-# Generator compile its hash-wasm WebAssembly modules in-browser. Neither
-# weakens the egress guarantee — that is enforced by `connect-src 'self'`.
+# Generator compile its hash-wasm WebAssembly modules in-browser.
+#
+# Cloudflare Web Analytics needs two origins, or the browser's CSP silently
+# drops it and the dashboard reports 0 visits:
+#   - script-src  https://static.cloudflareinsights.com  (loads beacon.min.js)
+#   - connect-src https://cloudflareinsights.com          (POSTs the page-view)
+# Neither weakens the USER-data guarantee: the beacon carries only the URL,
+# referrer, and coarse device info — never the contents of any tool.
 /*
-  Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline' 'wasm-unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self' data:; connect-src 'self'; object-src 'none'; base-uri 'self'; frame-ancestors 'none'
+  Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline' 'wasm-unsafe-eval' https://static.cloudflareinsights.com; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self' data:; connect-src 'self' https://cloudflareinsights.com; object-src 'none'; base-uri 'self'; frame-ancestors 'none'
   Strict-Transport-Security: max-age=63072000; includeSubDomains; preload
   X-Content-Type-Options: nosniff
   Referrer-Policy: no-referrer

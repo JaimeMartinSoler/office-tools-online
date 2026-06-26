@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Script from "next/script";
 import { Header } from "@/components/header";
 import { Sidebar } from "@/components/sidebar";
 import { ThemeProvider } from "@/components/theme-provider";
@@ -64,6 +65,14 @@ export const metadata: Metadata = {
   },
 };
 
+// Cloudflare Web Analytics: an anonymous, cookieless page-view beacon. It never
+// reads your tool input — only the URL, referrer, and coarse device info. We
+// load the beacon explicitly (rather than relying on Cloudflare Pages'
+// auto-injection, which it is deprecating) when a token is provided at build
+// time via NEXT_PUBLIC_CF_BEACON_TOKEN. The CSP in public/_headers allows the
+// two cloudflareinsights.com origins it needs. No token → no beacon, no egress.
+const CF_BEACON_TOKEN = process.env.NEXT_PUBLIC_CF_BEACON_TOKEN;
+
 export default function RootLayout({
   children,
 }: {
@@ -72,6 +81,13 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body>
+        {CF_BEACON_TOKEN ? (
+          <Script
+            src="https://static.cloudflareinsights.com/beacon.min.js"
+            strategy="afterInteractive"
+            data-cf-beacon={`{"token": "${CF_BEACON_TOKEN}"}`}
+          />
+        ) : null}
         <ThemeProvider attribute="class" defaultTheme="light" enableSystem>
           <TooltipProvider delayDuration={300}>
             <div className="flex h-screen overflow-hidden">
