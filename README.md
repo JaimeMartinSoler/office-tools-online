@@ -2,10 +2,12 @@
 
 A fast, **privacy-first** collection of online utilities for developers and office work — JSON, YAML, encoding, and string tools.
 
-> 🔒 **Every conversion runs entirely in your browser. Nothing is ever uploaded.**
+> 🔒 **Every conversion runs entirely in your browser. Your input is never uploaded.**
 > This isn't a policy promise — it's how the site is built. There is no backend,
 > no API, and no telemetry on your data. Open your browser's Network tab and see
-> for yourself.
+> for yourself. The only thing that ever leaves the page is an anonymous,
+> cookieless visit count (Cloudflare Web Analytics) — never the contents of your
+> inputs.
 
 ## Tools
 
@@ -33,9 +35,13 @@ mode-aware "Load sample". A persistent status line gives live feedback —
 
 The site is a **fully static export** (`next build` with `output: 'export'`).
 There are no server routes, no server actions, and no database — there is simply
-nowhere for your data to be sent. The only network activity is loading the
-static assets themselves, enforced by a strict Content-Security-Policy
-(`connect-src 'self'`) in [`public/_headers`](public/_headers).
+nowhere for your **input** to be sent. Network activity is limited to loading
+the static assets themselves plus an anonymous, cookieless visit beacon
+(Cloudflare Web Analytics), enforced by a strict Content-Security-Policy in
+[`public/_headers`](public/_headers): `connect-src` permits only `'self'` and
+Cloudflare's analytics origin, so user input physically cannot reach any other
+destination. This is **zero egress of _user_ data** — the visit beacon reports
+only URL, referrer, and coarse device class, never tool content.
 
 ## Tech stack
 

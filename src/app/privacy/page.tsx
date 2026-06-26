@@ -4,7 +4,7 @@ import { Lock } from "lucide-react";
 export const metadata: Metadata = {
   title: "Privacy & Security",
   description:
-    "How Office Dev Tools keeps your data private: everything runs client-side, nothing is ever sent to a server.",
+    "How Office Dev Tools keeps your data private: everything runs client-side, your input is never sent to a server.",
   alternates: { canonical: "/privacy/" },
 };
 
@@ -35,11 +35,15 @@ export default function PrivacyPage() {
         </Section>
         <Section title="No content telemetry">
           We do not send the contents of your inputs to any analytics or logging
-          service.
+          service. We do count visits with Cloudflare Web Analytics — a
+          cookieless, privacy-first service that records only an anonymous
+          page-view (URL, referrer, and coarse device class). It never receives
+          the contents of your inputs.
         </Section>
         <Section title="Verify it yourself">
           Open your browser&apos;s developer tools, go to the Network tab, and
-          use any tool. You will see that your data never leaves the page.
+          use any tool. You will see that your input never leaves the page — the
+          only request that goes out is the anonymous visit beacon.
         </Section>
       </div>
     </div>
