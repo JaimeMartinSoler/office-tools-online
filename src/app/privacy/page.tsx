@@ -37,8 +37,8 @@ export default function PrivacyPage() {
         </Section>
         <Section icon={EyeOff} title="No content telemetry">
           We do not send the contents of your inputs to any analytics or logging
-          service. The page sends a request just on load to the visits counter,
-          nothing else.
+          service. The page sends a single request on load, to the visits counter,
+          and nothing else.
         </Section>
         <Section icon={SearchCode} title="Verify it yourself">
           Open your browser&apos;s developer tools, go to the Network tab, and
