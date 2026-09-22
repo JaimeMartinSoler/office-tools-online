@@ -115,6 +115,14 @@ src/
 That's it — the sidebar, command palette (⌘/Ctrl-K), homepage grid, and the
 static route are all derived from the registry automatically.
 
+## Contributing
+
+Branch off `develop` and open PRs into `develop`. `main` is release-only and
+deploys to Cloudflare. The full process (branching, tests, docs, PRs) is in
+[`.claude/rules/`](.claude/rules/). Claude Code follows these rules, with the
+project overrides listed in [`CLAUDE.md`](CLAUDE.md), and can delegate work to the
+subagents in [`.claude/agents/`](.claude/agents/).
+
 ## License
 
 MIT

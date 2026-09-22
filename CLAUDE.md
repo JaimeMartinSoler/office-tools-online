@@ -3,18 +3,23 @@
 Client-side-only web app offering dev/office utilities (JSON, YAML, encoding, string tools).
 
 ## Workflow (every new request, unless told otherwise)
-1. **Verify the branch.** The base for new work is `develop`. If the current
-   branch is not `develop`, stop and tell me before doing anything else.
-2. **Branch off.** Create `feature/<short-descriptive-slug>` for the request and
-   do all work there. If the same request grows into more changes, keep using
-   that branch — do NOT open a new one.
-3. **Develop, don't publish.** Make the changes (and run `pnpm test` / `pnpm lint`)
-   on that branch. Do not commit, push, or open a PR yet.
-4. **Hand off.** When the work is done, ask me before committing — then, on my
-   go-ahead, commit + push the branch and open a PR into `develop`.
+Follow the process rules in `.claude/rules/`, in order:
+1. [`git-branching.md`](.claude/rules/git-branching.md): one `<type>/<slug>` branch off `develop` per request.
+2. [`run-tests.md`](.claude/rules/run-tests.md): `pnpm test` + `pnpm lint` green before done.
+3. [`update-docs.md`](.claude/rules/update-docs.md): `README.md`, `docs/`, and this file stay true.
+4. [`git-commit-push-pr.md`](.claude/rules/git-commit-push-pr.md): commit, push, and open a PR into `develop`.
 
-Never push directly to `main` (I own `develop` → `main`, and `main` triggers the
-Cloudflare deploy).
+**Project overrides.** These win over the rules, including inside subagents:
+- If the current branch is not `develop` when a new request starts, stop and
+  tell me before doing anything else. Don't switch branches yourself.
+- Never commit, push, or open a PR without my go-ahead. When the work is done, ask.
+- Never push to `main`. I own `develop` → `main`, and `main` triggers the
+  Cloudflare deploy.
+
+## Subagents (`.claude/agents/`)
+- [`requirement-implementer`](.claude/agents/requirement-implementer.md): takes one scoped requirement end to end (subject to the overrides above).
+- [`code-reviewer`](.claude/agents/code-reviewer.md): read-only review of the branch diff against `develop`.
+- [`code-explainer`](.claude/agents/code-explainer.md): read-only walkthroughs of how the code works.
 
 ## Inviolable constraints
 - **ZERO USER-data egress.** All conversion runs in the browser. No fetch/XHR/WebSocket
@@ -50,7 +55,7 @@ Cloudflare deploy).
 ## Conventions
 - TypeScript strict. No `any`. Pure functions return `Result<T>` (`{ok,value}|{ok:false,error}`),
   never throw for user-input errors — surface them in the UI.
-- Every logic.ts has a co-located test. Run `pnpm test` before claiming done.
+- Every logic.ts has a co-located test.
 - Each tool page sets its own <title>/meta description for SEO.
 
 ## Commands
