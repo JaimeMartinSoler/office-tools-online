@@ -4,7 +4,11 @@ import { useMemo, useState } from "react";
 import { CopyButton } from "@/components/copy-button";
 import { Segmented } from "@/components/segmented";
 import { StatusBanner } from "@/components/status-banner";
-import { ToolLayout, ToolPane } from "@/components/tool-layout";
+import {
+  ToolLayout,
+  ToolPane,
+  type ToolHeaderProps,
+} from "@/components/tool-layout";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { initialSample } from "@/lib/config";
@@ -21,7 +25,7 @@ import {
 
 const SAMPLE = "255";
 
-export function NumberBaseConverterTool() {
+export function NumberBaseConverterTool({ title, description }: ToolHeaderProps) {
   const [input, setInput] = useState(() => initialSample(SAMPLE));
   const [base, setBase] = useState<Base | "auto">("auto");
 
@@ -37,8 +41,8 @@ export function NumberBaseConverterTool() {
 
   return (
     <ToolLayout
-      title="Number Base Converter"
-      description="Convert integers between binary, octal, decimal, and hexadecimal — with a bit-by-bit view. Runs entirely in your browser."
+      title={title}
+      description={description}
     >
       <div className="flex flex-wrap items-center gap-2">
         <Segmented

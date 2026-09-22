@@ -70,7 +70,12 @@ Follow the process rules in `.claude/rules/`, in order:
 - TypeScript strict. No `any`. Pure functions return `Result<T>` (`{ok,value}|{ok:false,error}`),
   never throw for user-input errors — surface them in the UI.
 - Every logic.ts has a co-located test.
-- Each tool page sets its own <title>/meta description for SEO.
+- Each tool page sets its own <title>/meta description for SEO, derived from the
+  registry in `src/lib/seo.ts` — give every tool a `seoTitle`; tests keep the
+  composed title ≤ 60 chars and description ≤ 160. Tool components take their
+  `<h1>`/blurb as `{ title, description }` props, never hardcoded strings.
+- Only `GITHUB_REF_NAME=main` builds are indexable (`SITE_INDEXABLE` in
+  `src/lib/site.ts`); local/staging builds emit `Disallow: /` + `noindex`.
 
 ## Commands
 - `pnpm dev` / `pnpm build` / `pnpm test` / `pnpm lint`

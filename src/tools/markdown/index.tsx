@@ -3,6 +3,7 @@
 import { useCallback, useState } from "react";
 import { ConverterTool } from "@/components/converter-tool";
 import { Segmented } from "@/components/segmented";
+import type { ToolHeaderProps } from "@/components/tool-layout";
 import {
   convertToMarkdown,
   looksLikeCsv,
@@ -101,7 +102,7 @@ const PLACEHOLDERS: Record<InputFormat, string> = {
   markdown: "Write Markdown…",
 };
 
-export function MarkdownTool() {
+export function MarkdownTool({ title, description }: ToolHeaderProps) {
   const [format, setFormat] = useState<InputFormat>("html");
   const [view, setView] = useState<OutputView>("raw");
 
@@ -121,8 +122,8 @@ export function MarkdownTool() {
 
   return (
     <ConverterTool
-      title="Markdown"
-      description="Convert HTML or CSV to Markdown, or preview Markdown — entirely in your browser."
+      title={title}
+      description={description}
       sample={SAMPLES[format]}
       convert={convert}
       warn={warn}

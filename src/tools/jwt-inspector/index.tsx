@@ -5,7 +5,12 @@ import { useEffect, useMemo, useState, type ReactNode } from "react";
 import { CodeEditor } from "@/components/code-editor";
 import { CopyButton } from "@/components/copy-button";
 import { StatusBanner } from "@/components/status-banner";
-import { ToolLayout, ToolPane, ToolPanes } from "@/components/tool-layout";
+import {
+  ToolLayout,
+  ToolPane,
+  ToolPanes,
+  type ToolHeaderProps,
+} from "@/components/tool-layout";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { initialSample } from "@/lib/config";
@@ -38,7 +43,7 @@ type VerifyResult =
   | { status: "invalid" }
   | { status: "error"; message: string };
 
-export function JwtInspectorTool() {
+export function JwtInspectorTool({ title, description }: ToolHeaderProps) {
   const [token, setToken] = useState(() => initialSample(SAMPLE));
   const [secret, setSecret] = useState("");
 
@@ -77,8 +82,8 @@ export function JwtInspectorTool() {
 
   return (
     <ToolLayout
-      title="JWT Inspector"
-      description="Decode a JSON Web Token's header and payload, inspect its claims and expiry, and verify HS256/384/512 signatures — entirely in your browser."
+      title={title}
+      description={description}
     >
       <div className="flex flex-wrap items-center gap-2">
         <div className="ml-auto flex items-center gap-2">

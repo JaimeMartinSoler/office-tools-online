@@ -4,14 +4,19 @@ import { useMemo, useState } from "react";
 import { CodeEditor } from "@/components/code-editor";
 import { CopyButton } from "@/components/copy-button";
 import { Segmented } from "@/components/segmented";
-import { ToolLayout, ToolPane, ToolPanes } from "@/components/tool-layout";
+import {
+  ToolLayout,
+  ToolPane,
+  ToolPanes,
+  type ToolHeaderProps,
+} from "@/components/tool-layout";
 import { Button } from "@/components/ui/button";
 import { initialSample } from "@/lib/config";
 import { allCases } from "./logic";
 
 const SAMPLE = "Office Dev Tools";
 
-export function StringCaseConverter() {
+export function StringCaseConverter({ title, description }: ToolHeaderProps) {
   const [input, setInput] = useState(() => initialSample(SAMPLE));
   const [perLine, setPerLine] = useState(false);
 
@@ -19,8 +24,8 @@ export function StringCaseConverter() {
 
   return (
     <ToolLayout
-      title="String Case Converter"
-      description="Convert text between common naming cases — all in your browser."
+      title={title}
+      description={description}
     >
       <div className="flex flex-wrap items-center gap-2">
         <Segmented

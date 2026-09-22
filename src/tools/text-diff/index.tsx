@@ -4,7 +4,12 @@ import { useMemo, useState } from "react";
 import { CodeEditor } from "@/components/code-editor";
 import { Segmented } from "@/components/segmented";
 import { StatusBanner } from "@/components/status-banner";
-import { ToolLayout, ToolPane, ToolPanes } from "@/components/tool-layout";
+import {
+  ToolLayout,
+  ToolPane,
+  ToolPanes,
+  type ToolHeaderProps,
+} from "@/components/tool-layout";
 import { Button } from "@/components/ui/button";
 import { initialSample } from "@/lib/config";
 import { cn } from "@/lib/utils";
@@ -38,7 +43,7 @@ const SEGMENT_CLASS: Record<Segment["type"], string> = {
   insert: "rounded-sm bg-green-500/30 dark:bg-green-500/30",
 };
 
-export function TextDiffTool() {
+export function TextDiffTool({ title, description }: ToolHeaderProps) {
   const [original, setOriginal] = useState(() => initialSample(SAMPLE_ORIGINAL));
   const [changed, setChanged] = useState(() => initialSample(SAMPLE_CHANGED));
   const [mode, setMode] = useState<DiffMode>("json");
@@ -51,8 +56,8 @@ export function TextDiffTool() {
 
   return (
     <ToolLayout
-      title="Text / JSON Diff"
-      description="Compare two texts side by side with line and character-level highlighting. JSON mode ignores key order and formatting. Runs entirely in your browser."
+      title={title}
+      description={description}
     >
       <div className="flex flex-wrap items-center gap-2">
         <Segmented

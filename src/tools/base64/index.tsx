@@ -7,7 +7,12 @@ import { CopyButton } from "@/components/copy-button";
 import { DisabledHint } from "@/components/disabled-hint";
 import { Segmented } from "@/components/segmented";
 import { StatusBanner } from "@/components/status-banner";
-import { ToolLayout, ToolPane, ToolPanes } from "@/components/tool-layout";
+import {
+  ToolLayout,
+  ToolPane,
+  ToolPanes,
+  type ToolHeaderProps,
+} from "@/components/tool-layout";
 import { Button } from "@/components/ui/button";
 import { initialSample } from "@/lib/config";
 import {
@@ -21,7 +26,7 @@ type Mode = "encode" | "decode";
 
 const SAMPLE = "Hello, Office Dev Tools! 🔒";
 
-export function Base64Tool() {
+export function Base64Tool({ title, description }: ToolHeaderProps) {
   const [mode, setMode] = useState<Mode>("encode");
   const [variant, setVariant] = useState<Base64Variant>("standard");
   const [input, setInput] = useState(() => initialSample(SAMPLE));
@@ -68,8 +73,8 @@ export function Base64Tool() {
 
   return (
     <ToolLayout
-      title="Base64"
-      description="Encode and decode Base64 and Base64URL — entirely in your browser."
+      title={title}
+      description={description}
     >
       <div className="flex flex-wrap items-center gap-2">
         <Segmented

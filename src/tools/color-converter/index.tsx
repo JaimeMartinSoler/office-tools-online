@@ -3,7 +3,11 @@
 import { useMemo, useState } from "react";
 import { CopyButton } from "@/components/copy-button";
 import { StatusBanner } from "@/components/status-banner";
-import { ToolLayout, ToolPane } from "@/components/tool-layout";
+import {
+  ToolLayout,
+  ToolPane,
+  type ToolHeaderProps,
+} from "@/components/tool-layout";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { initialSample } from "@/lib/config";
@@ -35,7 +39,7 @@ function hexNoAlpha(c: Rgb): string {
   return `#${h(c.r)}${h(c.g)}${h(c.b)}`;
 }
 
-export function ColorConverterTool() {
+export function ColorConverterTool({ title, description }: ToolHeaderProps) {
   const [input, setInput] = useState(() => initialSample(SAMPLE));
   const [bg, setBg] = useState("#ffffff");
 
@@ -49,8 +53,8 @@ export function ColorConverterTool() {
 
   return (
     <ToolLayout
-      title="Color Converter"
-      description="Convert colours between hex, rgb, hsl, and oklch, and check WCAG contrast — entirely in your browser."
+      title={title}
+      description={description}
     >
       <div className="flex flex-wrap items-center gap-2">
         <input

@@ -7,7 +7,11 @@ import { CopyButton } from "@/components/copy-button";
 import { Hint } from "@/components/hint";
 import { Segmented } from "@/components/segmented";
 import { StatusBanner } from "@/components/status-banner";
-import { ToolLayout, ToolPane } from "@/components/tool-layout";
+import {
+  ToolLayout,
+  ToolPane,
+  type ToolHeaderProps,
+} from "@/components/tool-layout";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -24,7 +28,7 @@ const KIND_HINTS: Record<GenerateOptions["kind"], string> = {
   ulid: "26-char Crockford base32, lexically sortable, URL-safe — a compact alternative to UUID v7.",
 };
 
-export function UuidUlidGeneratorTool() {
+export function UuidUlidGeneratorTool({ title, description }: ToolHeaderProps) {
   const [options, setOptions] = useState<GenerateOptions>(DEFAULT_OPTIONS);
   const [ids, setIds] = useState<string[]>([]);
   const [error, setError] = useState<string | null>(null);
@@ -53,8 +57,8 @@ export function UuidUlidGeneratorTool() {
 
   return (
     <ToolLayout
-      title="UUID / ULID Generator"
-      description="Generate UUID v4, UUID v7, and ULID identifiers in bulk — using the Web Crypto API, entirely in your browser."
+      title={title}
+      description={description}
     >
       <div className="flex flex-wrap items-center gap-2">
         <Segmented

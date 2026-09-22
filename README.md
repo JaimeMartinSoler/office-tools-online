@@ -83,6 +83,10 @@ host (Cloudflare Pages, Netlify, Vercel, GitHub Pages, …). Hosts that read a
 `_headers` file (Cloudflare Pages, Netlify) will pick up the security headers
 automatically.
 
+Only a build with `GITHUB_REF_NAME=main` (the production deploy) is indexable:
+every other build — the `develop` staging slot, local builds — emits a
+`Disallow: /` robots.txt and a `noindex` robots meta.
+
 ## Project structure
 
 ```
@@ -109,8 +113,12 @@ src/
    Keep all conversion logic in `logic.ts` as pure functions returning
    `Result<T>` — never throw on user input.
 2. For a simple single-input → single-output tool, reuse the shared
-   [`ConverterTool`](src/components/converter-tool.tsx) component.
-3. Register it in [`src/tools/registry.ts`](src/tools/registry.ts).
+   [`ConverterTool`](src/components/converter-tool.tsx) component. Either way,
+   the component takes `{ title, description }` (`ToolHeaderProps`) and forwards
+   them to `ToolLayout` / `ConverterTool` — never hardcode the heading.
+3. Register it in [`src/tools/registry.ts`](src/tools/registry.ts) with a
+   search-phrased `seoTitle` and a description; `pnpm test` checks the
+   composed `<title>` and meta description fit Google's limits.
 
 That's it — the sidebar, command palette (⌘/Ctrl-K), homepage grid, and the
 static route are all derived from the registry automatically.
