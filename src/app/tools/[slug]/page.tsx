@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { toolMetadata } from "@/lib/seo";
+import { toolHeading, toolMetadata } from "@/lib/seo";
 import { SITE_URL } from "@/lib/site";
 import { getTool, tools } from "@/tools/registry";
 
@@ -71,7 +71,7 @@ export default async function ToolPage({ params }: PageProps) {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
       />
-      <ToolComponent />
+      <ToolComponent title={toolHeading(tool)} description={tool.description} />
     </>
   );
 }

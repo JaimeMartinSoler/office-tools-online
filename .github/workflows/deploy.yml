@@ -37,6 +37,15 @@ jobs:
       - name: Build static export
         run: pnpm build
 
+      # The build only allows crawling when GITHUB_REF_NAME is "main" (see
+      # isIndexableDeploy in src/lib/site.ts). If that ever misfires, the
+      # production site would ship "Disallow: /" and drop out of search, so
+      # refuse to deploy a main build that doesn't allow crawling.
+      - name: Assert production robots.txt allows crawling
+        if: github.ref_name == 'main'
+        run: |
+          grep -qx 'Allow: /' out/robots.txt || { echo "::error::out/robots.txt does not allow crawling on main"; cat out/robots.txt; exit 1; }
+
       # main → production deployment. Any other branch (develop on push, or any
       # branch via workflow_dispatch) → the fixed "develop" staging slot, served
       # at develop.<project>.pages.dev. $GITHUB_REF_NAME is the short branch name

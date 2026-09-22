@@ -5,6 +5,7 @@ import { useCallback, useState } from "react";
 import { ConverterTool } from "@/components/converter-tool";
 import { Hint } from "@/components/hint";
 import { Segmented } from "@/components/segmented";
+import type { ToolHeaderProps } from "@/components/tool-layout";
 import { Button } from "@/components/ui/button";
 import { inferSchema, looksLikeJsonSchema, schemaToSample } from "./logic";
 
@@ -48,7 +49,7 @@ const DIRECTIONS: { label: string; value: Direction; hint: string }[] = [
   },
 ];
 
-export function JsonJsonSchema() {
+export function JsonJsonSchema({ title, description }: ToolHeaderProps) {
   const [direction, setDirection] = useState<Direction>("infer");
   const [requiredByDefault, setRequiredByDefault] = useState(true);
   const [inferEnums, setInferEnums] = useState(false);
@@ -72,8 +73,8 @@ export function JsonJsonSchema() {
 
   return (
     <ConverterTool
-      title="JSON ↔ JSON Schema"
-      description="Infer a JSON Schema from a sample, or generate a sample from a schema — entirely in your browser."
+      title={title}
+      description={description}
       sample={isInfer ? JSON_SAMPLE : SCHEMA_SAMPLE}
       convert={convert}
       warn={warn}

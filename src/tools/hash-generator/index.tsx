@@ -7,7 +7,12 @@ import { CopyButton } from "@/components/copy-button";
 import { Hint } from "@/components/hint";
 import { Segmented } from "@/components/segmented";
 import { StatusBanner } from "@/components/status-banner";
-import { ToolLayout, ToolPane, ToolPanes } from "@/components/tool-layout";
+import {
+  ToolLayout,
+  ToolPane,
+  ToolPanes,
+  type ToolHeaderProps,
+} from "@/components/tool-layout";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Select } from "@/components/ui/select";
@@ -24,7 +29,7 @@ import {
 
 const SAMPLE = "The quick brown fox jumps over the lazy dog";
 
-export function HashGeneratorTool() {
+export function HashGeneratorTool({ title, description }: ToolHeaderProps) {
   const [options, setOptions] = useState<HashOptions>(() => ({
     ...DEFAULT_OPTIONS,
     input: initialSample(SAMPLE),
@@ -136,8 +141,8 @@ export function HashGeneratorTool() {
 
   return (
     <ToolLayout
-      title="Hash Generator"
-      description="Generate hashes, HMACs, and derived keys (MD5, SHA, BLAKE, PBKDF2, bcrypt, Argon2) — entirely in your browser."
+      title={title}
+      description={description}
     >
       <div className="flex flex-wrap items-center gap-2">
         <label className="flex items-center gap-2 text-sm">

@@ -8,7 +8,11 @@ import { CopyButton } from "@/components/copy-button";
 import { Hint } from "@/components/hint";
 import { Segmented } from "@/components/segmented";
 import { StatusBanner, type BannerKind } from "@/components/status-banner";
-import { ToolLayout, ToolPane } from "@/components/tool-layout";
+import {
+  ToolLayout,
+  ToolPane,
+  type ToolHeaderProps,
+} from "@/components/tool-layout";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
@@ -51,7 +55,7 @@ const METER_COLORS = [
   "bg-emerald-500",
 ] as const;
 
-export function PasswordGeneratorTool() {
+export function PasswordGeneratorTool({ title, description }: ToolHeaderProps) {
   const [options, setOptions] = useState<PasswordOptions>(DEFAULT_OPTIONS);
   const [password, setPassword] = useState("");
   // Bumped to force a fresh password without changing options.
@@ -98,8 +102,8 @@ export function PasswordGeneratorTool() {
 
   return (
     <ToolLayout
-      title="Password Generator"
-      description="Generate strong random passwords — entirely in your browser, using the Web Crypto API."
+      title={title}
+      description={description}
     >
       <div className="flex flex-wrap items-center gap-2">
         {CHAR_SETS.map((set) => (

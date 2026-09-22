@@ -5,7 +5,12 @@ import { CodeEditor } from "@/components/code-editor";
 import { CopyButton } from "@/components/copy-button";
 import { Segmented } from "@/components/segmented";
 import { StatusBanner } from "@/components/status-banner";
-import { ToolLayout, ToolPane, ToolPanes } from "@/components/tool-layout";
+import {
+  ToolLayout,
+  ToolPane,
+  ToolPanes,
+  type ToolHeaderProps,
+} from "@/components/tool-layout";
 import { Button } from "@/components/ui/button";
 import { initialSample } from "@/lib/config";
 import {
@@ -24,7 +29,7 @@ const SAMPLES: Record<Mode, string> = {
   parse: "https://example.com/search?q=hello world&lang=en&page=2#results",
 };
 
-export function UrlTool() {
+export function UrlTool({ title, description }: ToolHeaderProps) {
   const [mode, setMode] = useState<Mode>("encode");
   const [variant, setVariant] = useState<UrlVariant>("component");
   const [input, setInput] = useState(() => initialSample(SAMPLES.encode));
@@ -108,8 +113,8 @@ export function UrlTool() {
 
   return (
     <ToolLayout
-      title="URL Encoder / Decoder + Query Parser"
-      description="Percent-encode or decode text and break a URL's query string into key/value pairs — entirely in your browser."
+      title={title}
+      description={description}
     >
       <div className="flex flex-wrap items-center gap-2">
         <Segmented

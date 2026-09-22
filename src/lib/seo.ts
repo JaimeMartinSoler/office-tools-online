@@ -11,16 +11,49 @@ import { SITE_NAME } from "./site";
  * title or description in a page component.
  */
 
-/** Brand logo, reused as the default Open Graph / Twitter preview image. */
+/**
+ * Longest <title> Google reliably shows without truncating. Every composed
+ * title (site default, tool pages) must fit — seo.test.ts enforces it.
+ */
+export const TITLE_MAX = 60;
+
+/** Brand suffix appended to page titles when it fits within `TITLE_MAX`. */
+export const TITLE_SUFFIX = ` · ${SITE_NAME}`;
+
+/**
+ * Root-layout title template for simple pages (/about, /privacy). Tool pages
+ * bypass it with `title.absolute` so they can drop the suffix when it would
+ * overflow `TITLE_MAX` — see `toolDocumentTitle`.
+ */
+export const TITLE_TEMPLATE = `%s${TITLE_SUFFIX}`;
+
+/** Homepage / fallback <title> and social-card title. */
+export const DEFAULT_TITLE = `${SITE_NAME} — private, client-side dev utilities`;
+
+/**
+ * Longest meta description Google reliably shows in a snippet. Every composed
+ * tool description must fit — seo.test.ts enforces it.
+ */
+export const DESCRIPTION_MAX = 160;
+
+/**
+ * Privacy-first positioning appended to every tool's meta description. Kept
+ * short so registry descriptions have room to say what the tool does; registry
+ * descriptions must not repeat any of it (seo.test.ts enforces that too).
+ */
+export const DESCRIPTION_SUFFIX =
+  " Free and private — runs in your browser, no uploads.";
+
+/** Branded social-card image (Open Graph + Twitter `summary_large_image`). */
 export const OG_IMAGE = {
-  url: "/icon.png",
-  width: 256,
-  height: 256,
-  alt: SITE_NAME,
+  url: "/og.png",
+  width: 1200,
+  height: 630,
+  alt: `${SITE_NAME} — private, client-side dev tools`,
 } as const;
 
 /**
- * The document <title> for a tool. Prefers the search-optimised `seoTitle`
+ * A tool's search-facing title. Prefers the search-optimised `seoTitle`
  * (phrased the way people actually search) and falls back to the display name.
  */
 export function toolTitle(tool: Tool): string {
@@ -28,17 +61,39 @@ export function toolTitle(tool: Tool): string {
 }
 
 /**
+ * The document <title> for a tool page: `toolTitle` plus the brand suffix, but
+ * only when the result stays within `TITLE_MAX` — otherwise the bare tool title,
+ * since the keyword-rich part matters more than the brand in a truncated SERP.
+ */
+export function toolDocumentTitle(tool: Tool): string {
+  const title = toolTitle(tool);
+  const branded = `${title}${TITLE_SUFFIX}`;
+  return branded.length <= TITLE_MAX ? branded : title;
+}
+
+/**
+ * The on-page <h1> for a tool: an explicit `h1`, else the `seoTitle`, else the
+ * display name. The sidebar and command palette keep using the short `name`.
+ */
+export function toolHeading(tool: Tool): string {
+  return tool.h1 ?? tool.seoTitle ?? tool.name;
+}
+
+/**
  * Meta description for a tool — the registry description plus the privacy-first
  * positioning that differentiates this site in search results.
  */
 export function toolDescription(tool: Tool): string {
-  return `${tool.description} Free and private — runs entirely in your browser, your data is never uploaded.`;
+  return `${tool.description}${DESCRIPTION_SUFFIX}`;
 }
 
 /**
  * Full per-tool metadata: title, description, keywords, canonical, and the
  * Open Graph + Twitter cards that render a rich preview when a tool link is
  * shared or surfaced by a search engine.
+ *
+ * The Twitter object is set in full (card + images) because Next replaces a
+ * parent's `twitter` wholesale rather than merging into the layout's.
  */
 export function toolMetadata(tool: Tool): Metadata {
   const title = toolTitle(tool);
@@ -47,7 +102,9 @@ export function toolMetadata(tool: Tool): Metadata {
   const socialTitle = `${title} — ${SITE_NAME}`;
 
   return {
-    title,
+    // `absolute` bypasses the root layout's `%s · Office Dev Tools` template:
+    // toolDocumentTitle already decided whether the suffix fits.
+    title: { absolute: toolDocumentTitle(tool) },
     description,
     keywords: tool.keywords,
     alternates: { canonical: url },
@@ -60,9 +117,10 @@ export function toolMetadata(tool: Tool): Metadata {
       images: [OG_IMAGE],
     },
     twitter: {
-      card: "summary",
+      card: "summary_large_image",
       title: socialTitle,
       description,
+      images: [OG_IMAGE.url],
     },
   };
 }

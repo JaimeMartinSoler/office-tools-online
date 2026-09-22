@@ -6,7 +6,12 @@ import { CodeEditor } from "@/components/code-editor";
 import { CopyButton } from "@/components/copy-button";
 import { Segmented } from "@/components/segmented";
 import { StatusBanner } from "@/components/status-banner";
-import { ToolLayout, ToolPane, ToolPanes } from "@/components/tool-layout";
+import {
+  ToolLayout,
+  ToolPane,
+  ToolPanes,
+  type ToolHeaderProps,
+} from "@/components/tool-layout";
 import { Button } from "@/components/ui/button";
 import { initialSample } from "@/lib/config";
 import type { Result } from "@/lib/result";
@@ -23,7 +28,7 @@ type Mode = "timestamp" | "date";
 const SAMPLE_TIMESTAMP = "1718323200";
 const SAMPLE_DATE = "2024-06-14T00:00:00Z";
 
-export function UnixTimestampTool() {
+export function UnixTimestampTool({ title, description }: ToolHeaderProps) {
   const [mode, setMode] = useState<Mode>("timestamp");
   const [unit, setUnit] = useState<TimestampUnit>("auto");
   const [input, setInput] = useState(() => initialSample(SAMPLE_TIMESTAMP));
@@ -48,8 +53,8 @@ export function UnixTimestampTool() {
 
   return (
     <ToolLayout
-      title="Unix Timestamp Converter"
-      description="Convert Unix timestamps to dates and back — entirely in your browser."
+      title={title}
+      description={description}
     >
       <div className="flex flex-wrap items-center gap-2">
         <Segmented

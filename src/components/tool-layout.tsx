@@ -1,5 +1,16 @@
 import type { ReactNode } from "react";
 
+/**
+ * The on-page heading + blurb every tool component receives from
+ * /tools/[slug]/page.tsx, resolved from the registry (`toolHeading` /
+ * `description`). Tools forward these to `ToolLayout` rather than hardcoding
+ * them, so the registry stays the single source of truth for tool copy.
+ */
+export interface ToolHeaderProps {
+  title: string;
+  description: string;
+}
+
 /** Standard header + content frame shared by every tool page. */
 export function ToolLayout({
   title,

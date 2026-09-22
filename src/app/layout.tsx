@@ -3,24 +3,23 @@ import { Header } from "@/components/header";
 import { Sidebar } from "@/components/sidebar";
 import { ThemeProvider } from "@/components/theme-provider";
 import { TooltipProvider } from "@/components/ui/tooltip";
-import { OG_IMAGE } from "@/lib/seo";
-import { SITE_NAME, SITE_URL } from "@/lib/site";
+import { DEFAULT_TITLE, OG_IMAGE, TITLE_TEMPLATE } from "@/lib/seo";
+import { SITE_INDEXABLE, SITE_NAME, SITE_URL } from "@/lib/site";
 import "./globals.css";
 
-const DEFAULT_TITLE = "Office Dev Tools — private, client-side dev utilities";
 const DEFAULT_DESCRIPTION =
   "A fast, privacy-first collection of online developer tools — JSON formatter & converter, Base64 encoder, hash generator, password generator, URL encoder, timestamp and number base converters, and more. Every conversion runs entirely in your browser; nothing is ever uploaded.";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   applicationName: SITE_NAME,
-  // Browser tab text is always just the brand name. The template has no `%s`,
-  // so any per-page title (Privacy, About, each tool) still resolves to the
-  // constant "Office Dev Tools" in the tab. Social-card titles below stay
-  // descriptive for SEO/sharing.
+  // The homepage gets the keyword-rich default; simple pages (About, Privacy)
+  // get "<page> · Office Dev Tools" from the template. Tool pages set
+  // `title.absolute` (see toolMetadata), so they bypass the template and only
+  // carry the brand suffix when it fits within TITLE_MAX.
   title: {
-    default: "Office Dev Tools",
-    template: "Office Dev Tools",
+    default: DEFAULT_TITLE,
+    template: TITLE_TEMPLATE,
   },
   description: DEFAULT_DESCRIPTION,
   keywords: [
@@ -40,6 +39,20 @@ export const metadata: Metadata = {
     "client-side",
   ],
   alternates: { canonical: "/" },
+  // Staging/local builds get `noindex` (plus a disallow-all robots.txt) so
+  // only the production build is ever indexed — see isIndexableDeploy.
+  robots: SITE_INDEXABLE
+    ? {
+        index: true,
+        follow: true,
+        googleBot: {
+          index: true,
+          follow: true,
+          "max-image-preview": "large",
+          "max-snippet": -1,
+        },
+      }
+    : { index: false, follow: false },
   openGraph: {
     type: "website",
     siteName: SITE_NAME,
@@ -50,7 +63,7 @@ export const metadata: Metadata = {
     images: [OG_IMAGE],
   },
   twitter: {
-    card: "summary",
+    card: "summary_large_image",
     title: DEFAULT_TITLE,
     description: DEFAULT_DESCRIPTION,
     images: [OG_IMAGE.url],

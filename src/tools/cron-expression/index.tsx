@@ -5,7 +5,12 @@ import { CodeEditor } from "@/components/code-editor";
 import { CopyButton } from "@/components/copy-button";
 import { Segmented } from "@/components/segmented";
 import { StatusBanner } from "@/components/status-banner";
-import { ToolLayout, ToolPane, ToolPanes } from "@/components/tool-layout";
+import {
+  ToolLayout,
+  ToolPane,
+  ToolPanes,
+  type ToolHeaderProps,
+} from "@/components/tool-layout";
 import { Button } from "@/components/ui/button";
 import { initialSample } from "@/lib/config";
 import type { Result } from "@/lib/result";
@@ -16,7 +21,7 @@ const SAMPLES: Record<CronMode, string> = {
   extended: "0 9 * * MON-FRI",
 };
 
-export function CronExpressionTool() {
+export function CronExpressionTool({ title, description }: ToolHeaderProps) {
   const [mode, setMode] = useState<CronMode>("standard");
   const [input, setInput] = useState(() => initialSample(SAMPLES.standard));
 
@@ -29,8 +34,8 @@ export function CronExpressionTool() {
 
   return (
     <ToolLayout
-      title="Cron Expression Explainer"
-      description="Break a cron expression down field by field — entirely in your browser."
+      title={title}
+      description={description}
     >
       <div className="flex flex-wrap items-center gap-2">
         <Segmented

@@ -1,4 +1,5 @@
 import type { ComponentType } from "react";
+import type { ToolHeaderProps } from "@/components/tool-layout";
 import { CLIPBOARD_SHARING_URL } from "@/lib/site";
 import { Base64Tool } from "./base64";
 import { ColorConverterTool } from "./color-converter";
@@ -31,12 +32,23 @@ export interface Tool extends MenuEntryBase {
   /**
    * Search-optimised page <title>, phrased the way people actually search
    * (e.g. "JSON Formatter & Converter") when the display `name` is not a good
-   * match. Used ONLY for the document title / social previews — the on-page
-   * heading still uses `name`. Falls back to `name` when omitted.
+   * match. Falls back to `name` when omitted. Keep it short enough that
+   * `toolDocumentTitle` stays within `TITLE_MAX` (src/lib/seo.ts).
    */
   seoTitle?: string;
+  /**
+   * On-page <h1>, phrased as a human would type it. Resolves
+   * `h1 ?? seoTitle ?? name` (`toolHeading`); set it only when the `seoTitle`
+   * reads badly as a heading. Sidebar and command palette keep the short `name`.
+   */
+  h1?: string;
   status?: "stable" | "placeholder";
-  Component: ComponentType;
+  /**
+   * Receives the resolved heading and the registry `description` from
+   * /tools/[slug]/page.tsx and forwards them to `ToolLayout` — tool components
+   * can't import this registry (circular), so they never hardcode their header.
+   */
+  Component: ComponentType<ToolHeaderProps>;
 }
 
 /** A menu entry that links out to another site (opened in a new tab). */
@@ -59,8 +71,9 @@ export const tools: Tool[] = [
     slug: "json-yaml-xml",
     name: "JSON ↔ YAML ↔ XML ↔ CSV",
     seoTitle: "JSON Formatter & Converter (YAML, XML, CSV)",
+    h1: "JSON Formatter and Converter",
     description:
-      "Convert, beautify, and minify between JSON, YAML, XML, and CSV.",
+      "Format, beautify, and minify JSON, and convert between JSON, YAML, XML, and CSV in any direction.",
     category: "JSON",
     keywords: [
       "json",
@@ -83,7 +96,7 @@ export const tools: Tool[] = [
     name: "JSON ↔ JSON Schema",
     seoTitle: "JSON Schema Generator & Validator",
     description:
-      "Infer a JSON Schema from a sample, or generate a sample from a schema.",
+      "Infer a JSON Schema (draft 2020-12) from a sample JSON document, or generate sample data from a schema.",
     category: "JSON",
     keywords: [
       "json",
@@ -102,7 +115,8 @@ export const tools: Tool[] = [
     slug: "base64",
     name: "Base64",
     seoTitle: "Base64 Encoder & Decoder",
-    description: "Encode and decode Base64 and Base64URL.",
+    description:
+      "Encode and decode Base64 and URL-safe Base64URL text, or encode any file to Base64. Unicode-safe.",
     category: "Encoding",
     keywords: ["base64", "base64url", "encode", "decode", "url-safe"],
     status: "stable",
@@ -111,8 +125,10 @@ export const tools: Tool[] = [
   {
     slug: "hash-generator",
     name: "Hash Generator",
+    seoTitle: "Hash Generator — MD5, SHA-256, BLAKE3, Argon2",
+    h1: "Hash Generator (MD5, SHA-256, BLAKE3, Argon2)",
     description:
-      "Generate hashes, HMACs, and derived keys — MD5, SHA, BLAKE, PBKDF2, bcrypt, Argon2.",
+      "Generate hashes, HMACs, and derived keys — MD5, SHA-1/2/3, BLAKE2b, BLAKE3, CRC32, bcrypt, Argon2.",
     category: "Encoding",
     keywords: [
       "hash",
@@ -141,8 +157,10 @@ export const tools: Tool[] = [
   {
     slug: "url",
     name: "URL Encoder / Decoder",
+    seoTitle: "URL Encoder & Decoder Online",
+    h1: "URL Encoder, Decoder & Query Parser",
     description:
-      "Percent-encode or decode text, and parse a URL's query string into key/value pairs.",
+      "Percent-encode or decode text and URLs, and parse a URL's query string into key/value pairs.",
     category: "Encoding",
     keywords: [
       "url",
@@ -163,8 +181,9 @@ export const tools: Tool[] = [
   {
     slug: "password-generator",
     name: "Password Generator",
+    seoTitle: "Random Password Generator",
     description:
-      "Generate strong random passwords — choose length, character sets, and minimums. Runs entirely in your browser.",
+      "Generate strong random passwords with the Web Crypto API — choose length, character sets, and minimums.",
     category: "Encoding",
     keywords: [
       "password",
@@ -212,8 +231,10 @@ export const tools: Tool[] = [
   {
     slug: "uuid-ulid-generator",
     name: "UUID / ULID Generator",
+    seoTitle: "UUID & ULID Generator (v4, v7)",
+    h1: "UUID & ULID Generator",
     description:
-      "Generate UUID v4, UUID v7, and ULID identifiers in bulk, using the Web Crypto API.",
+      "Generate UUID v4, UUID v7, and ULID identifiers in bulk (up to 1,000 at once) with the Web Crypto API.",
     category: "Encoding",
     keywords: [
       "uuid",
@@ -235,8 +256,9 @@ export const tools: Tool[] = [
   {
     slug: "number-base-converter",
     name: "Number Base Converter",
+    seoTitle: "Number Base Converter (Hex, Binary, Octal)",
     description:
-      "Convert integers between binary, octal, decimal, and hexadecimal, with a bit-by-bit view.",
+      "Convert integers between binary, octal, decimal, and hexadecimal, with a bit-by-bit view of the value.",
     category: "Encoding",
     keywords: [
       "number",
@@ -261,7 +283,9 @@ export const tools: Tool[] = [
     slug: "markdown",
     name: "Markdown",
     seoTitle: "Markdown Converter — HTML & CSV to Markdown",
-    description: "Convert HTML or CSV into Markdown.",
+    h1: "HTML & CSV to Markdown Converter",
+    description:
+      "Convert HTML or CSV tables to clean Markdown, or write Markdown and preview it rendered as HTML.",
     category: "Text",
     keywords: [
       "markdown",
@@ -278,7 +302,10 @@ export const tools: Tool[] = [
   {
     slug: "string-case-converter",
     name: "String Case Converter",
-    description: "Convert text between common naming cases.",
+    seoTitle: "Case Converter — camelCase, snake_case & more",
+    h1: "Case Converter (camelCase, snake_case & more)",
+    description:
+      "Convert text between camelCase, PascalCase, snake_case, kebab-case, CONSTANT_CASE, Title Case, and more.",
     category: "Text",
     keywords: [
       "case",
@@ -297,8 +324,9 @@ export const tools: Tool[] = [
     slug: "text-diff",
     name: "Text / JSON Diff",
     seoTitle: "Text & JSON Diff Checker — Compare Online",
+    h1: "Text & JSON Diff Checker",
     description:
-      "Compare two texts side by side with line and character-level highlighting, including structural JSON diff.",
+      "Compare two texts side by side with line and character-level highlighting, or diff JSON structurally.",
     category: "Text",
     keywords: [
       "diff",
@@ -319,8 +347,10 @@ export const tools: Tool[] = [
   {
     slug: "unix-timestamp",
     name: "Unix Timestamp Converter",
+    seoTitle: "Unix Timestamp Converter — Epoch to Date",
+    h1: "Unix Timestamp Converter (Epoch to Date)",
     description:
-      "Convert Unix timestamps to dates and back, in seconds or milliseconds.",
+      "Convert Unix epoch timestamps in seconds or milliseconds to readable dates, and dates back to timestamps.",
     category: "Datetime",
     keywords: [
       "unix",
@@ -339,8 +369,9 @@ export const tools: Tool[] = [
   {
     slug: "cron-expression",
     name: "Cron Expression Explainer",
+    seoTitle: "Cron Expression Explainer & Crontab Parser",
     description:
-      "Explain a cron expression field by field, with the periodicity and matched values.",
+      "Explain a cron expression field by field in plain English, with its periodicity and matched values.",
     category: "Datetime",
     keywords: [
       "cron",
@@ -362,8 +393,9 @@ export const tools: Tool[] = [
   {
     slug: "color-converter",
     name: "Color Converter",
+    seoTitle: "Color Converter & WCAG Contrast Checker",
     description:
-      "Convert colours between hex, rgb, hsl, and oklch, and check WCAG contrast ratios.",
+      "Convert colors between HEX, RGB, HSL, and OKLCH, and check the WCAG contrast ratio of two colors.",
     category: "Misc",
     keywords: [
       "color",

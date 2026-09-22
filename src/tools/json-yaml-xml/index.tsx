@@ -3,6 +3,7 @@
 import { useCallback, useState } from "react";
 import { ConverterTool } from "@/components/converter-tool";
 import { Segmented } from "@/components/segmented";
+import type { ToolHeaderProps } from "@/components/tool-layout";
 import type { IndentOption } from "@/lib/json";
 import { convertData, isJsonObjectOrArray, type DataFormat } from "./logic";
 
@@ -117,7 +118,7 @@ const VALUE_TYPE_OPTIONS: {
 const editorLanguage = (format: DataFormat) =>
   format === "json" ? "json" : "text";
 
-export function JsonYamlXml() {
+export function JsonYamlXml({ title, description }: ToolHeaderProps) {
   const [from, setFrom] = useState<DataFormat>("json");
   const [to, setTo] = useState<DataFormat>("yaml");
   const [indent, setIndent] = useState<IndentOption>(2);
@@ -154,8 +155,8 @@ export function JsonYamlXml() {
 
   return (
     <ConverterTool
-      title="JSON ↔ YAML ↔ XML ↔ CSV"
-      description="Convert, beautify, and minify between JSON, YAML, XML, and CSV — entirely in your browser."
+      title={title}
+      description={description}
       sample={SAMPLES[from]}
       convert={convert}
       warn={warn}
