@@ -1,6 +1,7 @@
 import type { ComponentType } from "react";
 import type { ToolHeaderProps } from "@/components/tool-layout";
 import { CLIPBOARD_SHARING_URL } from "@/lib/site";
+import type { ToolContent } from "@/lib/tool-content";
 import { Base64Tool } from "./base64";
 import { ColorConverterTool } from "./color-converter";
 import { CronExpressionTool } from "./cron-expression";
@@ -16,6 +17,21 @@ import { TextDiffTool } from "./text-diff";
 import { UnixTimestampTool } from "./unix-timestamp";
 import { UrlTool } from "./url";
 import { UuidUlidGeneratorTool } from "./uuid-ulid-generator";
+import { content as base64Content } from "./base64/content";
+import { content as colorConverterContent } from "./color-converter/content";
+import { content as cronExpressionContent } from "./cron-expression/content";
+import { content as hashGeneratorContent } from "./hash-generator/content";
+import { content as jsonJsonSchemaContent } from "./json-json-schema/content";
+import { content as jsonYamlXmlContent } from "./json-yaml-xml/content";
+import { content as jwtInspectorContent } from "./jwt-inspector/content";
+import { content as markdownContent } from "./markdown/content";
+import { content as numberBaseConverterContent } from "./number-base-converter/content";
+import { content as passwordGeneratorContent } from "./password-generator/content";
+import { content as stringCaseConverterContent } from "./string-case-converter/content";
+import { content as textDiffContent } from "./text-diff/content";
+import { content as unixTimestampContent } from "./unix-timestamp/content";
+import { content as urlContent } from "./url/content";
+import { content as uuidUlidGeneratorContent } from "./uuid-ulid-generator/content";
 
 export type ToolCategory = "JSON" | "Encoding" | "Text" | "Datetime" | "Misc";
 
@@ -43,6 +59,13 @@ export interface Tool extends MenuEntryBase {
    */
   h1?: string;
   status?: "stable" | "placeholder";
+  /**
+   * Below-the-fold reference copy (what it does, steps, examples, FAQ, related
+   * tools), kept in the tool's co-located `content.ts`. Rendered by
+   * `ToolArticle` and reused, verbatim, for the FAQPage/HowTo JSON-LD. Every
+   * `stable` tool must have it (registry.test.ts).
+   */
+  content?: ToolContent;
   /**
    * Receives the resolved heading and the registry `description` from
    * /tools/[slug]/page.tsx and forwards them to `ToolLayout` — tool components
@@ -89,6 +112,7 @@ export const tools: Tool[] = [
       "validate",
     ],
     status: "stable",
+    content: jsonYamlXmlContent,
     Component: JsonYamlXml,
   },
   {
@@ -109,6 +133,7 @@ export const tools: Tool[] = [
       "generate",
     ],
     status: "stable",
+    content: jsonJsonSchemaContent,
     Component: JsonJsonSchema,
   },
   {
@@ -120,6 +145,7 @@ export const tools: Tool[] = [
     category: "Encoding",
     keywords: ["base64", "base64url", "encode", "decode", "url-safe"],
     status: "stable",
+    content: base64Content,
     Component: Base64Tool,
   },
   {
@@ -152,6 +178,7 @@ export const tools: Tool[] = [
       "kdf",
     ],
     status: "stable",
+    content: hashGeneratorContent,
     Component: HashGeneratorTool,
   },
   {
@@ -176,6 +203,7 @@ export const tools: Tool[] = [
       "params",
     ],
     status: "stable",
+    content: urlContent,
     Component: UrlTool,
   },
   {
@@ -200,6 +228,7 @@ export const tools: Tool[] = [
       "entropy",
     ],
     status: "stable",
+    content: passwordGeneratorContent,
     Component: PasswordGeneratorTool,
   },
   {
@@ -226,6 +255,7 @@ export const tools: Tool[] = [
       "auth",
     ],
     status: "stable",
+    content: jwtInspectorContent,
     Component: JwtInspectorTool,
   },
   {
@@ -251,6 +281,7 @@ export const tools: Tool[] = [
       "bulk",
     ],
     status: "stable",
+    content: uuidUlidGeneratorContent,
     Component: UuidUlidGeneratorTool,
   },
   {
@@ -277,6 +308,7 @@ export const tools: Tool[] = [
       "convert",
     ],
     status: "stable",
+    content: numberBaseConverterContent,
     Component: NumberBaseConverterTool,
   },
   {
@@ -297,6 +329,7 @@ export const tools: Tool[] = [
       "to markdown",
     ],
     status: "stable",
+    content: markdownContent,
     Component: MarkdownTool,
   },
   {
@@ -318,6 +351,7 @@ export const tools: Tool[] = [
       "convert",
     ],
     status: "stable",
+    content: stringCaseConverterContent,
     Component: StringCaseConverter,
   },
   {
@@ -342,6 +376,7 @@ export const tools: Tool[] = [
       "line",
     ],
     status: "stable",
+    content: textDiffContent,
     Component: TextDiffTool,
   },
   {
@@ -364,6 +399,7 @@ export const tools: Tool[] = [
       "convert",
     ],
     status: "stable",
+    content: unixTimestampContent,
     Component: UnixTimestampTool,
   },
   {
@@ -388,6 +424,7 @@ export const tools: Tool[] = [
       "explain",
     ],
     status: "stable",
+    content: cronExpressionContent,
     Component: CronExpressionTool,
   },
   {
@@ -413,6 +450,7 @@ export const tools: Tool[] = [
       "picker",
     ],
     status: "stable",
+    content: colorConverterContent,
     Component: ColorConverterTool,
   },
 ];
@@ -451,6 +489,53 @@ export const toolCategories: ToolCategory[] = [
 
 export function getTool(slug: string): Tool | undefined {
   return tools.find((tool) => tool.slug === slug);
+}
+
+/**
+ * A menu entry reduced to plain, serialisable data. The sidebar and command
+ * palette are client components, so they receive these as props from the
+ * server layout instead of importing this registry — which would bundle every
+ * tool's `content` prose into the client JS of every page.
+ */
+export interface MenuLink {
+  slug: string;
+  name: string;
+  description: string;
+  keywords: string[];
+  href: string;
+  external: boolean;
+  placeholder: boolean;
+}
+
+export interface MenuLinkGroup {
+  category: ToolCategory;
+  links: MenuLink[];
+}
+
+function menuLink(entry: MenuEntry): MenuLink {
+  const external = isExternalTool(entry);
+  return {
+    slug: entry.slug,
+    name: entry.name,
+    description: entry.description,
+    keywords: entry.keywords,
+    href: external ? entry.url : `/tools/${entry.slug}`,
+    external,
+    placeholder: !external && entry.status === "placeholder",
+  };
+}
+
+/** Every menu entry as plain data, in `menuEntries` order (command palette). */
+export function menuLinks(): MenuLink[] {
+  return menuEntries.map(menuLink);
+}
+
+/** Menu entries as plain data, grouped like `toolsByCategory` (sidebar). */
+export function menuLinkGroups(): MenuLinkGroup[] {
+  return toolsByCategory().map((group) => ({
+    category: group.category,
+    links: group.tools.map(menuLink),
+  }));
 }
 
 export function toolsByCategory(): Array<{

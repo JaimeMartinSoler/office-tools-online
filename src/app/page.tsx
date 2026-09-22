@@ -1,7 +1,8 @@
-import { ExternalLink } from "lucide-react";
 import Link from "next/link";
-import { SITE_NAME, SITE_URL } from "@/lib/site";
-import { isExternalTool, toolsByCategory } from "@/tools/registry";
+import { ToolCard } from "@/components/tool-card";
+import { CSP_CONNECT_SRC, SITE_NAME, SITE_URL } from "@/lib/site";
+import { categories } from "@/tools/categories";
+import { tools, toolsByCategory } from "@/tools/registry";
 
 const structuredData = {
   "@context": "https://schema.org",
@@ -24,6 +25,9 @@ const structuredData = {
     },
   ],
 };
+
+const LINK_CLASS =
+  "font-medium text-foreground underline underline-offset-4 hover:text-muted-foreground";
 
 export default function HomePage() {
   const groups = toolsByCategory();
@@ -48,41 +52,71 @@ export default function HomePage() {
             {group.category}
           </h2>
           <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-            {group.tools.map((tool) => {
-              const external = isExternalTool(tool);
-              return (
-                <Link
-                  key={tool.slug}
-                  href={external ? tool.url : `/tools/${tool.slug}`}
-                  {...(external && {
-                    target: "_blank",
-                    rel: "noopener noreferrer",
-                  })}
-                  className="group flex flex-col gap-1 rounded-lg border bg-card p-4 transition-colors hover:border-foreground/20 hover:bg-accent"
-                >
-                  <div className="flex items-center justify-between gap-2">
-                    <h3 className="font-medium">{tool.name}</h3>
-                    {external && (
-                      <>
-                        <ExternalLink className="size-3.5 shrink-0 text-muted-foreground" />
-                        <span className="sr-only">(opens in a new tab)</span>
-                      </>
-                    )}
-                    {!external && tool.status === "placeholder" && (
-                      <span className="rounded bg-muted px-1.5 py-0.5 text-[10px] font-medium text-muted-foreground">
-                        soon
-                      </span>
-                    )}
-                  </div>
-                  <p className="text-sm text-muted-foreground">
-                    {tool.description}
-                  </p>
-                </Link>
-              );
-            })}
+            {group.tools.map((tool) => (
+              <ToolCard key={tool.slug} tool={tool} />
+            ))}
           </div>
         </section>
       ))}
+
+      {/* Below the grid on purpose: the tools stay the first thing you see. */}
+      <section className="space-y-4 border-t pt-8 text-sm leading-relaxed">
+        <h2 className="text-lg font-semibold tracking-tight">
+          What&apos;s different here
+        </h2>
+        <ul className="space-y-3 text-muted-foreground">
+          <li>
+            <strong className="font-semibold text-foreground">
+              {tools.length} tools, one Ctrl+K palette.
+            </strong>{" "}
+            Press Ctrl+K (⌘K on a Mac) anywhere to jump to any tool by name or
+            keyword. The tools share one layout and the same syntax-highlighting
+            editor, so moving between them costs nothing.
+          </li>
+          <li>
+            <strong className="font-semibold text-foreground">
+              Hash algorithms most browser tools don&apos;t have.
+            </strong>{" "}
+            As well as MD5 and the SHA family, the{" "}
+            <Link href="/tools/hash-generator/" className={LINK_CLASS}>
+              Hash Generator
+            </Link>{" "}
+            runs BLAKE3, Argon2id, scrypt and bcrypt, compiled to WebAssembly and
+            executed on your device.
+          </li>
+          <li>
+            <strong className="font-semibold text-foreground">
+              No ads, no trackers, no sign-up.
+            </strong>{" "}
+            No accounts, no cookies, and no ad or tracking scripts — just the tools.
+          </li>
+          <li>
+            <strong className="font-semibold text-foreground">
+              A strict Content-Security-Policy you can check.
+            </strong>{" "}
+            The site&apos;s <code className="rounded bg-muted px-1 py-0.5 font-mono text-[0.85em]">connect-src</code>{" "}
+            is <code className="rounded bg-muted px-1 py-0.5 font-mono text-[0.85em]">{CSP_CONNECT_SRC}</code>:
+            your browser may only send data to this site&apos;s own origin and to
+            Cloudflare&apos;s anonymous, cookieless page-view beacon — never
+            anywhere else, and never your input.{" "}
+            <Link href="/privacy/" className={LINK_CLASS}>
+              How privacy works here
+            </Link>
+            .
+          </li>
+        </ul>
+        <p className="text-muted-foreground">
+          Browse by category:{" "}
+          {categories.map((info, index) => (
+            <span key={info.slug}>
+              {index > 0 && " · "}
+              <Link href={`/tools/${info.slug}/`} className={LINK_CLASS}>
+                {info.heading}
+              </Link>
+            </span>
+          ))}
+        </p>
+      </section>
     </div>
   );
 }

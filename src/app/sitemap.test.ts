@@ -1,11 +1,15 @@
 import { describe, expect, it } from "vitest";
+import { categories } from "@/tools/categories";
 import { tools } from "@/tools/registry";
 import sitemap from "./sitemap";
 
 describe("sitemap.xml", () => {
-  it("lists the static pages and every tool, with trailing slashes", () => {
+  it("lists the static pages, category hubs, and every tool, with trailing slashes", () => {
     const urls = sitemap().map((entry) => entry.url);
-    expect(urls).toHaveLength(3 + tools.length);
+    expect(urls).toHaveLength(3 + categories.length + tools.length);
+    for (const info of categories) {
+      expect(urls).toContain(`https://office-dev-tools.com/tools/${info.slug}/`);
+    }
     for (const url of urls) expect(url.endsWith("/")).toBe(true);
   });
 

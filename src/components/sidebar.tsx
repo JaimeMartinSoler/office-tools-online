@@ -5,11 +5,11 @@ import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
-import { isExternalTool, toolsByCategory } from "@/tools/registry";
+import type { MenuLinkGroup } from "@/tools/registry";
 
-export function Sidebar() {
+/** `groups` comes from the server layout (`menuLinkGroups()`), not an import. */
+export function Sidebar({ groups }: { groups: MenuLinkGroup[] }) {
   const pathname = usePathname();
-  const groups = toolsByCategory();
 
   return (
     <aside className="hidden h-screen w-64 shrink-0 flex-col border-r bg-card md:flex">
@@ -31,9 +31,8 @@ export function Sidebar() {
             <p className="px-2 pb-1 text-xs font-bold uppercase tracking-wider text-foreground">
               {group.category}
             </p>
-            {group.tools.map((tool) => {
-              const external = isExternalTool(tool);
-              const href = external ? tool.url : `/tools/${tool.slug}`;
+            {group.links.map((tool) => {
+              const { external, href } = tool;
               const active = pathname === href || pathname === `${href}/`;
               return (
                 <Link
@@ -57,7 +56,7 @@ export function Sidebar() {
                       <span className="sr-only">(opens in a new tab)</span>
                     </>
                   )}
-                  {!external && tool.status === "placeholder" && (
+                  {tool.placeholder && (
                     <span className="rounded bg-muted px-1.5 py-0.5 text-[10px] font-medium text-muted-foreground">
                       soon
                     </span>
