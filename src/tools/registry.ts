@@ -1,6 +1,6 @@
 import type { ComponentType } from "react";
+import { CLIPBOARD_SHARING_URL } from "@/lib/site";
 import { Base64Tool } from "./base64";
-import { ClipboardSharing } from "./clipboard-sharing";
 import { ColorConverterTool } from "./color-converter";
 import { CronExpressionTool } from "./cron-expression";
 import { HashGeneratorTool } from "./hash-generator";
@@ -18,12 +18,16 @@ import { UuidUlidGeneratorTool } from "./uuid-ulid-generator";
 
 export type ToolCategory = "JSON" | "Encoding" | "Text" | "Datetime" | "Misc";
 
-export interface Tool {
+interface MenuEntryBase {
   slug: string;
   name: string;
   description: string;
   category: ToolCategory;
   keywords: string[];
+}
+
+/** An on-site tool, rendered at /tools/<slug>. */
+export interface Tool extends MenuEntryBase {
   /**
    * Search-optimised page <title>, phrased the way people actually search
    * (e.g. "JSON Formatter & Converter") when the display `name` is not a good
@@ -35,12 +39,20 @@ export interface Tool {
   Component: ComponentType;
 }
 
+/** A menu entry that links out to another site (opened in a new tab). */
+export interface ExternalTool extends MenuEntryBase {
+  url: string;
+}
+
+export type MenuEntry = Tool | ExternalTool;
+
 /**
- * Single source of truth for every tool.
+ * Single source of truth for every on-site tool.
  *
- * The sidebar, command palette, homepage grid, and the static params for
- * /tools/[slug] are ALL derived from this array — never hardcode a tool list
- * anywhere else (see docs/ARCHITECTURE.md).
+ * The static params for /tools/[slug], the sitemap, and — together with
+ * `externalTools` — the sidebar, command palette, and homepage grid are ALL
+ * derived from this array. Never hardcode a tool list anywhere else (see
+ * docs/ARCHITECTURE.md).
  */
 export const tools: Tool[] = [
   {
@@ -371,16 +383,31 @@ export const tools: Tool[] = [
     status: "stable",
     Component: ColorConverterTool,
   },
+];
+
+/**
+ * Menu entries that live on another site. They appear in the sidebar, command
+ * palette, and homepage grid alongside `tools`, but open `url` in a new tab
+ * and have no /tools/[slug] page, sitemap entry, or SEO metadata here.
+ */
+export const externalTools: ExternalTool[] = [
   {
     slug: "clipboard-sharing",
     name: "Clipboard Sharing",
-    description: "Share clipboard contents across devices. (Coming soon)",
+    description:
+      "Share text between your devices, end-to-end encrypted in the browser.",
     category: "Misc",
-    keywords: ["clipboard", "share", "sync", "paste"],
-    status: "placeholder",
-    Component: ClipboardSharing,
+    keywords: ["clipboard", "share", "sync", "paste", "devices", "encrypted"],
+    url: CLIPBOARD_SHARING_URL,
   },
 ];
+
+/** Every menu entry: on-site tools first, then external ones. */
+export const menuEntries: MenuEntry[] = [...tools, ...externalTools];
+
+export function isExternalTool(entry: MenuEntry): entry is ExternalTool {
+  return "url" in entry;
+}
 
 export const toolCategories: ToolCategory[] = [
   "JSON",
@@ -394,11 +421,14 @@ export function getTool(slug: string): Tool | undefined {
   return tools.find((tool) => tool.slug === slug);
 }
 
-export function toolsByCategory(): Array<{ category: ToolCategory; tools: Tool[] }> {
+export function toolsByCategory(): Array<{
+  category: ToolCategory;
+  tools: MenuEntry[];
+}> {
   return toolCategories
     .map((category) => ({
       category,
-      tools: tools.filter((tool) => tool.category === category),
+      tools: menuEntries.filter((tool) => tool.category === category),
     }))
     .filter((group) => group.tools.length > 0);
 }

@@ -34,7 +34,9 @@ Follow the process rules in `.claude/rules/`, in order:
 
 ## Architecture
 - Tools are registered in `src/tools/registry.ts`. Each tool lives in `src/tools/<slug>/`
-  with: `index.tsx` (UI), `logic.ts` (pure functions), `logic.test.ts`.
+  with: `index.tsx` (UI), `logic.ts` (pure functions), `logic.test.ts`. Menu entries
+  that live on another site (e.g. Clipboard Sharing) go in `externalTools` instead:
+  no route or page, they open their `url` in a new tab.
 - UI never contains conversion logic. Logic files import nothing from React/DOM.
 - Shared UI primitives in `src/components/`. shadcn/ui in `src/components/ui/`.
 - Framework-agnostic helpers live in `src/lib/` — `Result` (`result.ts`) and JSON
