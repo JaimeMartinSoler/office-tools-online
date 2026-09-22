@@ -1,11 +1,11 @@
 "use client";
 
-import { Info, Lock } from "lucide-react";
+import { ExternalLink, Info, Lock } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
-import { toolsByCategory } from "@/tools/registry";
+import { isExternalTool, toolsByCategory } from "@/tools/registry";
 
 export function Sidebar() {
   const pathname = usePathname();
@@ -32,12 +32,17 @@ export function Sidebar() {
               {group.category}
             </p>
             {group.tools.map((tool) => {
-              const href = `/tools/${tool.slug}`;
+              const external = isExternalTool(tool);
+              const href = external ? tool.url : `/tools/${tool.slug}`;
               const active = pathname === href || pathname === `${href}/`;
               return (
                 <Link
                   key={tool.slug}
                   href={href}
+                  {...(external && {
+                    target: "_blank",
+                    rel: "noopener noreferrer",
+                  })}
                   className={cn(
                     "flex items-center justify-between rounded-md px-2 py-1.5 text-sm transition-colors",
                     active
@@ -46,7 +51,13 @@ export function Sidebar() {
                   )}
                 >
                   <span>{tool.name}</span>
-                  {tool.status === "placeholder" && (
+                  {external && (
+                    <>
+                      <ExternalLink className="size-3.5 shrink-0" />
+                      <span className="sr-only">(opens in a new tab)</span>
+                    </>
+                  )}
+                  {!external && tool.status === "placeholder" && (
                     <span className="rounded bg-muted px-1.5 py-0.5 text-[10px] font-medium text-muted-foreground">
                       soon
                     </span>

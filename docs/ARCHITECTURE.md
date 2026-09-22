@@ -4,19 +4,28 @@
 - /                      → landing + tool grid (from registry)
 - /tools/[slug]          → renders registry[slug].Component
 - /privacy               → privacy/security statement
+- /about                 → repo link + sibling sites (mirrors clipboard-sharing-online's /about)
 
 ## Tool registry (src/tools/registry.ts)
-type Tool = {
+type MenuEntryBase = {
   slug: string; name: string; description: string;
   category: 'JSON' | 'Encoding' | 'Text' | 'Datetime' | 'Misc';
   keywords: string[];
-  status?: 'stable' | 'placeholder';
+}
+type Tool = MenuEntryBase & {           // on-site, rendered at /tools/<slug>
+  seoTitle?: string;
+  status?: 'stable' | 'placeholder';    // placeholder → "soon" badge
   Component: React.ComponentType;
 }
+type ExternalTool = MenuEntryBase & { url: string };  // another site, new tab
 export const tools: Tool[] = [ ... ]
+export const externalTools: ExternalTool[] = [ ... ]  // e.g. Clipboard Sharing
+export const menuEntries = [...tools, ...externalTools]
 
-Sidebar, search palette, homepage cards, and static params for /tools/[slug]
-are ALL derived from `tools`. Never hardcode a tool list twice.
+Static params for /tools/[slug], the sitemap, and SEO metadata derive from
+`tools`. Sidebar, search palette, and homepage cards derive from `menuEntries`
+(via `toolsByCategory()`); `isExternalTool()` tells them to open the entry's
+`url` in a new tab with an external-link icon. Never hardcode a tool list twice.
 
 ## Result type (src/lib/result.ts)
 type Result<T> = { ok: true; value: T } | { ok: false; error: string };

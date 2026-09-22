@@ -26,4 +26,5 @@ See docs/TOOLS.md.
 
 ## Out of scope (v1)
 - Accounts, persistence beyond localStorage prefs, any server feature.
-- Clipboard Sharing tool ships as a non-functional placeholder (see TOOLS.md).
+- Clipboard Sharing is not built here: its menu entry links out to the sibling
+  site https://clipboard-sharing-online.com (see TOOLS.md).

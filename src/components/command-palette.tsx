@@ -1,10 +1,11 @@
 "use client";
 
 import { Command } from "cmdk";
-import { Search } from "lucide-react";
+import { ExternalLink, Search } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
-import { tools } from "@/tools/registry";
+import { isExternalTool, menuEntries } from "@/tools/registry";
+import type { MenuEntry } from "@/tools/registry";
 
 export function CommandPalette() {
   const router = useRouter();
@@ -30,9 +31,13 @@ export function CommandPalette() {
   }, []);
 
   const go = useCallback(
-    (slug: string) => {
+    (entry: MenuEntry) => {
       setOpen(false);
-      router.push(`/tools/${slug}`);
+      if (isExternalTool(entry)) {
+        window.open(entry.url, "_blank", "noopener,noreferrer");
+      } else {
+        router.push(`/tools/${entry.slug}`);
+      }
     },
     [router],
   );
@@ -73,14 +78,22 @@ export function CommandPalette() {
               <Command.Empty className="py-6 text-center text-sm text-muted-foreground">
                 No tools found.
               </Command.Empty>
-              {tools.map((tool) => (
+              {menuEntries.map((tool) => (
                 <Command.Item
                   key={tool.slug}
                   value={`${tool.name} ${tool.keywords.join(" ")}`}
-                  onSelect={() => go(tool.slug)}
+                  onSelect={() => go(tool)}
                   className="flex cursor-pointer flex-col gap-0.5 rounded-md px-3 py-2 text-sm data-[selected=true]:bg-accent data-[selected=true]:text-accent-foreground"
                 >
-                  <span className="font-medium">{tool.name}</span>
+                  <span className="flex items-center gap-1.5 font-medium">
+                    {tool.name}
+                    {isExternalTool(tool) && (
+                      <>
+                        <ExternalLink className="size-3.5 shrink-0 text-muted-foreground" />
+                        <span className="sr-only">(opens in a new tab)</span>
+                      </>
+                    )}
+                  </span>
                   <span className="text-xs text-muted-foreground">
                     {tool.description}
                   </span>

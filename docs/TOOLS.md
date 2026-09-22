@@ -114,6 +114,8 @@ Each tool exposes pure functions in logic.ts. Errors are returned, not thrown.
   run times"), no dependency, fully client-side. Errors name the offending field
   (out-of-range, reversed range, zero step, names/macros used in Standard mode).
 
-## clipboard-sharing  [PLACEHOLDER — v1 does nothing]
-- Render the tool page + "Coming soon" empty state. No backend, no logic.
-- Keep it in the registry so the menu/route exist, but wire no functionality.
+## clipboard-sharing  [EXTERNAL — lives on the sibling site]
+- An `externalTools` entry in the registry, not an on-site tool: no route, no
+  logic, no sitemap entry.
+- The sidebar, command palette, and homepage grid open
+  https://clipboard-sharing-online.com in a new tab, with an external-link icon.

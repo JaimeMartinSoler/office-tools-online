@@ -7,3 +7,6 @@
  */
 export const SITE_URL = "https://office-dev-tools.com";
 export const SITE_NAME = "Office Dev Tools";
+
+/** Sibling site — linked from the tool menus (external entry) and /about. */
+export const CLIPBOARD_SHARING_URL = "https://clipboard-sharing-online.com";

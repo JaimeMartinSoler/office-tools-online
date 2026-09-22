@@ -1,6 +1,13 @@
 import type { Metadata } from "next";
 import type { LucideIcon } from "lucide-react";
-import { Lock, LaptopMinimalCheck, ServerOff, EyeOff, SearchCode } from "lucide-react";
+import {
+  Apple,
+  EyeOff,
+  LaptopMinimalCheck,
+  Lock,
+  SearchCode,
+  ServerOff,
+} from "lucide-react";
 
 export const metadata: Metadata = {
   title: "Privacy & Security",
@@ -39,6 +46,11 @@ export default function PrivacyPage() {
           We do not send the contents of your inputs to any analytics or logging
           service. The page sends a single request on load, to the visits counter,
           and nothing else.
+        </Section>
+        <Section icon={Apple} title="No cookies here">
+          Didn&apos;t you accept the cookies? That&apos;s because this site has
+          none at all. Your theme preference stays in this browser&apos;s local
+          storage, and the visits counter is cookieless by design.
         </Section>
         <Section icon={SearchCode} title="Verify it yourself">
           Open your browser&apos;s developer tools, go to the Network tab, and

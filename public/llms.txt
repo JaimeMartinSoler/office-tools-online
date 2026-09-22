@@ -27,3 +27,4 @@
 
 - [About](https://office-dev-tools.com/about/): About the project and a link to the open-source code on GitHub.
 - [Privacy & Security](https://office-dev-tools.com/privacy/): How the site guarantees that user data never leaves the browser.
+- [Clipboard Sharing Online](https://clipboard-sharing-online.com): Sibling site for sharing text between devices, end-to-end encrypted in the browser.

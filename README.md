@@ -23,7 +23,7 @@ A fast, **privacy-first** collection of online utilities for developers and offi
 | **String Case Converter** | camelCase, PascalCase, snake_case, kebab-case, CONSTANT_CASE, and more. |
 | **Unix Timestamp Converter** | Convert Unix timestamps to dates and back, in seconds or milliseconds. |
 | **Cron Expression Explainer** | Break a cron expression into per-field periodicity and matched values. |
-| **Clipboard Sharing** | Placeholder — coming soon. |
+| **Clipboard Sharing** | Links out to the sibling site [clipboard-sharing-online.com](https://clipboard-sharing-online.com): end-to-end encrypted text sharing between devices. |
 
 Each tool is **bidirectional** where it makes sense (a direction toggle, like
 Base64's Encode/Decode), with on-hover tooltips on every control and a

@@ -1,6 +1,7 @@
+import { ExternalLink } from "lucide-react";
 import Link from "next/link";
 import { SITE_NAME, SITE_URL } from "@/lib/site";
-import { toolsByCategory } from "@/tools/registry";
+import { isExternalTool, toolsByCategory } from "@/tools/registry";
 
 const structuredData = {
   "@context": "https://schema.org",
@@ -47,25 +48,38 @@ export default function HomePage() {
             {group.category}
           </h2>
           <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-            {group.tools.map((tool) => (
-              <Link
-                key={tool.slug}
-                href={`/tools/${tool.slug}`}
-                className="group flex flex-col gap-1 rounded-lg border bg-card p-4 transition-colors hover:border-foreground/20 hover:bg-accent"
-              >
-                <div className="flex items-center justify-between gap-2">
-                  <h3 className="font-medium">{tool.name}</h3>
-                  {tool.status === "placeholder" && (
-                    <span className="rounded bg-muted px-1.5 py-0.5 text-[10px] font-medium text-muted-foreground">
-                      soon
-                    </span>
-                  )}
-                </div>
-                <p className="text-sm text-muted-foreground">
-                  {tool.description}
-                </p>
-              </Link>
-            ))}
+            {group.tools.map((tool) => {
+              const external = isExternalTool(tool);
+              return (
+                <Link
+                  key={tool.slug}
+                  href={external ? tool.url : `/tools/${tool.slug}`}
+                  {...(external && {
+                    target: "_blank",
+                    rel: "noopener noreferrer",
+                  })}
+                  className="group flex flex-col gap-1 rounded-lg border bg-card p-4 transition-colors hover:border-foreground/20 hover:bg-accent"
+                >
+                  <div className="flex items-center justify-between gap-2">
+                    <h3 className="font-medium">{tool.name}</h3>
+                    {external && (
+                      <>
+                        <ExternalLink className="size-3.5 shrink-0 text-muted-foreground" />
+                        <span className="sr-only">(opens in a new tab)</span>
+                      </>
+                    )}
+                    {!external && tool.status === "placeholder" && (
+                      <span className="rounded bg-muted px-1.5 py-0.5 text-[10px] font-medium text-muted-foreground">
+                        soon
+                      </span>
+                    )}
+                  </div>
+                  <p className="text-sm text-muted-foreground">
+                    {tool.description}
+                  </p>
+                </Link>
+              );
+            })}
           </div>
         </section>
       ))}
