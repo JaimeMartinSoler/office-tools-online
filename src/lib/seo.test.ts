@@ -1,6 +1,7 @@
 import { readFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { describe, expect, it } from "vitest";
+import { categories } from "@/tools/categories";
 import { tools, type Tool } from "@/tools/registry";
 import {
   DEFAULT_TITLE,
@@ -10,6 +11,9 @@ import {
   TITLE_MAX,
   TITLE_SUFFIX,
   TITLE_TEMPLATE,
+  categoryDescription,
+  categoryDocumentTitle,
+  categoryMetadata,
   toolDescription,
   toolDocumentTitle,
   toolHeading,
@@ -175,5 +179,43 @@ describe("registry SEO invariants", () => {
         expect(own, `${tool.slug}: "${phrase}"`).not.toContain(phrase);
       }
     }
+  });
+});
+
+describe("category hub SEO invariants", () => {
+  it("every hub <title> fits within TITLE_MAX and is unique site-wide", () => {
+    for (const info of categories) {
+      expect(categoryDocumentTitle(info).length, info.slug).toBeLessThanOrEqual(TITLE_MAX);
+    }
+    const all = [...categories.map(categoryDocumentTitle), ...tools.map(toolDocumentTitle)];
+    expect(new Set(all).size).toBe(all.length);
+  });
+
+  it("every hub meta description fits a search snippet and is unique", () => {
+    for (const info of categories) {
+      const { length } = categoryDescription(info);
+      expect(length, info.slug).toBeLessThanOrEqual(DESCRIPTION_MAX);
+      expect(length, info.slug).toBeGreaterThanOrEqual(120);
+    }
+    const all = [...categories.map(categoryDescription), ...tools.map(toolDescription)];
+    expect(new Set(all).size).toBe(all.length);
+  });
+
+  it("no hub description repeats a phrase from the appended suffix", () => {
+    const suffixPhrases = trigrams(DESCRIPTION_SUFFIX);
+    for (const info of categories) {
+      const own = trigrams(info.description);
+      for (const phrase of suffixPhrases) {
+        expect(own, `${info.slug}: "${phrase}"`).not.toContain(phrase);
+      }
+    }
+  });
+
+  it("builds canonical metadata for /tools/<category>/", () => {
+    const info = categories[0]!;
+    const meta = categoryMetadata(info);
+    expect(meta.title).toEqual({ absolute: categoryDocumentTitle(info) });
+    expect(meta.alternates?.canonical).toBe(`/tools/${info.slug}/`);
+    expect(meta.openGraph?.images).toEqual([OG_IMAGE]);
   });
 });

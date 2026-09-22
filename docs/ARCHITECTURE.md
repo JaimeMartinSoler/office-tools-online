@@ -2,7 +2,10 @@
 
 ## Routing
 - /                      → landing + tool grid (from registry)
-- /tools/[slug]          → renders registry[slug].Component
+- /tools/[slug]          → renders registry[slug].Component, then its ToolArticle
+- /tools/<category>      → category hub (json, encoding, text, datetime, misc);
+                           shares the [slug] segment — page.tsx dispatches tool
+                           vs hub, and a test keeps the slugs from colliding
 - /privacy               → privacy/security statement
 - /about                 → repo link + sibling sites (mirrors clipboard-sharing-online's /about)
 
@@ -16,6 +19,7 @@ type Tool = MenuEntryBase & {           // on-site, rendered at /tools/<slug>
   seoTitle?: string;                    // search-phrased <title>; falls back to name
   h1?: string;                          // on-page heading; falls back to seoTitle, name
   status?: 'stable' | 'placeholder';    // placeholder → "soon" badge
+  content?: ToolContent;                // below-the-fold copy, from ./<slug>/content.ts
   Component: React.ComponentType<ToolHeaderProps>;  // { title, description }
 }
 type ExternalTool = MenuEntryBase & { url: string };  // another site, new tab
@@ -27,6 +31,35 @@ Static params for /tools/[slug], the sitemap, and SEO metadata derive from
 `tools`. Sidebar, search palette, and homepage cards derive from `menuEntries`
 (via `toolsByCategory()`); `isExternalTool()` tells them to open the entry's
 `url` in a new tab with an external-link icon. Never hardcode a tool list twice.
+
+The sidebar and command palette are client components, so they must NOT import
+the registry (that would bundle every tool's `content` prose into every page's
+JS). The server layout/header pass them plain `MenuLink` data instead
+(`menuLinkGroups()` / `menuLinks()`); they only `import type` from the registry.
+
+Category hub copy (title, description, intro) lives in `src/tools/categories.ts`,
+keyed by `ToolCategory`, so a new category without hub copy fails type-checking.
+
+## Tool page content (below the fold)
+Each tool has a co-located `src/tools/<slug>/content.ts` — pure data, typed
+`ToolContent` (src/lib/tool-content.ts): intro, 3–5 steps, worked examples,
+4–6 FAQ entries, and a "Related tools" paragraph with 2–3 inline links. Prose
+supports a tiny inline markup: `` `code` ``, `**control name**`, and
+`[label](/tools/slug/)`.
+
+- `ToolArticle` (src/components/tool-article.tsx) renders it as a sibling AFTER
+  the tool inside the scrolling `<main>`. `ToolLayout` is `min-h-full` (not
+  `h-full`), so the tool alone still fills the first screen and grows instead of
+  overflowing; the article's `mt-16` gap exceeds main's bottom padding, so
+  nothing of it shows above the fold.
+- JSON-LD (src/lib/structured-data.ts) builds `HowTo` and `FAQPage` nodes from
+  the SAME content, next to `WebApplication` and a Home → Category → Tool
+  `BreadcrumbList`. `tool-article.test.ts` renders the article and asserts the
+  FAQ/steps in the JSON-LD equal the rendered text.
+- `content-examples.test.ts` re-runs every example's input through the tool's
+  own logic and compares it with the published output — examples can't rot.
+- registry.test.ts requires content (≥ 1 example, ≥ 4 FAQ) on every `stable`
+  tool and checks every inline link points at a real page.
 
 Tool components can't import the registry (it imports them — circular), so
 /tools/[slug]/page.tsx passes each one its header: `title` = `toolHeading`
@@ -51,7 +84,11 @@ tool hardcodes them. Sidebar and command palette keep the short `name`.
   `Allow: /`. A static export can't see the request host, so the production
   `<project>.pages.dev` mirror (same `main` build) is still indexable — that
   has to be handled in Cloudflare, not in code.
-- Sitemap: no `lastModified` (there's no honest per-page date source).
+- Sitemap: static pages, the category hubs, then every tool. No
+  `lastModified` (there's no honest per-page date source).
+- Category hubs get the same treatment via `categoryDocumentTitle` /
+  `categoryDescription` / `categoryMetadata`, under the same length and
+  uniqueness tests.
 
 ## Result type (src/lib/result.ts)
 type Result<T> = { ok: true; value: T } | { ok: false; error: string };

@@ -95,16 +95,19 @@ src/
 │   ├── layout.tsx            # app shell (sidebar, header, theme)
 │   ├── page.tsx              # landing page (tool grid)
 │   ├── privacy/              # privacy & security statement
-│   └── tools/[slug]/         # one static page per tool
+│   └── tools/[slug]/         # one static page per tool + the category hubs
 ├── components/               # shared UI (editor, sidebar, command palette…)
 │   └── ui/                   # shadcn-style primitives
-├── lib/                      # framework-agnostic helpers (Result, JSON parse)
+├── lib/                      # framework-agnostic helpers (Result, JSON parse,
+│                             #   SEO, JSON-LD, tool-content types)
 └── tools/
     ├── registry.ts           # single source of truth for all tools
+    ├── categories.ts         # /tools/<category>/ hub copy
     └── <slug>/
         ├── index.tsx         # the tool's UI (client component)
         ├── logic.ts          # pure conversion functions (no React/DOM)
-        └── logic.test.ts     # co-located unit tests
+        ├── logic.test.ts     # co-located unit tests
+        └── content.ts        # below-the-fold copy: steps, examples, FAQ
 ```
 
 ## Adding a new tool
@@ -116,12 +119,19 @@ src/
    [`ConverterTool`](src/components/converter-tool.tsx) component. Either way,
    the component takes `{ title, description }` (`ToolHeaderProps`) and forwards
    them to `ToolLayout` / `ConverterTool` — never hardcode the heading.
-3. Register it in [`src/tools/registry.ts`](src/tools/registry.ts) with a
-   search-phrased `seoTitle` and a description; `pnpm test` checks the
-   composed `<title>` and meta description fit Google's limits.
+3. Write `content.ts` (`ToolContent`): a short intro, 3–5 steps, 2–4 worked
+   examples, 4–6 FAQ entries, and 2–3 related-tool links — all describing what
+   `logic.ts` really does. Add the examples to
+   [`content-examples.test.ts`](src/tools/content-examples.test.ts) so they're
+   checked against the logic.
+4. Register it in [`src/tools/registry.ts`](src/tools/registry.ts) with a
+   search-phrased `seoTitle`, a description, and its `content`; `pnpm test`
+   checks the composed `<title>` and meta description fit Google's limits and
+   that a `stable` tool has content.
 
-That's it — the sidebar, command palette (⌘/Ctrl-K), homepage grid, and the
-static route are all derived from the registry automatically.
+That's it — the sidebar, command palette (⌘/Ctrl-K), homepage grid, category
+hub, sitemap, FAQ/HowTo structured data, and the static route are all derived
+from the registry automatically.
 
 ## Contributing
 

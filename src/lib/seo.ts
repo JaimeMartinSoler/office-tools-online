@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import type { CategoryInfo } from "@/tools/categories";
 import type { Tool } from "@/tools/registry";
 import { SITE_NAME } from "./site";
 
@@ -66,7 +67,11 @@ export function toolTitle(tool: Tool): string {
  * since the keyword-rich part matters more than the brand in a truncated SERP.
  */
 export function toolDocumentTitle(tool: Tool): string {
-  const title = toolTitle(tool);
+  return brandedTitle(toolTitle(tool));
+}
+
+/** `title` plus the brand suffix when that still fits within `TITLE_MAX`. */
+function brandedTitle(title: string): string {
   const branded = `${title}${TITLE_SUFFIX}`;
   return branded.length <= TITLE_MAX ? branded : title;
 }
@@ -96,17 +101,55 @@ export function toolDescription(tool: Tool): string {
  * parent's `twitter` wholesale rather than merging into the layout's.
  */
 export function toolMetadata(tool: Tool): Metadata {
-  const title = toolTitle(tool);
-  const description = toolDescription(tool);
-  const url = `/tools/${tool.slug}/`;
+  return {
+    ...pageMetadata({
+      title: toolTitle(tool),
+      documentTitle: toolDocumentTitle(tool),
+      description: toolDescription(tool),
+      url: `/tools/${tool.slug}/`,
+    }),
+    keywords: tool.keywords,
+  };
+}
+
+/** The document <title> for a /tools/<category>/ hub page. */
+export function categoryDocumentTitle(info: CategoryInfo): string {
+  return brandedTitle(info.seoTitle);
+}
+
+/** Meta description for a category hub, with the same privacy suffix as tools. */
+export function categoryDescription(info: CategoryInfo): string {
+  return `${info.description}${DESCRIPTION_SUFFIX}`;
+}
+
+/** Full metadata for a /tools/<category>/ hub page. */
+export function categoryMetadata(info: CategoryInfo): Metadata {
+  return pageMetadata({
+    title: info.seoTitle,
+    documentTitle: categoryDocumentTitle(info),
+    description: categoryDescription(info),
+    url: `/tools/${info.slug}/`,
+  });
+}
+
+function pageMetadata({
+  title,
+  documentTitle,
+  description,
+  url,
+}: {
+  title: string;
+  documentTitle: string;
+  description: string;
+  url: string;
+}): Metadata {
   const socialTitle = `${title} — ${SITE_NAME}`;
 
   return {
     // `absolute` bypasses the root layout's `%s · Office Dev Tools` template:
-    // toolDocumentTitle already decided whether the suffix fits.
-    title: { absolute: toolDocumentTitle(tool) },
+    // brandedTitle already decided whether the suffix fits.
+    title: { absolute: documentTitle },
     description,
-    keywords: tool.keywords,
     alternates: { canonical: url },
     openGraph: {
       type: "website",

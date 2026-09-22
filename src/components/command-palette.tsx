@@ -4,10 +4,10 @@ import { Command } from "cmdk";
 import { ExternalLink, Search } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
-import { isExternalTool, menuEntries } from "@/tools/registry";
-import type { MenuEntry } from "@/tools/registry";
+import type { MenuLink } from "@/tools/registry";
 
-export function CommandPalette() {
+/** `entries` comes from the server (`menuLinks()`), not a registry import. */
+export function CommandPalette({ entries }: { entries: MenuLink[] }) {
   const router = useRouter();
   const [open, setOpen] = useState(false);
   // Detected client-side after mount to avoid an SSR/hydration mismatch
@@ -31,12 +31,12 @@ export function CommandPalette() {
   }, []);
 
   const go = useCallback(
-    (entry: MenuEntry) => {
+    (entry: MenuLink) => {
       setOpen(false);
-      if (isExternalTool(entry)) {
-        window.open(entry.url, "_blank", "noopener,noreferrer");
+      if (entry.external) {
+        window.open(entry.href, "_blank", "noopener,noreferrer");
       } else {
-        router.push(`/tools/${entry.slug}`);
+        router.push(entry.href);
       }
     },
     [router],
@@ -78,7 +78,7 @@ export function CommandPalette() {
               <Command.Empty className="py-6 text-center text-sm text-muted-foreground">
                 No tools found.
               </Command.Empty>
-              {menuEntries.map((tool) => (
+              {entries.map((tool) => (
                 <Command.Item
                   key={tool.slug}
                   value={`${tool.name} ${tool.keywords.join(" ")}`}
@@ -87,7 +87,7 @@ export function CommandPalette() {
                 >
                   <span className="flex items-center gap-1.5 font-medium">
                     {tool.name}
-                    {isExternalTool(tool) && (
+                    {tool.external && (
                       <>
                         <ExternalLink className="size-3.5 shrink-0 text-muted-foreground" />
                         <span className="sr-only">(opens in a new tab)</span>
