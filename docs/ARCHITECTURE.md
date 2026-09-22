@@ -28,6 +28,13 @@ type Result<T> = { ok: true; value: T } | { ok: false; error: string };
   bespoke tools render it directly.
 - Hint / Segmented `hint` — on-hover tooltips (Hint works on disabled controls).
 
+## Theme (src/app/globals.css)
+- shadcn-style HSL tokens, layered one lightness step apart: body/panels
+  (`--background`, `--card`) → header bar (`--secondary`) → header pills and
+  raised badges (`--muted`) → hover and selected states (`--accent`).
+- Shared with the sibling app clipboard-sharing-online; its
+  `docs/STYLE_MIGRATION.md` is the source of truth for cross-site style changes.
+
 ## Static export & privacy hardening
 - next.config: output:'export', images.unoptimized:true.
 - Set a strict CSP via hosting headers: default-src 'self'; connect-src 'self'

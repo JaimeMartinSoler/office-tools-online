@@ -159,7 +159,7 @@ export function Base64Tool() {
       </div>
 
       {fileNote && (
-        <div className="rounded-md border border-border bg-secondary px-3 py-2 text-sm text-muted-foreground">
+        <div className="rounded-md border border-border bg-muted/50 px-3 py-2 text-sm text-muted-foreground">
           {fileNote}
         </div>
       )}

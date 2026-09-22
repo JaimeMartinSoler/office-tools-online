@@ -97,7 +97,7 @@ export function JsonJsonSchema() {
           />
           <Hint text="Mark every property present in the sample as required in the inferred schema. Active in JSON → JSON Schema mode.">
             <Button
-              variant={requiredByDefault ? "secondary" : "outline"}
+              variant={requiredByDefault ? "selected" : "outline"}
               size="sm"
               disabled={!isInfer}
               onClick={() => setRequiredByDefault((v) => !v)}
@@ -107,7 +107,7 @@ export function JsonJsonSchema() {
           </Hint>
           <Hint text="Emit an enum of the observed values for arrays of primitives, instead of a generic item type. Active in JSON → JSON Schema mode.">
             <Button
-              variant={inferEnums ? "secondary" : "outline"}
+              variant={inferEnums ? "selected" : "outline"}
               size="sm"
               disabled={!isInfer}
               onClick={() => setInferEnums((v) => !v)}

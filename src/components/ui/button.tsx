@@ -10,6 +10,9 @@ const buttonVariants = cva(
         default: "bg-primary text-primary-foreground hover:bg-primary/90",
         secondary:
           "bg-secondary text-secondary-foreground hover:bg-secondary/80",
+        // Toggled-on state (segmented options, on/off toggles). Uses the hover
+        // shade so a selected control never reads lighter than a hovered one.
+        selected: "bg-accent text-accent-foreground hover:bg-accent/80",
         outline:
           "border border-input bg-background hover:bg-accent hover:text-accent-foreground",
         ghost: "hover:bg-accent hover:text-accent-foreground",
