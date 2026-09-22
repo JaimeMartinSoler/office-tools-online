@@ -13,7 +13,7 @@ export function Sidebar() {
 
   return (
     <aside className="hidden h-screen w-64 shrink-0 flex-col border-r bg-card md:flex">
-      <div className="flex h-14 shrink-0 items-center gap-2 border-b px-4">
+      <div className="flex h-14 shrink-0 items-center gap-2 border-b bg-secondary px-4">
         <Link href="/" className="flex items-center gap-2 font-semibold">
           <Image
             src="/logo.png"
@@ -41,7 +41,7 @@ export function Sidebar() {
                   className={cn(
                     "flex items-center justify-between rounded-md px-2 py-1.5 text-sm transition-colors",
                     active
-                      ? "bg-secondary font-medium text-secondary-foreground"
+                      ? "bg-accent font-medium text-accent-foreground"
                       : "text-muted-foreground hover:bg-accent hover:text-accent-foreground",
                   )}
                 >
@@ -70,7 +70,7 @@ export function Sidebar() {
               className={cn(
                 "flex items-center gap-2 rounded-md px-2 py-1.5 text-sm transition-colors",
                 active
-                  ? "bg-secondary font-medium text-secondary-foreground"
+                  ? "bg-accent font-medium text-accent-foreground"
                   : "text-muted-foreground hover:bg-accent hover:text-accent-foreground",
               )}
             >

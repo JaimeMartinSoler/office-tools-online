@@ -44,7 +44,7 @@ export function Segmented<T extends string | number>({
           const button = (
             <Button
               key={String(opt.value)}
-              variant={value === opt.value ? "secondary" : "ghost"}
+              variant={value === opt.value ? "selected" : "ghost"}
               size="sm"
               disabled={disabled}
               onClick={() => onChange(opt.value)}

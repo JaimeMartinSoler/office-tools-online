@@ -84,7 +84,7 @@ export function UuidUlidGeneratorTool() {
           }
         >
           <Button
-            variant={options.braces && !isUlid ? "secondary" : "outline"}
+            variant={options.braces && !isUlid ? "selected" : "outline"}
             size="sm"
             aria-pressed={options.braces && !isUlid}
             disabled={isUlid}

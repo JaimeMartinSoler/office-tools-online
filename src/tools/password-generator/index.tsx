@@ -105,7 +105,7 @@ export function PasswordGeneratorTool() {
         {CHAR_SETS.map((set) => (
           <Hint key={set} text={SET_HINTS[set]}>
             <Button
-              variant={options.sets[set] ? "secondary" : "outline"}
+              variant={options.sets[set] ? "selected" : "outline"}
               size="sm"
               aria-pressed={options.sets[set]}
               onClick={() => toggleSet(set)}
