@@ -52,6 +52,11 @@ supports a tiny inline markup: `` `code` ``, `**control name**`, and
   `h-full`), so the tool alone still fills the first screen and grows instead of
   overflowing; the article's `mt-16` gap exceeds main's bottom padding, so
   nothing of it shows above the fold.
+- Exception: tools whose UI has nothing that stretches (color, number base,
+  password, UUID/ULID) pass `fitContent` to `ToolLayout`. Stretching them only
+  left a blank gap on tall screens, so their article follows the tool directly
+  (64px below it) and can start above the fold there. The tool itself is
+  unchanged.
 - JSON-LD (src/lib/structured-data.ts) builds `HowTo` and `FAQPage` nodes from
   the SAME content, next to `WebApplication` and a Home → Category → Tool
   `BreadcrumbList`. `tool-article.test.ts` renders the article and asserts the

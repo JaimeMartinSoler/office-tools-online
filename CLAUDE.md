@@ -43,8 +43,10 @@ Follow the process rules in `.claude/rules/`, in order:
   the tool) and the FAQPage/HowTo JSON-LD — one source, never a second copy.
   Examples must be real `logic.ts` output: add each to
   `src/tools/content-examples.test.ts`. Write only what the logic does; no
-  filler. Nothing new goes above the tool: `ToolLayout` is `min-h-full` so the
-  tool fills the first screen and everything else starts below the fold.
+  filler. Nothing new goes above the tool: `ToolLayout` is `min-h-full` so a
+  tool with stretching (`flex-1`) panes fills the first screen and the article
+  starts below it. A tool with nothing that stretches passes `fitContent`, or
+  that stretch is just a blank gap before the article.
 - Client components (sidebar, command palette) never import the registry; the
   server passes them `MenuLink` data (`menuLinkGroups()` / `menuLinks()`), so
   tool content stays out of the client JS.

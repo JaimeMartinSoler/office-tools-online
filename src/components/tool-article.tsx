@@ -23,7 +23,7 @@ export function ToolArticle({
   return (
     <article
       data-tool-article
-      className="mt-16 max-w-3xl space-y-10 border-t pt-10 pb-4 text-sm leading-relaxed"
+      className="mx-auto mt-16 max-w-3xl space-y-10 border-t pt-10 pb-4 text-sm leading-relaxed"
     >
       <Section title="What this tool does">
         <p>

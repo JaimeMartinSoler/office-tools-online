@@ -59,6 +59,7 @@ export function UuidUlidGeneratorTool({ title, description }: ToolHeaderProps) {
     <ToolLayout
       title={title}
       description={description}
+      fitContent
     >
       <div className="flex flex-wrap items-center gap-2">
         <Segmented
