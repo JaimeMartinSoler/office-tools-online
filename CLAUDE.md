@@ -43,10 +43,20 @@ Follow the process rules in `.claude/rules/`, in order:
   the tool) and the FAQPage/HowTo JSON-LD — one source, never a second copy.
   Examples must be real `logic.ts` output: add each to
   `src/tools/content-examples.test.ts`. Write only what the logic does; no
-  filler. Nothing new goes above the tool: `ToolLayout` is `min-h-full` so a
-  tool with stretching (`flex-1`) panes fills the first screen and the article
-  starts below it. A tool with nothing that stretches passes `fitContent`, or
-  that stretch is just a blank gap before the article.
+  filler. Nothing new goes above the tool. `ToolLayout` sizes to the tool, and
+  the article follows right after it.
+- **Editor sizes.** Every `CodeEditor` takes a required `lines` prop, one of
+  the `SIZE_VERTICAL_*` constants in `src/components/code-editor/sizes.ts`
+  (XL 40, L 30, M 20, S 10, XS 1). The box holds exactly that many lines and
+  scrolls in both directions; lines never wrap. XS is a single-line field with
+  no gutters or scrollbars. A non-editor pane beside an editor (preview, result
+  table) sets `style={{ height: editorBoxHeight(lines) }}` so the row lines up.
+  Nothing stretches to fill the screen, so don't add `flex-1`/`vh` heights to
+  panes. On mobile, `autoHeight` inputs grow with their content up to `lines`.
+- **Invisible-effect feedback.** When a control's effect may not show (e.g.
+  Regenerate on a masked password), play `BUTTON_BEAT` on the control and
+  `FIELD_BEAT` on its target via `playAnimation` (`src/lib/motion.ts`, ported
+  from the sibling app; no-op under reduced motion).
 - Client components (sidebar, command palette) never import the registry; the
   server passes them `MenuLink` data (`menuLinkGroups()` / `menuLinks()`), so
   tool content stays out of the client JS.

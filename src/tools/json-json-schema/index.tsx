@@ -2,6 +2,7 @@
 
 import { RefreshCw } from "lucide-react";
 import { useCallback, useState } from "react";
+import { SIZE_VERTICAL_XL } from "@/components/code-editor/sizes";
 import { ConverterTool } from "@/components/converter-tool";
 import { Hint } from "@/components/hint";
 import { Segmented } from "@/components/segmented";
@@ -77,6 +78,7 @@ export function JsonJsonSchema({ title, description }: ToolHeaderProps) {
       description={description}
       sample={isInfer ? JSON_SAMPLE : SCHEMA_SAMPLE}
       convert={convert}
+      lines={SIZE_VERTICAL_XL}
       warn={warn}
       validatedMessage={
         isInfer ? "Looks good — valid JSON." : "Looks good — valid JSON Schema."

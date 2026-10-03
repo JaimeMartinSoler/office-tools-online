@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useState } from "react";
+import { SIZE_VERTICAL_XL } from "@/components/code-editor/sizes";
 import { ConverterTool } from "@/components/converter-tool";
 import { Segmented } from "@/components/segmented";
 import type { ToolHeaderProps } from "@/components/tool-layout";
@@ -159,6 +160,7 @@ export function JsonYamlXml({ title, description }: ToolHeaderProps) {
       description={description}
       sample={SAMPLES[from]}
       convert={convert}
+      lines={SIZE_VERTICAL_XL}
       warn={warn}
       validatedMessage={`Looks good — valid ${from.toUpperCase()}.`}
       inputLabel="Input"

@@ -3,6 +3,7 @@
 import { RefreshCw } from "lucide-react";
 import { useCallback, useEffect, useState } from "react";
 import { CodeEditor } from "@/components/code-editor";
+import { SIZE_VERTICAL_S } from "@/components/code-editor/sizes";
 import { CopyButton } from "@/components/copy-button";
 import { Hint } from "@/components/hint";
 import { Segmented } from "@/components/segmented";
@@ -56,11 +57,7 @@ export function UuidUlidGeneratorTool({ title, description }: ToolHeaderProps) {
   const text = ids.join("\n");
 
   return (
-    <ToolLayout
-      title={title}
-      description={description}
-      fitContent
-    >
+    <ToolLayout title={title} description={description}>
       <div className="flex flex-wrap items-center gap-2">
         <Segmented
           aria-label="Identifier type"
@@ -134,7 +131,7 @@ export function UuidUlidGeneratorTool({ title, description }: ToolHeaderProps) {
       )}
 
       <ToolPane label="Identifiers" actions={<CopyButton value={text} />}>
-        <CodeEditor value={text} readOnly minHeight="40vh" />
+        <CodeEditor value={text} readOnly lines={SIZE_VERTICAL_S} />
       </ToolPane>
     </ToolLayout>
   );

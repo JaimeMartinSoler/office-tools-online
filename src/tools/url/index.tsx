@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useState } from "react";
 import { CodeEditor } from "@/components/code-editor";
+import { editorBoxHeight, SIZE_VERTICAL_M } from "@/components/code-editor/sizes";
 import { CopyButton } from "@/components/copy-button";
 import { Segmented } from "@/components/segmented";
 import { StatusBanner } from "@/components/status-banner";
@@ -187,6 +188,7 @@ export function UrlTool({ title, description }: ToolHeaderProps) {
                   ? "Paste percent-encoded text…"
                   : "Type or paste text…"
             }
+            lines={SIZE_VERTICAL_M}
             autoHeight
           />
         </ToolPane>
@@ -199,7 +201,7 @@ export function UrlTool({ title, description }: ToolHeaderProps) {
             label={mode === "decode" ? "Decoded" : "Encoded"}
             actions={<CopyButton value={output} />}
           >
-            <CodeEditor value={output} readOnly />
+            <CodeEditor value={output} readOnly lines={SIZE_VERTICAL_M} />
           </ToolPane>
         )}
       </ToolPanes>
@@ -213,16 +215,25 @@ function paramsAsText(parsed: ParsedQuery | null): string {
   return parsed.params.map((p) => `${p.key}\t${p.value}`).join("\n");
 }
 
+/** Same height as the input editor beside it. */
+const RESULTS_STYLE = { height: editorBoxHeight(SIZE_VERTICAL_M) };
+
 function QueryResults({ parsed }: { parsed: ParsedQuery | null }) {
   if (!parsed) {
     return (
-      <div className="flex min-h-[60vh] items-center justify-center rounded-md border bg-card p-4 text-sm text-muted-foreground">
+      <div
+        className="flex items-center justify-center rounded-md border bg-card p-4 text-sm text-muted-foreground"
+        style={RESULTS_STYLE}
+      >
         Parsed parameters will appear here.
       </div>
     );
   }
   return (
-    <div className="flex min-h-[60vh] flex-col gap-4 overflow-auto rounded-md border bg-card p-4">
+    <div
+      className="flex flex-col gap-4 overflow-auto rounded-md border bg-card p-4"
+      style={RESULTS_STYLE}
+    >
       {parsed.url && (
         <dl className="grid grid-cols-[auto_1fr] gap-x-3 gap-y-1 text-sm">
           {(

@@ -3,6 +3,7 @@
 import { Upload } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { CodeEditor } from "@/components/code-editor";
+import { SIZE_VERTICAL_M } from "@/components/code-editor/sizes";
 import { CopyButton } from "@/components/copy-button";
 import { DisabledHint } from "@/components/disabled-hint";
 import { Segmented } from "@/components/segmented";
@@ -194,6 +195,7 @@ export function Base64Tool({ title, description }: ToolHeaderProps) {
             placeholder={
               mode === "encode" ? "Type or paste text…" : "Paste Base64…"
             }
+            lines={SIZE_VERTICAL_M}
             autoHeight
           />
         </ToolPane>
@@ -201,7 +203,7 @@ export function Base64Tool({ title, description }: ToolHeaderProps) {
           label={mode === "encode" ? "Base64" : "Text"}
           actions={<CopyButton value={output} />}
         >
-          <CodeEditor value={output} readOnly />
+          <CodeEditor value={output} readOnly lines={SIZE_VERTICAL_M} />
         </ToolPane>
       </ToolPanes>
     </ToolLayout>

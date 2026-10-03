@@ -2,6 +2,7 @@
 
 import { useMemo, useState } from "react";
 import { CodeEditor } from "@/components/code-editor";
+import { SIZE_VERTICAL_L } from "@/components/code-editor/sizes";
 import { Segmented } from "@/components/segmented";
 import { StatusBanner } from "@/components/status-banner";
 import {
@@ -129,6 +130,7 @@ export function TextDiffTool({ title, description }: ToolHeaderProps) {
             onChange={setOriginal}
             language={mode === "json" ? "json" : "text"}
             placeholder="Paste the original…"
+            lines={SIZE_VERTICAL_L}
             autoHeight
           />
         </ToolPane>
@@ -138,6 +140,7 @@ export function TextDiffTool({ title, description }: ToolHeaderProps) {
             onChange={setChanged}
             language={mode === "json" ? "json" : "text"}
             placeholder="Paste the changed version…"
+            lines={SIZE_VERTICAL_L}
             autoHeight
           />
         </ToolPane>

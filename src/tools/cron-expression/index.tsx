@@ -2,6 +2,7 @@
 
 import { useMemo, useState } from "react";
 import { CodeEditor } from "@/components/code-editor";
+import { SIZE_VERTICAL_XS } from "@/components/code-editor/sizes";
 import { CopyButton } from "@/components/copy-button";
 import { Segmented } from "@/components/segmented";
 import { StatusBanner } from "@/components/status-banner";
@@ -99,6 +100,7 @@ export function CronExpressionTool({ title, description }: ToolHeaderProps) {
                 ? "e.g. 0 9 * * MON-FRI or @daily"
                 : "e.g. */15 9-17 * * 1-5"
             }
+            lines={SIZE_VERTICAL_XS}
             autoHeight
           />
         </ToolPane>
@@ -106,9 +108,9 @@ export function CronExpressionTool({ title, description }: ToolHeaderProps) {
           label="Schedule"
           actions={<CopyButton value={asText(fields)} />}
         >
-          <div className="min-h-[60vh] overflow-auto rounded-md border bg-card p-4">
+          <div className="overflow-auto rounded-md border bg-card p-4">
             {fields.length === 0 ? (
-              <div className="flex h-full items-center justify-center text-center text-sm text-muted-foreground">
+              <div className="py-2 text-center text-sm text-muted-foreground">
                 {result && !result.ok
                   ? "Fix the expression above to see the schedule."
                   : "The breakdown appears here."}
