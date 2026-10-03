@@ -4,6 +4,7 @@ import Link from "next/link";
 import { ClientSideBadge, HEADER_PILL_CLASS } from "@/components/client-side-badge";
 import { CommandPalette } from "@/components/command-palette";
 import { ThemeToggle } from "@/components/theme-toggle";
+import { menuLinks } from "@/tools/registry";
 
 export function Header() {
   return (
@@ -34,7 +35,7 @@ export function Header() {
             <span className="hidden whitespace-nowrap md:inline">About</span>
           </Link>
         </div>
-        <CommandPalette />
+        <CommandPalette entries={menuLinks()} />
         <ThemeToggle />
       </div>
     </header>

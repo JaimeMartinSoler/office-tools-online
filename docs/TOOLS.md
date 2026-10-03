@@ -10,6 +10,12 @@ Each tool exposes pure functions in logic.ts. Errors are returned, not thrown.
   disabled/grayed in the modes where they don't apply, rather than hidden.
 - "Load sample" is mode-aware: it loads a beautified sample matching the currently
   selected direction/format.
+- Below the fold, every tool page carries reference copy from its
+  `content.ts`: what it does, how to use it, worked examples (verified against
+  `logic.ts` by `content-examples.test.ts`), an FAQ, and related-tool links. See
+  docs/ARCHITECTURE.md → "Tool page content". Describe only what `logic.ts`
+  actually does; when behaviour changes, the examples test tells you which copy
+  to update.
 
 ## json-yaml-xml
 - Bidirectional conversion between JSON, YAML, and XML (absorbs the former

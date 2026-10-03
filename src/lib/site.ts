@@ -30,3 +30,10 @@ export const SITE_INDEXABLE = isIndexableDeploy(process.env.GITHUB_REF_NAME);
 
 /** Sibling site — linked from the tool menus (external entry) and /about. */
 export const CLIPBOARD_SHARING_URL = "https://clipboard-sharing-online.com";
+
+/**
+ * The live `connect-src` directive from public/_headers, quoted verbatim by the
+ * homepage's CSP claim. site.test.ts fails if the two ever disagree, so the
+ * page can't overstate how locked-down the policy is.
+ */
+export const CSP_CONNECT_SRC = "'self' https://cloudflareinsights.com";

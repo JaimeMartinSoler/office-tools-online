@@ -1,5 +1,6 @@
 import type { MetadataRoute } from "next";
 import { SITE_URL } from "@/lib/site";
+import { categories } from "@/tools/categories";
 import { tools } from "@/tools/registry";
 
 // Required for metadata routes under `output: "export"` — emits a static file
@@ -14,9 +15,10 @@ export const dynamic = "force-static";
 // Crawlers fall back to their own recrawl heuristics, which is fine here.
 export default function sitemap(): MetadataRoute.Sitemap {
   const staticPaths = ["/", "/privacy/", "/about/"];
+  const categoryPaths = categories.map((info) => `/tools/${info.slug}/`);
   const toolPaths = tools.map((tool) => `/tools/${tool.slug}/`);
 
-  return [...staticPaths, ...toolPaths].map((path) => ({
+  return [...staticPaths, ...categoryPaths, ...toolPaths].map((path) => ({
     url: `${SITE_URL}${path}`,
   }));
 }

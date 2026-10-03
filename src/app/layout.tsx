@@ -5,6 +5,7 @@ import { ThemeProvider } from "@/components/theme-provider";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { DEFAULT_TITLE, OG_IMAGE, TITLE_TEMPLATE } from "@/lib/seo";
 import { SITE_INDEXABLE, SITE_NAME, SITE_URL } from "@/lib/site";
+import { menuLinkGroups } from "@/tools/registry";
 import "./globals.css";
 
 const DEFAULT_DESCRIPTION =
@@ -88,7 +89,7 @@ export default function RootLayout({
         <ThemeProvider attribute="class" defaultTheme="light" enableSystem>
           <TooltipProvider delayDuration={300}>
             <div className="flex h-screen overflow-hidden">
-              <Sidebar />
+              <Sidebar groups={menuLinkGroups()} />
               <div className="flex min-w-0 flex-1 flex-col">
                 <Header />
                 <main className="flex-1 overflow-y-auto p-4 md:p-6">

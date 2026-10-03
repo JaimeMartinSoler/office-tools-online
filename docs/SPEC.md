@@ -23,6 +23,9 @@ See docs/TOOLS.md.
 - Controls carry on-hover tooltips; mode-dependent controls are disabled/grayed
   rather than hidden.
 - A visible "🔒 100% client-side — your data never leaves this browser" badge + /privacy page.
+- The tool is the only thing above the fold. Reference content (steps, examples,
+  FAQ, related tools) sits below it, and /tools/<category>/ hub pages group the
+  tools for browsing and search.
 
 ## Out of scope (v1)
 - Accounts, persistence beyond localStorage prefs, any server feature.

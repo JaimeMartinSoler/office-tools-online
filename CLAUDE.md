@@ -34,10 +34,22 @@ Follow the process rules in `.claude/rules/`, in order:
 
 ## Architecture
 - Tools are registered in `src/tools/registry.ts`. Each tool lives in `src/tools/<slug>/`
-  with: `index.tsx` (UI), `logic.ts` (pure functions), `logic.test.ts`. Menu entries
+  with: `index.tsx` (UI), `logic.ts` (pure functions), `logic.test.ts`, and
+  `content.ts` (below-the-fold copy, pure data). Menu entries
   that live on another site (e.g. Clipboard Sharing) go in `externalTools` instead:
   no route or page, they open their `url` in a new tab.
 - UI never contains conversion logic. Logic files import nothing from React/DOM.
+- **Tool page content.** `content.ts` feeds both `ToolArticle` (rendered below
+  the tool) and the FAQPage/HowTo JSON-LD — one source, never a second copy.
+  Examples must be real `logic.ts` output: add each to
+  `src/tools/content-examples.test.ts`. Write only what the logic does; no
+  filler. Nothing new goes above the tool: `ToolLayout` is `min-h-full` so a
+  tool with stretching (`flex-1`) panes fills the first screen and the article
+  starts below it. A tool with nothing that stretches passes `fitContent`, or
+  that stretch is just a blank gap before the article.
+- Client components (sidebar, command palette) never import the registry; the
+  server passes them `MenuLink` data (`menuLinkGroups()` / `menuLinks()`), so
+  tool content stays out of the client JS.
 - Shared UI primitives in `src/components/`. shadcn/ui in `src/components/ui/`.
 - Framework-agnostic helpers live in `src/lib/` — `Result` (`result.ts`) and JSON
   parsing with line/column errors (`json.ts`). Reuse these instead of re-deriving.

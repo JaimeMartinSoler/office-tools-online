@@ -55,6 +55,7 @@ export function ColorConverterTool({ title, description }: ToolHeaderProps) {
     <ToolLayout
       title={title}
       description={description}
+      fitContent
     >
       <div className="flex flex-wrap items-center gap-2">
         <input
