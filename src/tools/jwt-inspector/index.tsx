@@ -3,6 +3,7 @@
 import { CheckCircle2, ShieldAlert, ShieldX } from "lucide-react";
 import { useEffect, useMemo, useState, type ReactNode } from "react";
 import { CodeEditor } from "@/components/code-editor";
+import { editorBoxHeight, SIZE_VERTICAL_S } from "@/components/code-editor/sizes";
 import { CopyButton } from "@/components/copy-button";
 import { StatusBanner } from "@/components/status-banner";
 import {
@@ -119,6 +120,7 @@ export function JwtInspectorTool({ title, description }: ToolHeaderProps) {
             value={token}
             onChange={setToken}
             placeholder="Paste a JWT (header.payload.signature)…"
+            lines={SIZE_VERTICAL_S}
             autoHeight
           />
         </ToolPane>
@@ -126,7 +128,12 @@ export function JwtInspectorTool({ title, description }: ToolHeaderProps) {
           label="Payload"
           actions={<CopyButton value={ok?.payload ?? ""} />}
         >
-          <CodeEditor value={ok?.payload ?? ""} language="json" readOnly />
+          <CodeEditor
+            value={ok?.payload ?? ""}
+            language="json"
+            readOnly
+            lines={SIZE_VERTICAL_S}
+          />
         </ToolPane>
       </ToolPanes>
 
@@ -139,12 +146,15 @@ export function JwtInspectorTool({ title, description }: ToolHeaderProps) {
             value={ok?.header ?? ""}
             language="json"
             readOnly
-            minHeight="20vh"
+            lines={SIZE_VERTICAL_S}
           />
         </ToolPane>
 
         <ToolPane label="Claims">
-          <div className="min-h-[20vh] overflow-auto rounded-md border bg-card p-1">
+          <div
+            className="overflow-auto rounded-md border bg-card p-1"
+            style={{ height: editorBoxHeight(SIZE_VERTICAL_S) }}
+          >
             {claims.length === 0 ? (
               <div className="flex h-full items-center justify-center p-4 text-center text-sm text-muted-foreground">
                 Decoded claims appear here.

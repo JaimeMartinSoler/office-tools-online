@@ -1,7 +1,7 @@
 "use client";
 
 import { json } from "@codemirror/lang-json";
-import CodeMirror, { EditorView } from "@uiw/react-codemirror";
+import CodeMirror from "@uiw/react-codemirror";
 import { useTheme } from "next-themes";
 
 export interface CodeEditorInnerProps {
@@ -10,7 +10,8 @@ export interface CodeEditorInnerProps {
   language?: "json" | "text";
   readOnly?: boolean;
   placeholder?: string;
-  minHeight?: string;
+  /** Drop the line-number and fold gutters (set by `CodeEditor` for 1-line boxes). */
+  singleLine?: boolean;
 }
 
 /**
@@ -24,12 +25,13 @@ export default function CodeEditorInner({
   language = "text",
   readOnly = false,
   placeholder,
-  minHeight = "60vh",
+  singleLine = false,
 }: CodeEditorInnerProps) {
   const { resolvedTheme } = useTheme();
 
-  const extensions = [EditorView.lineWrapping];
-  if (language === "json") extensions.push(json());
+  // No EditorView.lineWrapping: long lines scroll horizontally instead of
+  // wrapping, so the box always shows its full `lines` count of real lines.
+  const extensions = language === "json" ? [json()] : [];
 
   return (
     <CodeMirror
@@ -40,12 +42,13 @@ export default function CodeEditorInner({
       theme={resolvedTheme === "dark" ? "dark" : "light"}
       extensions={extensions}
       basicSetup={{
-        lineNumbers: true,
-        foldGutter: true,
-        highlightActiveLine: !readOnly,
-        highlightActiveLineGutter: !readOnly,
+        lineNumbers: !singleLine,
+        foldGutter: !singleLine,
+        highlightActiveLine: !readOnly && !singleLine,
+        highlightActiveLineGutter: !readOnly && !singleLine,
       }}
-      style={{ fontSize: "0.875rem", minHeight }}
+      // Keep in step with `editorBoxHeight` (sizes.ts), which assumes this size.
+      style={{ fontSize: "0.875rem" }}
     />
   );
 }

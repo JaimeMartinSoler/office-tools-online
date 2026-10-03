@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import type { ReactNode } from "react";
 import { CodeEditor } from "@/components/code-editor";
+import { SIZE_VERTICAL_M } from "@/components/code-editor/sizes";
 import { CopyButton } from "@/components/copy-button";
 import { Hint } from "@/components/hint";
 import { Segmented } from "@/components/segmented";
@@ -411,7 +412,7 @@ export function HashGeneratorTool({ title, description }: ToolHeaderProps) {
             value={options.input}
             onChange={(value) => update({ input: value })}
             placeholder="Type or paste text…"
-            minHeight="30vh"
+            lines={SIZE_VERTICAL_M}
             autoHeight
           />
         </ToolPane>
@@ -419,7 +420,7 @@ export function HashGeneratorTool({ title, description }: ToolHeaderProps) {
           label={meta.isKdf ? "Derived key" : "Hash"}
           actions={<CopyButton value={output} />}
         >
-          <CodeEditor value={output} readOnly minHeight="30vh" />
+          <CodeEditor value={output} readOnly lines={SIZE_VERTICAL_M} />
         </ToolPane>
       </ToolPanes>
     </ToolLayout>

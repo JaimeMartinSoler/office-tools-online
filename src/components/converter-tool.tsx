@@ -26,6 +26,7 @@ export function ConverterTool({
   description,
   sample,
   convert,
+  lines,
   inputLabel = "Input",
   outputLabel = "Output",
   inputLanguage = "text",
@@ -43,6 +44,11 @@ export function ConverterTool({
   description: string;
   sample: string;
   convert: (input: string) => Result<string>;
+  /**
+   * Height of both panes in lines (a `SIZE_VERTICAL_*` constant). A custom
+   * `renderOutput` sizes itself, e.g. with `editorBoxHeight(lines)`.
+   */
+  lines: number;
   inputLabel?: string;
   outputLabel?: string;
   inputLanguage?: Language;
@@ -130,6 +136,7 @@ export function ConverterTool({
             onChange={setInput}
             language={inputLanguage}
             placeholder={inputPlaceholder}
+            lines={lines}
             autoHeight
           />
         </ToolPane>
@@ -141,7 +148,12 @@ export function ConverterTool({
           {renderOutput ? (
             renderOutput(output)
           ) : (
-            <CodeEditor value={output} language={outputLanguage} readOnly />
+            <CodeEditor
+              value={output}
+              language={outputLanguage}
+              readOnly
+              lines={lines}
+            />
           )}
         </ToolPane>
       </ToolPanes>

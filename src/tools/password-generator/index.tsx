@@ -1,9 +1,10 @@
 "use client";
 
 import { Eye, EyeOff, RefreshCw } from "lucide-react";
-import { useCallback, useEffect, useMemo, useState } from "react";
-import type { ReactNode } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import type { MouseEvent, ReactNode } from "react";
 import { CodeEditor } from "@/components/code-editor";
+import { SIZE_VERTICAL_XS } from "@/components/code-editor/sizes";
 import { CopyButton } from "@/components/copy-button";
 import { Hint } from "@/components/hint";
 import { Segmented } from "@/components/segmented";
@@ -15,6 +16,7 @@ import {
 } from "@/components/tool-layout";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { BUTTON_BEAT, FIELD_BEAT, playAnimation } from "@/lib/motion";
 import { cn } from "@/lib/utils";
 import {
   CHAR_SETS,
@@ -61,6 +63,7 @@ export function PasswordGeneratorTool({ title, description }: ToolHeaderProps) {
   // Bumped to force a fresh password without changing options.
   const [nonce, setNonce] = useState(0);
   const [hidden, setHidden] = useState(true);
+  const passwordRef = useRef<HTMLDivElement>(null);
 
   const displayPassword = hidden ? "•".repeat(password.length) : password;
 
@@ -100,12 +103,16 @@ export function PasswordGeneratorTool({ title, description }: ToolHeaderProps) {
     return () => clearTimeout(handle);
   }, [options, nonce]);
 
+  // A fresh password can look identical to the old one (always while masked),
+  // so the button and the field "beat" to show the press did something.
+  const regenerate = useCallback((e: MouseEvent<HTMLButtonElement>) => {
+    playAnimation(e.currentTarget, ...BUTTON_BEAT);
+    playAnimation(passwordRef.current, ...FIELD_BEAT);
+    setNonce((n) => n + 1);
+  }, []);
+
   return (
-    <ToolLayout
-      title={title}
-      description={description}
-      fitContent
-    >
+    <ToolLayout title={title} description={description}>
       <div className="flex flex-wrap items-center gap-2">
         {CHAR_SETS.map((set) => (
           <Hint key={set} text={SET_HINTS[set]}>
@@ -139,7 +146,7 @@ export function PasswordGeneratorTool({ title, description }: ToolHeaderProps) {
         />
 
         <div className="ml-auto flex items-center gap-2">
-          <Button size="sm" onClick={() => setNonce((n) => n + 1)}>
+          <Button size="sm" onClick={regenerate}>
             <RefreshCw />
             Regenerate
           </Button>
@@ -202,7 +209,13 @@ export function PasswordGeneratorTool({ title, description }: ToolHeaderProps) {
       )}
 
       <ToolPane label="Password" actions={<CopyButton value={password} />}>
-        <CodeEditor value={displayPassword} readOnly minHeight="20vh" />
+        <CodeEditor
+          ref={passwordRef}
+          value={displayPassword}
+          readOnly
+          lines={SIZE_VERTICAL_XS}
+          className="[&_.cm-line]:text-center"
+        />
         <div className="mt-2 flex gap-1" aria-hidden>
           {[0, 1, 2, 3].map((i) => (
             <div

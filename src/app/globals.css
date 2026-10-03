@@ -96,16 +96,39 @@
 }
 
 /*
- * Mobile: input editors flagged with `cm-auto-input` drop their tall fixed
- * minimum height and grow with their content (capped, with internal scroll), so
- * a one-line input no longer pushes the output pane far below the fold. Scoped
- * to small screens so the desktop two-pane layout keeps its fixed-height boxes.
+ * `CodeEditor` boxes are a fixed number of lines tall: the wrapper takes
+ * --cm-height (set from `editorBoxHeight`, sizes.ts) and CodeMirror fills it,
+ * scrolling internally once the content outgrows it.
+ */
+.cm-sized {
+  height: var(--cm-height);
+}
+.cm-sized > div,
+.cm-sized .cm-editor {
+  height: 100%;
+}
+
+/* Single-line boxes behave like a text input: no scrollbars eating the line. */
+.cm-single-line .cm-scroller {
+  scrollbar-width: none;
+}
+.cm-single-line .cm-scroller::-webkit-scrollbar {
+  display: none;
+}
+
+/*
+ * Mobile: input editors flagged with `cm-auto-input` grow with their content
+ * up to their usual size instead of holding it from the start, so a one-line
+ * input no longer pushes the output pane far below the fold. Scoped to small
+ * screens so the desktop two-pane layout keeps its fixed-height boxes.
  */
 @media (max-width: 1023px) {
+  .cm-auto-input,
   .cm-auto-input > div {
-    min-height: 0 !important;
+    height: auto;
   }
   .cm-auto-input .cm-editor {
-    max-height: 50vh;
+    height: auto;
+    max-height: calc(var(--cm-height) - 2px);
   }
 }

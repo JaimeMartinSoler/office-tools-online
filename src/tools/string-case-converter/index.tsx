@@ -2,6 +2,7 @@
 
 import { useMemo, useState } from "react";
 import { CodeEditor } from "@/components/code-editor";
+import { SIZE_VERTICAL_M } from "@/components/code-editor/sizes";
 import { CopyButton } from "@/components/copy-button";
 import { Segmented } from "@/components/segmented";
 import {
@@ -58,6 +59,7 @@ export function StringCaseConverter({ title, description }: ToolHeaderProps) {
             value={input}
             onChange={setInput}
             placeholder="Type or paste text…"
+            lines={SIZE_VERTICAL_M}
             autoHeight
           />
         </ToolPane>
