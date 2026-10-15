@@ -1,5 +1,4 @@
 import type { ReactNode } from "react";
-import { cn } from "@/lib/utils";
 
 /**
  * The on-page heading + blurb every tool component receives from
@@ -12,38 +11,25 @@ export interface ToolHeaderProps {
   description: string;
 }
 
-/** Standard header + content frame shared by every tool page. */
+/**
+ * Standard header + content frame shared by every tool page. It sizes to its
+ * content: every pane has a fixed height (`CodeEditor`'s `lines`, or
+ * `editorBoxHeight` for non-editor panes), so nothing stretches to fill the
+ * screen and the below-the-fold `ToolArticle` follows right after the tool.
+ */
 export function ToolLayout({
   title,
   description,
-  fitContent = false,
   children,
 }: {
   title: string;
   description: string;
-  /**
-   * Size the tool to its content instead of stretching it to the first screen.
-   * For tools with nothing that grows (no `flex-1` editor panes): stretching
-   * them only adds blank space between the tool and the `ToolArticle` below.
-   */
-  fitContent?: boolean;
   children: ReactNode;
 }) {
   return (
-    // `min-h-full` (not `h-full`): the tool still fills the first screen of the
-    // scrolling <main> exactly, so its `flex-1` panes stretch, but grows with
-    // its content instead of spilling out of a fixed-height box — so the
-    // below-the-fold `ToolArticle` sibling on /tools/[slug] starts after the
-    // tool rather than overlapping it. `fitContent` tools skip it.
     // pb-4 adds a little breathing room below the bottom pane on mobile, where
-    // the panes stack and the content scrolls; dropped at lg where the layout is
-    // fixed-height two columns and the main padding already provides the gap.
-    <div
-      className={cn(
-        "flex flex-col gap-4 pb-4 lg:pb-0",
-        !fitContent && "min-h-full",
-      )}
-    >
+    // the panes stack; dropped at lg where the main padding provides the gap.
+    <div className="flex flex-col gap-4 pb-4 lg:pb-0">
       <header className="space-y-1">
         <h1 className="text-2xl font-semibold tracking-tight">{title}</h1>
         <p className="text-sm text-muted-foreground">{description}</p>
@@ -56,7 +42,7 @@ export function ToolLayout({
 /** Two-column input/output pane wrapper (stacks on small screens). */
 export function ToolPanes({ children }: { children: ReactNode }) {
   return (
-    <div className="grid flex-1 gap-4 lg:grid-cols-2">{children}</div>
+    <div className="grid gap-4 lg:grid-cols-2">{children}</div>
   );
 }
 

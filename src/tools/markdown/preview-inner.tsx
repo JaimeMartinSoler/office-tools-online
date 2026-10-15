@@ -1,6 +1,7 @@
 "use client";
 
 import DOMPurify from "dompurify";
+import { editorBoxHeight, SIZE_VERTICAL_XL } from "@/components/code-editor/sizes";
 import { markdownToHtml } from "./logic";
 
 export interface MarkdownPreviewInnerProps {
@@ -20,7 +21,9 @@ export default function MarkdownPreviewInner({
 
   return (
     <div
-      className="prose prose-sm max-w-none min-h-[60vh] overflow-auto rounded-md border bg-card p-4 dark:prose-invert"
+      className="prose prose-sm max-w-none overflow-auto rounded-md border bg-card p-4 dark:prose-invert"
+      // Same height as the Markdown/HTML editor beside it.
+      style={{ height: editorBoxHeight(SIZE_VERTICAL_XL) }}
       // Sanitised above; external images/links won't load under the site CSP.
       dangerouslySetInnerHTML={{ __html: html }}
     />

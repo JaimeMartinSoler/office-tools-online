@@ -4,10 +4,9 @@ import { parseInline, type InlineText, type ToolContent } from "@/lib/tool-conte
 
 /**
  * Below-the-fold reference copy for a tool page, rendered as a sibling AFTER
- * the tool inside the scrolling <main>. `ToolLayout` is `min-h-full`, so the
- * tool alone still fills the first screen; the `mt-16` gap is larger than
- * main's bottom padding, so not even this article's top rule peeks above the
- * fold.
+ * the tool inside the scrolling <main>. `ToolLayout` sizes to the tool's
+ * fixed-height panes, so the article follows right after it, set apart by the
+ * `mt-16` gap.
  *
  * The same `content` also feeds the FAQPage/HowTo JSON-LD
  * (src/lib/structured-data.ts); tool-article.test.ts keeps them in lockstep.

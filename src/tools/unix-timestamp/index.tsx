@@ -3,6 +3,7 @@
 import { Clock } from "lucide-react";
 import { useMemo, useState } from "react";
 import { CodeEditor } from "@/components/code-editor";
+import { SIZE_VERTICAL_XS } from "@/components/code-editor/sizes";
 import { CopyButton } from "@/components/copy-button";
 import { Segmented } from "@/components/segmented";
 import { StatusBanner } from "@/components/status-banner";
@@ -140,6 +141,7 @@ export function UnixTimestampTool({ title, description }: ToolHeaderProps) {
                 ? "e.g. 1718323200"
                 : "e.g. 2024-06-14T00:00:00Z"
             }
+            lines={SIZE_VERTICAL_XS}
             autoHeight
           />
         </ToolPane>

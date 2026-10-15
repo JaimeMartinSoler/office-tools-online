@@ -52,11 +52,7 @@ export function ColorConverterTool({ title, description }: ToolHeaderProps) {
   const contrast = color && bgColor ? gradeContrast(color, bgColor) : null;
 
   return (
-    <ToolLayout
-      title={title}
-      description={description}
-      fitContent
-    >
+    <ToolLayout title={title} description={description}>
       <div className="flex flex-wrap items-center gap-2">
         <input
           type="color"

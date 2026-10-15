@@ -40,11 +40,7 @@ export function NumberBaseConverterTool({ title, description }: ToolHeaderProps)
   const bitCount = value !== null ? bitLength(value) : 0;
 
   return (
-    <ToolLayout
-      title={title}
-      description={description}
-      fitContent
-    >
+    <ToolLayout title={title} description={description}>
       <div className="flex flex-wrap items-center gap-2">
         <Segmented
           aria-label="Input base"
