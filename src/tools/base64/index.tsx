@@ -196,6 +196,7 @@ export function Base64Tool({ title, description }: ToolHeaderProps) {
               mode === "encode" ? "Type or paste text…" : "Paste Base64…"
             }
             lines={SIZE_VERTICAL_M}
+            wrap
             autoHeight
           />
         </ToolPane>
@@ -203,7 +204,7 @@ export function Base64Tool({ title, description }: ToolHeaderProps) {
           label={mode === "encode" ? "Base64" : "Text"}
           actions={<CopyButton value={output} />}
         >
-          <CodeEditor value={output} readOnly lines={SIZE_VERTICAL_M} />
+          <CodeEditor value={output} readOnly lines={SIZE_VERTICAL_M} wrap />
         </ToolPane>
       </ToolPanes>
     </ToolLayout>

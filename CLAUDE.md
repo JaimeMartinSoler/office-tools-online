@@ -47,12 +47,17 @@ Follow the process rules in `.claude/rules/`, in order:
   the article follows right after it.
 - **Editor sizes.** Every `CodeEditor` takes a required `lines` prop, one of
   the `SIZE_VERTICAL_*` constants in `src/components/code-editor/sizes.ts`
-  (XL 40, L 30, M 20, S 10, XS 1). The box holds exactly that many lines and
-  scrolls in both directions; lines never wrap. XS is a single-line field with
-  no gutters or scrollbars. A non-editor pane beside an editor (preview, result
-  table) sets `style={{ height: editorBoxHeight(lines) }}` so the row lines up.
-  Nothing stretches to fill the screen, so don't add `flex-1`/`vh` heights to
-  panes. On mobile, `autoHeight` inputs grow with their content up to `lines`.
+  (XL 40, L 30, M 20, S 10, XS 1; typed as `EditorLines`). The box is that
+  many lines tall and scrolls in both directions. Long lines don't wrap,
+  except in editors that set `wrap`: use it for panes whose content is usually
+  one long line (JWT, Base64, URL, hash). XS is a single-line field with no
+  gutters or scrollbars; Enter does nothing there and pasted line breaks
+  become spaces (`toSingleLine`). A non-editor pane beside an editor (preview,
+  result table) sets `style={{ height: editorBoxHeight(lines) }}` so the row
+  lines up. Nothing stretches to fill the screen, so don't add `flex-1`/`vh`
+  heights to panes (number-base-converter's content-sized Bits panel keeps a
+  `min-h-[12vh]` floor and is the one exception). On mobile, `autoHeight`
+  inputs grow with their content up to `lines`.
 - **Invisible-effect feedback.** When a control's effect may not show (e.g.
   Regenerate on a masked password), play `BUTTON_BEAT` on the control and
   `FIELD_BEAT` on its target via `playAnimation` (`src/lib/motion.ts`, ported

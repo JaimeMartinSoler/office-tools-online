@@ -105,6 +105,8 @@ export function PasswordGeneratorTool({ title, description }: ToolHeaderProps) {
 
   // A fresh password can look identical to the old one (always while masked),
   // so the button and the field "beat" to show the press did something.
+  // The new value lands after the 150ms debounce above, just before
+  // FIELD_BEAT peaks (~170ms); keep the two in step if either changes.
   const regenerate = useCallback((e: MouseEvent<HTMLButtonElement>) => {
     playAnimation(e.currentTarget, ...BUTTON_BEAT);
     playAnimation(passwordRef.current, ...FIELD_BEAT);

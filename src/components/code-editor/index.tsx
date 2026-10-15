@@ -5,6 +5,7 @@ import type { CSSProperties, Ref } from "react";
 import { cn } from "@/lib/utils";
 import type { CodeEditorInnerProps } from "./inner";
 import { editorBoxHeight, SIZE_VERTICAL_XS } from "./sizes";
+import type { EditorLines } from "./sizes";
 
 // ssr:false guarantees CodeMirror never executes during the static prerender.
 const CodeEditorInner = dynamic(() => import("./inner"), {
@@ -26,7 +27,7 @@ export function CodeEditor({
   className?: string;
   autoHeight?: boolean;
   /** Visible height in lines — one of the `SIZE_VERTICAL_*` constants. */
-  lines: number;
+  lines: EditorLines;
   /** The bordered wrapper, e.g. to animate the whole field. */
   ref?: Ref<HTMLDivElement>;
 }) {

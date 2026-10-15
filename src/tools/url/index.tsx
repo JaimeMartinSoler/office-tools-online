@@ -189,6 +189,7 @@ export function UrlTool({ title, description }: ToolHeaderProps) {
                   : "Type or paste text…"
             }
             lines={SIZE_VERTICAL_M}
+            wrap
             autoHeight
           />
         </ToolPane>
@@ -201,7 +202,7 @@ export function UrlTool({ title, description }: ToolHeaderProps) {
             label={mode === "decode" ? "Decoded" : "Encoded"}
             actions={<CopyButton value={output} />}
           >
-            <CodeEditor value={output} readOnly lines={SIZE_VERTICAL_M} />
+            <CodeEditor value={output} readOnly lines={SIZE_VERTICAL_M} wrap />
           </ToolPane>
         )}
       </ToolPanes>

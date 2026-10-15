@@ -413,6 +413,7 @@ export function HashGeneratorTool({ title, description }: ToolHeaderProps) {
             onChange={(value) => update({ input: value })}
             placeholder="Type or paste text…"
             lines={SIZE_VERTICAL_M}
+            wrap
             autoHeight
           />
         </ToolPane>
@@ -420,7 +421,7 @@ export function HashGeneratorTool({ title, description }: ToolHeaderProps) {
           label={meta.isKdf ? "Derived key" : "Hash"}
           actions={<CopyButton value={output} />}
         >
-          <CodeEditor value={output} readOnly lines={SIZE_VERTICAL_M} />
+          <CodeEditor value={output} readOnly lines={SIZE_VERTICAL_M} wrap />
         </ToolPane>
       </ToolPanes>
     </ToolLayout>

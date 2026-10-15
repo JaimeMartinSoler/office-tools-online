@@ -2,6 +2,7 @@
 
 import { useEffect, useState, type ReactNode } from "react";
 import { CodeEditor } from "@/components/code-editor";
+import type { EditorLines } from "@/components/code-editor/sizes";
 import { CopyButton } from "@/components/copy-button";
 import { StatusBanner } from "@/components/status-banner";
 import { ToolLayout, ToolPane, ToolPanes } from "@/components/tool-layout";
@@ -48,7 +49,7 @@ export function ConverterTool({
    * Height of both panes in lines (a `SIZE_VERTICAL_*` constant). A custom
    * `renderOutput` sizes itself, e.g. with `editorBoxHeight(lines)`.
    */
-  lines: number;
+  lines: EditorLines;
   inputLabel?: string;
   outputLabel?: string;
   inputLanguage?: Language;

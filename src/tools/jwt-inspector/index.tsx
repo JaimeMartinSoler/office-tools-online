@@ -121,6 +121,7 @@ export function JwtInspectorTool({ title, description }: ToolHeaderProps) {
             onChange={setToken}
             placeholder="Paste a JWT (header.payload.signature)…"
             lines={SIZE_VERTICAL_S}
+            wrap
             autoHeight
           />
         </ToolPane>
